@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const connectDB = async () => {
   try {
-    const uri = process.env.MONGO_URI; // ⚠️ yahi naam use kar (Render me bhi same)
+    const uri = process.env.MONGODB_URI; // ⚠️ yahi naam use kar (Render me bhi same)
 
     if (!uri) {
       throw new Error("❌ MONGO_URI not found in environment variables");
