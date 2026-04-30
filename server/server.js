@@ -18,17 +18,15 @@ const server = http.createServer(app);
 const io = initializeSocket(server);
 app.set('io', io);
 
-// Middleware
-app.use(helmet({ crossOriginResourcePolicy: false }));
-
-// CORS — allow all Vercel preview/production domains + localhost
+// CORS — MUST come before helmet so preflight OPTIONS get proper headers
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
+  'https://artflow-live.vercel.app',
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
@@ -40,7 +38,20 @@ app.use(cors({
     if (process.env.NODE_ENV !== 'production') return callback(null, true);
     callback(new Error('Not allowed by CORS'));
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
+
+// Apply CORS first — including preflight
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // explicit preflight for all routes
+
+// Helmet — after CORS so it doesn't override Access-Control headers
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false,
+  crossOriginEmbedderPolicy: false,
 }));
 
 app.use(morgan('dev'));
@@ -61,11 +72,12 @@ app.get('/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date().to
 // Root test route
 app.get('/api', (_req, res) => res.json({ message: 'ArtFlow Studio API is running 🚀', ts: new Date().toISOString() }));
 
-// Serve frontend in production
+// Serve frontend in production (only for non-API routes)
 if (process.env.NODE_ENV === 'production') {
   const publicDir = path.join(__dirname, 'public');
   app.use(express.static(publicDir));
-  app.get('*', (_req, res) => {
+  // Only serve index.html for non-API routes
+  app.get(/^\/(?!api).*/, (_req, res) => {
     res.sendFile(path.join(publicDir, 'index.html'));
   });
 }

@@ -12,6 +12,8 @@ const initializeSocket = (server) => {
         if (/\.vercel\.app$/.test(origin)) return callback(null, true);
         // Allow localhost
         if (/^http:\/\/localhost:\d+$/.test(origin)) return callback(null, true);
+        // Allow explicit artflow-live domain
+        if (origin === 'https://artflow-live.vercel.app') return callback(null, true);
         // Allow explicit CLIENT_URL
         if (process.env.CLIENT_URL && origin === process.env.CLIENT_URL) return callback(null, true);
         // In development, allow everything
