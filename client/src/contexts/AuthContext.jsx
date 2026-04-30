@@ -10,45 +10,80 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('af_token'));
   const [loading, setLoading] = useState(true);
 
+  // 🔄 Load user on refresh
   useEffect(() => {
-    if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      api.get('/auth/me')
-        .then((res) => setUser(res.data.user))
-        .catch(() => { localStorage.removeItem('af_token'); setToken(null); })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    const loadUser = async () => {
+      try {
+        if (token) {
+          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          const { data } = await api.get('/auth/me');
+          setUser(data.user);
+        }
+      } catch (err) {
+        localStorage.removeItem('af_token');
+        setToken(null);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
   }, [token]);
 
+  // 🔐 LOGIN
   const login = async (email, password) => {
     const { data } = await api.post('/auth/login', { email, password });
+
     localStorage.setItem('af_token', data.token);
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+
     setToken(data.token);
     setUser(data.user);
+
     return data;
   };
 
+  // 🆕 SIGNUP
   const signup = async (name, email, password, company, phone) => {
-    const { data } = await api.post('/auth/signup', { name, email, password, company, phone });
+    const { data } = await api.post('/auth/signup', {
+      name,
+      email,
+      password,
+      company,
+      phone,
+    });
+
     localStorage.setItem('af_token', data.token);
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+
     setToken(data.token);
     setUser(data.user);
+
     return data;
   };
 
+  // 🚪 LOGOUT
   const logout = () => {
     localStorage.removeItem('af_token');
     delete api.defaults.headers.common['Authorization'];
+
     setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, signup, logout, isAdmin: user?.role === 'admin' }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        loading,
+        login,
+        signup,
+        logout,
+        isAdmin: user?.role === 'admin',
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
