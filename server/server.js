@@ -99,5 +99,17 @@ const PORT = process.env.PORT || 5000;
     console.log(`📡 WebSocket ready`);
     console.log(`💳 Payments → ${process.env.RAZORPAY_KEY_ID ? 'Razorpay LIVE' : 'Demo Mode'}`);
     console.log(`🌍 ${process.env.NODE_ENV || 'development'}\n`);
+
+    // 🔄 Self-ping keep-alive — prevents Render free tier from sleeping
+    if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
+      const https = require('https');
+      const KEEP_ALIVE_MS = 14 * 60 * 1000; // 14 minutes
+      setInterval(() => {
+        https.get(`${process.env.RENDER_EXTERNAL_URL}/api/health`, (res) => {
+          console.log(`♻️  Keep-alive ping → ${res.statusCode}`);
+        }).on('error', (e) => console.log('♻️  Keep-alive error:', e.message));
+      }, KEEP_ALIVE_MS);
+      console.log('♻️  Keep-alive enabled (every 14 min)');
+    }
   });
 })();
