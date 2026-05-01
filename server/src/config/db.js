@@ -27,7 +27,7 @@ const connectDB = async () => {
     const adminExists = await User.findOne({ role: 'admin' });
 
     if (!adminExists) {
-      const hashed = await bcrypt.hash('admin123', 12);
+      const hashed = await bcrypt.hash('admin123', 10);
       await User.create({
         name: 'Admin',
         email: 'admin@artflow.studio',
