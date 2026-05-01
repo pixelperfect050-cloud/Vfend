@@ -14,7 +14,7 @@ const servicesData = {
       'Unlimited scalability — print at any size',
       'Color-separated layers for production',
       'Multiple output formats (AI, EPS, SVG, PDF)',
-      'Free revisions until perfect',
+      '3 free revisions included',
       'Rush delivery available (4 hours)',
     ],
     process: [
@@ -42,7 +42,7 @@ const servicesData = {
       'Optimized stitch count for efficiency',
       'Color sequence & thread charts included',
       'Left chest, full back, cap, and all placements',
-      'Test sew photos upon request',
+      '3 free revision rounds included',
     ],
     process: [
       { step: '01', title: 'Submit Design', desc: 'Upload your logo or artwork. Tell us the placement, size, and fabric type.' },
@@ -65,7 +65,7 @@ const servicesData = {
     description: 'Our logo design service creates professional, memorable logos from scratch or refines your existing concepts. Every logo is hand-crafted with attention to versatility — ensuring it works across print, digital, embroidery, and every application.',
     features: [
       '3 initial concept options',
-      'Unlimited revisions on chosen concept',
+      '3 free revisions on your design',
       'All file formats included (AI, EPS, SVG, PNG, PDF)',
       'Brand color palette & typography guide',
       'Print-ready & web-optimized versions',
@@ -241,7 +241,7 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {/* Get a Quote CTA (instead of detailed pricing) */}
+      {/* Get a Free Quote CTA — No prices shown */}
       <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-6">
           <FadeUp>
@@ -249,28 +249,21 @@ export default function ServiceDetail() {
               whileHover={{ scale: 1.005 }}
               className="relative bg-gradient-to-br from-[#0B1220] via-[#162040] to-[#0B1220] rounded-3xl p-10 sm:p-14 overflow-hidden"
             >
-              {/* Decorative elements */}
               <motion.div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a18]/8 rounded-full -translate-y-1/2 translate-x-1/3" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 6, repeat: Infinity }} />
               <motion.div className="absolute bottom-0 left-0 w-48 h-48 bg-[#ff7a18]/5 rounded-full translate-y-1/2 -translate-x-1/3" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 8, repeat: Infinity, delay: 2 }} />
               
               <div className="relative z-10 text-center">
-                <p className="text-sm text-[#ff7a18] font-semibold uppercase tracking-widest mb-3">Pricing</p>
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-4">Get Your Custom Quote</h2>
+                <p className="text-sm text-[#ff7a18] font-semibold uppercase tracking-widest mb-3">Ready to Start?</p>
+                <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-4">Get a Free Quote in Minutes</h2>
                 <p className="text-gray-400 max-w-lg mx-auto mb-8">
-                  Every project is unique. Tell us what you need and we'll send you a detailed quote with pricing, turnaround time, and delivery formats — all within a few hours.
+                  Every project is unique. Tell us about your artwork and we'll send you a personalized quote with turnaround time and delivery formats — completely free.
                 </p>
                 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-8">
-                  <div className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 text-center">
-                    <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Starting from</p>
-                    <p className="text-4xl font-display font-bold text-[#ff7a18]">{service.pricing[0].price}</p>
-                    <p className="text-gray-500 text-xs mt-1">{service.pricing[0].desc}</p>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 text-gray-500 text-sm">
-                    <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-400" /> Free revisions included</div>
-                    <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> Turnaround: {service.pricing[0].time}</div>
-                    <div className="flex items-center gap-2"><Zap className="w-4 h-4 text-amber-400" /> Rush delivery available</div>
-                  </div>
+                <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-8 text-sm">
+                  <div className="flex items-center gap-2 text-gray-400"><CheckCircle2 className="w-4 h-4 text-green-400" /> 3 Free Revisions</div>
+                  <div className="flex items-center gap-2 text-gray-400"><Clock className="w-4 h-4 text-blue-400" /> Fast Turnaround</div>
+                  <div className="flex items-center gap-2 text-gray-400"><Zap className="w-4 h-4 text-amber-400" /> Rush Delivery Available</div>
+                  <div className="flex items-center gap-2 text-gray-400"><Shield className="w-4 h-4 text-purple-400" /> 100% Satisfaction Guaranteed</div>
                 </div>
 
                 <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }} className="inline-block">

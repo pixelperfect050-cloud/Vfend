@@ -246,75 +246,103 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── PRICING PROMO ── */}
+      {/* ── PRICING PROMO — Marketing Billboard ── */}
       <section className="bg-white py-20 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-50 to-transparent rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-orange-50 to-transparent rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
         
         <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <FadeUp className="text-center mb-14">
-            <p className="text-sm text-[#ff7a18] font-semibold uppercase tracking-widest mb-3">Simple Pricing</p>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-[#0B1220] mb-4">Studio-Quality Work. Unbeatable Prices.</h2>
-            <p className="text-gray-500 max-w-lg mx-auto">No hidden fees. No subscriptions. Just pay per project and get production-ready results.</p>
-          </FadeUp>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
-            {[
-              { icon: PenTool, title: 'Vector Tracing', price: '5.99', tag: 'Most Popular', desc: 'Simple logos & text', slug: 'vector-tracing' },
-              { icon: Layers, title: 'Embroidery Digitizing', price: '9.99', tag: 'Best Value', desc: 'Left chest / cap designs', slug: 'embroidery-digitizing' },
-              { icon: ImageIcon, title: 'Logo Design', price: '49.99', tag: 'Custom', desc: '3 unique concepts included', slug: 'logo-design' },
-              { icon: FileType, title: 'Format Conversion', price: '4.99', tag: 'Quick', desc: 'Any format to any format', slug: 'format-conversion' },
-            ].map(({ icon: Icon, title, price, tag, desc, slug }, i) => (
-              <FadeUp key={i} delay={i * 0.1}>
-                <Link to={`/services/${slug}`}>
-                  <motion.div 
-                    whileHover={{ y: -10, boxShadow: '0 25px 50px rgba(255, 122, 24, 0.15)' }}
-                    className="relative bg-white rounded-2xl border border-gray-100 p-6 h-full group overflow-hidden transition-all duration-300 hover:border-orange-200"
-                  >
-                    <div className="absolute top-3 right-3">
-                      <span className="text-[9px] font-bold uppercase tracking-wider bg-orange-50 text-[#ff7a18] px-2.5 py-1 rounded-full">{tag}</span>
-                    </div>
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100/50 flex items-center justify-center mb-4">
-                      <Icon className="w-5 h-5 text-[#ff7a18]" />
-                    </div>
-                    <h3 className="font-display font-semibold text-[#0B1220] mb-1 group-hover:text-[#ff7a18] transition-colors">{title}</h3>
-                    <p className="text-xs text-gray-400 mb-4">{desc}</p>
-                    <div className="flex items-baseline gap-1 mb-4">
-                      <span className="text-sm text-gray-400 font-medium">from</span>
-                      <span className="text-3xl font-display font-bold text-[#0B1220]">${price}</span>
-                    </div>
-                    <span className="text-xs font-semibold text-[#ff7a18] flex items-center gap-1 group-hover:gap-2 transition-all">
-                      Get Started <ArrowRight className="w-3 h-3" />
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-t from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
-                  </motion.div>
-                </Link>
-              </FadeUp>
-            ))}
-          </div>
-          
-          <FadeUp delay={0.3}>
-            <motion.div 
-              whileHover={{ scale: 1.01 }}
-              className="bg-gradient-to-r from-[#0B1220] via-[#1a2a4a] to-[#0B1220] rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden"
-            >
-              <motion.div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-[#ff7a18]/10" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 4, repeat: Infinity }} />
-              <motion.div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[#ff7a18]/8" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 5, repeat: Infinity, delay: 1 }} />
-              <div className="text-center sm:text-left relative z-10">
-                <div className="flex items-center gap-3 mb-2">
-                  <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 3, repeat: Infinity }} className="text-3xl">🎨</motion.div>
-                  <div>
-                    <h3 className="text-white font-display font-bold text-xl">Need a custom quote?</h3>
-                    <p className="text-gray-400 text-sm">Complex projects, bulk orders, rush delivery — we've got you covered.</p>
+          {/* Main promotional billboard */}
+          <FadeUp>
+            <div className="relative bg-gradient-to-br from-[#0B1220] via-[#162040] to-[#0B1220] rounded-3xl overflow-hidden">
+              {/* Decorative circles */}
+              <motion.div className="absolute -top-16 -right-16 w-64 h-64 bg-[#ff7a18]/10 rounded-full" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 6, repeat: Infinity }} />
+              <motion.div className="absolute -bottom-12 -left-12 w-48 h-48 bg-[#ff7a18]/8 rounded-full" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 8, repeat: Infinity, delay: 2 }} />
+              <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMSIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
+              
+              <div className="relative z-10 p-10 sm:p-16 flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+                {/* Left: Big price headline */}
+                <div className="flex-1 text-center lg:text-left">
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                    className="text-sm text-[#ff7a18] font-semibold uppercase tracking-[0.2em] mb-4"
+                  >Professional Artwork Services</motion.p>
+                  
+                  <div className="flex items-end justify-center lg:justify-start gap-3 mb-6">
+                    <motion.div
+                      initial={{ scale: 0.5, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }}
+                      viewport={{ once: true }} transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
+                    >
+                      <span className="text-white text-xl sm:text-2xl font-medium">Starting at just</span>
+                      <div className="flex items-baseline gap-1 mt-1">
+                        <span className="text-6xl sm:text-8xl lg:text-[110px] font-display font-black text-white leading-none tracking-tight">
+                          $5<span className="text-[#ff7a18]">.99</span>
+                        </span>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }} transition={{ delay: 0.5 }}
+                      className="pb-2 sm:pb-4"
+                    >
+                      <p className="text-gray-400 text-xs sm:text-sm leading-snug max-w-[120px]">per simple<br />logo / artwork</p>
+                    </motion.div>
                   </div>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.6 }}
+                    className="text-gray-400 text-sm sm:text-base max-w-md mb-6 leading-relaxed"
+                  >
+                    Vector tracing, embroidery digitizing, logo design & format conversion — all production-ready with <span className="text-white font-semibold">3 free revisions</span>.
+                  </motion.p>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.7 }}
+                    className="flex flex-wrap justify-center lg:justify-start gap-3"
+                  >
+                    <Link to="/request-quote">
+                      <motion.button whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }}
+                        className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#ff7a18] hover:bg-[#EA580C] text-white font-semibold rounded-full text-sm transition-colors shadow-lg shadow-orange-500/30">
+                        Get Free Quote <ArrowRight className="w-4 h-4" />
+                      </motion.button>
+                    </Link>
+                    <Link to="/signup">
+                      <motion.button whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }}
+                        className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-white/20 text-white hover:bg-white/10 font-semibold rounded-full text-sm transition-all">
+                        Start an Order <ArrowRight className="w-4 h-4" />
+                      </motion.button>
+                    </Link>
+                  </motion.div>
                 </div>
+
+                {/* Right: Trust signals */}
+                <motion.div 
+                  initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }} transition={{ delay: 0.4, duration: 0.6 }}
+                  className="w-full lg:w-auto flex-shrink-0"
+                >
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 space-y-5 max-w-sm mx-auto lg:mx-0">
+                    <h4 className="text-white font-display font-bold text-base text-center mb-4">What You Get</h4>
+                    {[
+                      { emoji: '✓', text: '3 Free Revisions included', highlight: true },
+                      { emoji: '⚡', text: '24-hour standard turnaround' },
+                      { emoji: '🎯', text: 'Production-ready vector files' },
+                      { emoji: '📦', text: 'All formats: AI, EPS, SVG, PDF' },
+                      { emoji: '🔄', text: 'Additional revisions: just $4.99 / 3 revisions' },
+                      { emoji: '🚀', text: 'Rush delivery available (4 hrs)' },
+                    ].map((item, i) => (
+                      <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }} transition={{ delay: 0.5 + i * 0.08 }}
+                        className="flex items-start gap-3"
+                      >
+                        <span className="text-sm mt-0.5 flex-shrink-0">{item.emoji}</span>
+                        <span className={`text-sm ${item.highlight ? 'text-[#ff7a18] font-semibold' : 'text-gray-400'}`}>{item.text}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
               </div>
-              <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }} className="relative z-10 flex-shrink-0">
-                <Link to="/request-quote" className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#ff7a18] hover:bg-[#EA580C] text-white font-semibold rounded-full text-sm transition-colors shadow-lg shadow-orange-500/25">
-                  Request Free Quote <ArrowRight className="w-4 h-4" />
-                </Link>
-              </motion.div>
-            </motion.div>
+            </div>
           </FadeUp>
         </div>
       </section>
