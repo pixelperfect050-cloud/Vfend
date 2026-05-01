@@ -1,14 +1,26 @@
 const Quote = require('../models/Quote');
 
-// Public — anyone can submit a quote request
+// Public — anyone can submit a quote request (with optional file uploads)
 exports.submitQuote = async (req, res) => {
   try {
-    const { name, email, phone, company, service, description } = req.body;
+    const { name, email, phone, company, service, description, fileLink } = req.body;
     if (!name || !email || !service || !description) {
       return res.status(400).json({ success: false, message: 'Name, email, service, and description are required.' });
     }
 
-    const quote = await Quote.create({ name, email, phone, company, service, description });
+    // Process uploaded files
+    const files = (req.files || []).map(f => ({
+      filename: f.filename,
+      originalName: f.originalname,
+      size: f.size,
+      mimetype: f.mimetype,
+    }));
+
+    const quote = await Quote.create({
+      name, email, phone, company, service, description,
+      files,
+      fileLink: fileLink || '',
+    });
     
     // Notify admin via socket if available
     const io = req.app.get('io');

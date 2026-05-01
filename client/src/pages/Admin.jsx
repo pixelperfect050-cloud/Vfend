@@ -368,6 +368,47 @@ export default function Admin() {
                               <p className="text-sm text-gray-700 mb-2">{item.description}</p>
                               {item.phone && <p className="text-xs text-gray-500">📞 {item.phone}</p>}
                             </div>
+
+                            {/* Uploaded Reference Images */}
+                            {item.files?.length > 0 && (
+                              <div className="bg-white p-4 rounded-xl border border-gray-200">
+                                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">📎 Uploaded Files</p>
+                                <div className="flex flex-wrap gap-3">
+                                  {item.files.map((f, idx) => {
+                                    const isImage = f.mimetype?.startsWith('image/');
+                                    const fileUrl = `/uploads/quotes/${f.filename}`;
+                                    return (
+                                      <a key={idx} href={fileUrl} target="_blank" rel="noreferrer"
+                                        className="group relative block">
+                                        {isImage ? (
+                                          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-gray-100 group-hover:border-[#ff7a18] transition-colors shadow-sm">
+                                            <img src={fileUrl} alt={f.originalName} className="w-full h-full object-cover" />
+                                          </div>
+                                        ) : (
+                                          <div className="w-24 h-24 rounded-xl bg-gray-50 border-2 border-gray-100 group-hover:border-[#ff7a18] flex flex-col items-center justify-center gap-1 transition-colors">
+                                            <Upload className="w-5 h-5 text-gray-400" />
+                                            <span className="text-[9px] text-gray-400 px-1 truncate max-w-full">{f.originalName?.split('.').pop()?.toUpperCase()}</span>
+                                          </div>
+                                        )}
+                                        <p className="text-[9px] text-gray-400 mt-1 truncate max-w-[96px] text-center">{f.originalName}</p>
+                                      </a>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* External File Link */}
+                            {item.fileLink && (
+                              <div className="bg-purple-50 p-4 rounded-xl border border-purple-100">
+                                <p className="text-xs font-bold text-purple-600 uppercase tracking-widest mb-1">🔗 Shared File Link</p>
+                                <a href={item.fileLink} target="_blank" rel="noreferrer"
+                                  className="text-sm text-purple-700 hover:text-purple-900 underline break-all">
+                                  {item.fileLink}
+                                </a>
+                              </div>
+                            )}
+
                             {item.adminReply && (
                               <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
                                 <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">Your Reply</p>
