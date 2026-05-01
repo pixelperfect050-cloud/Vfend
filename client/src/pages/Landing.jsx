@@ -66,10 +66,10 @@ const trustStats = [
 ];
 
 const services = [
-  { icon: PenTool, title: 'Vector Tracing', desc: 'Convert any raster image to scalable vector format with clean paths and perfect accuracy.' },
-  { icon: Layers, title: 'Embroidery Digitizing', desc: 'Production-ready embroidery files with precise stitch mapping for any garment or fabric.' },
-  { icon: ImageIcon, title: 'Logo Design', desc: 'Professional logo creation and refinement built around your unique brand identity.' },
-  { icon: FileType, title: 'Format Conversion', desc: 'Seamless conversion between AI, EPS, SVG, PDF, and 20+ professional file formats.' },
+  { icon: PenTool, title: 'Vector Tracing', slug: 'vector-tracing', desc: 'Convert any raster image to scalable vector format with clean paths and perfect accuracy.' },
+  { icon: Layers, title: 'Embroidery Digitizing', slug: 'embroidery-digitizing', desc: 'Production-ready embroidery files with precise stitch mapping for any garment or fabric.' },
+  { icon: ImageIcon, title: 'Logo Design', slug: 'logo-design', desc: 'Professional logo creation and refinement built around your unique brand identity.' },
+  { icon: FileType, title: 'Format Conversion', slug: 'format-conversion', desc: 'Seamless conversion between AI, EPS, SVG, PDF, and 20+ professional file formats.' },
 ];
 
 const portfolio = [
@@ -169,7 +169,7 @@ export default function Landing() {
                 <Link to="/signup" className="btn-pill btn-pill-primary">
                   Become a Client <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/signup" className="btn-pill btn-pill-primary">
+                <Link to="/request-quote" className="btn-pill btn-pill-primary">
                   Request a Quote <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link to="/signup" className="btn-pill btn-pill-outline">
@@ -225,18 +225,21 @@ export default function Landing() {
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-[#0B1220]">What We Do</h2>
           </FadeUp>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {services.map(({ icon: Icon, title, desc }, i) => (
+            {services.map(({ icon: Icon, title, desc, slug }, i) => (
               <FadeUp key={i} delay={i * 0.1}>
-                <motion.div whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="card-hover p-7 h-full">
-                  <motion.div whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }} transition={{ duration: 0.5 }}
-                    className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center mb-5">
-                    <Icon className="w-5 h-5 text-[#ff7a18]" />
+                <Link to={`/services/${slug}`}>
+                  <motion.div whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="card-hover p-7 h-full group">
+                    <motion.div whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }} transition={{ duration: 0.5 }}
+                      className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center mb-5">
+                      <Icon className="w-5 h-5 text-[#ff7a18]" />
+                    </motion.div>
+                    <h3 className="font-display font-semibold text-lg text-[#0B1220] mb-2 group-hover:text-[#ff7a18] transition-colors">{title}</h3>
+                    <p className="text-sm text-gray-500 leading-relaxed mb-3">{desc}</p>
+                    <span className="text-xs font-semibold text-[#ff7a18] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">Learn More <ArrowRight className="w-3 h-3" /></span>
                   </motion.div>
-                  <h3 className="font-display font-semibold text-lg text-[#0B1220] mb-2">{title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
-                </motion.div>
+                </Link>
               </FadeUp>
             ))}
           </div>

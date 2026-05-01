@@ -8,6 +8,8 @@ import CreateJob from './pages/CreateJob';
 import Jobs from './pages/Jobs';
 import Orders from './pages/Orders';
 import Admin from './pages/Admin';
+import RequestQuote from './pages/RequestQuote';
+import ServiceDetail from './pages/ServiceDetail';
 import DashboardLayout from './components/Layout/DashboardLayout';
 
 function ProtectedRoute({ children }) {
@@ -28,6 +30,8 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/request-quote" element={<RequestQuote />} />
+      <Route path="/services/:slug" element={<ServiceDetail />} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><Dashboard /></DashboardLayout></ProtectedRoute>} />
       <Route path="/jobs/create" element={<ProtectedRoute><DashboardLayout><CreateJob /></DashboardLayout></ProtectedRoute>} />
       <Route path="/jobs" element={<ProtectedRoute><DashboardLayout><Jobs /></DashboardLayout></ProtectedRoute>} />

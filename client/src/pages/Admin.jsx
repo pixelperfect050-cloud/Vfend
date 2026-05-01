@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, Briefcase, Users, Package, ChevronDown, ChevronUp, Upload, Search, DollarSign, UserPlus, Trash2, CheckCircle2, XCircle, MoreVertical } from 'lucide-react';
+import { ShieldCheck, Briefcase, Users, Package, ChevronDown, ChevronUp, Upload, Search, DollarSign, UserPlus, Trash2, CheckCircle2, XCircle, MoreVertical, MessageSquare, Send } from 'lucide-react';
 import api from '../services/api';
 import socket from '../services/socket';
 import { format } from 'date-fns';
@@ -25,12 +25,14 @@ export default function Admin() {
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState({ totalUsers: 0, totalJobs: 0, totalOrders: 0, paidOrders: 0, totalRevenue: 0 });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('jobs'); // 'jobs', 'orders', 'users'
+  const [activeTab, setActiveTab] = useState('jobs'); // 'jobs', 'orders', 'users', 'quotes'
   const [expanded, setExpanded] = useState(null);
   const [search, setSearch] = useState('');
   const [deliveryFiles, setDeliveryFiles] = useState([]);
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [priceInput, setPriceInput] = useState('');
+  const [quotes, setQuotes] = useState([]);
+  const [quoteReply, setQuoteReply] = useState({ adminReply: '', quotedPrice: '', quotedTurnaround: '' });
 
   const fetchData = async () => {
     try {
@@ -44,6 +46,11 @@ export default function Admin() {
       setOrders(o.data.orders);
       setUsers(u.data.users);
       setStats(s.data.stats);
+      // Fetch quotes separately (non-blocking)
+      try {
+        const q = await api.get('/quotes/all');
+        setQuotes(q.data.quotes || []);
+      } catch { /* quotes endpoint may not exist yet */ }
     } catch (err) {
       toast.error('Failed to load admin data');
     } finally {
@@ -109,7 +116,29 @@ export default function Admin() {
     if (activeTab === 'jobs') return jobs.filter(j => j.title?.toLowerCase().includes(q) || j.userId?.name?.toLowerCase().includes(q));
     if (activeTab === 'orders') return orders.filter(o => o.jobId?.title?.toLowerCase().includes(q) || o.userId?.name?.toLowerCase().includes(q));
     if (activeTab === 'users') return users.filter(u => u.name?.toLowerCase().includes(q) || u.email?.toLowerCase().includes(q));
+    if (activeTab === 'quotes') return quotes.filter(qt => qt.name?.toLowerCase().includes(q) || qt.email?.toLowerCase().includes(q) || qt.service?.toLowerCase().includes(q));
     return [];
+  };
+
+  const replyToQuote = async (quoteId) => {
+    try {
+      const { data } = await api.put(`/quotes/${quoteId}/reply`, quoteReply);
+      setQuotes(p => p.map(q => q._id === quoteId ? data.quote : q));
+      setQuoteReply({ adminReply: '', quotedPrice: '', quotedTurnaround: '' });
+      toast.success('Quote reply sent!');
+    } catch {
+      toast.error('Reply failed');
+    }
+  };
+
+  const deleteQuote = async (quoteId) => {
+    try {
+      await api.delete(`/quotes/${quoteId}`);
+      setQuotes(p => p.filter(q => q._id !== quoteId));
+      toast.success('Quote deleted');
+    } catch {
+      toast.error('Delete failed');
+    }
   };
 
   return (
@@ -147,6 +176,7 @@ export default function Admin() {
           {[
             { id: 'jobs', label: 'All Jobs', icon: Briefcase },
             { id: 'orders', label: 'Deliveries', icon: Package },
+            { id: 'quotes', label: 'Quote Requests', icon: MessageSquare },
             { id: 'users', label: 'User Management', icon: Users }
           ].map((tab) => (
             <button
@@ -191,6 +221,11 @@ export default function Admin() {
                           <h3 className="font-semibold text-sm text-gray-900">{item.name}</h3>
                           <p className="text-xs text-gray-400">{item.email} · {item.role.toUpperCase()}</p>
                         </>
+                      ) : activeTab === 'quotes' ? (
+                        <>
+                          <h3 className="font-semibold text-sm text-gray-900">{item.name} — {item.service}</h3>
+                          <p className="text-xs text-gray-400">{item.email} {item.company && `· ${item.company}`} · {format(new Date(item.createdAt), 'MMM d, yyyy')}</p>
+                        </>
                       ) : (
                         <>
                           <h3 className="font-semibold text-sm text-gray-900 truncate">{item.title || (item.jobId?.title || 'Order')}</h3>
@@ -205,6 +240,13 @@ export default function Admin() {
                       <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${item.isActive ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
                         {item.isActive ? 'ACTIVE' : 'DISABLED'}
                       </span>
+                    ) : activeTab === 'quotes' ? (
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        item.status === 'quoted' ? 'bg-blue-50 text-blue-600' :
+                        item.status === 'accepted' ? 'bg-green-50 text-green-600' :
+                        item.status === 'rejected' ? 'bg-red-50 text-red-600' :
+                        'bg-amber-50 text-amber-600'
+                      }`}>{item.status?.toUpperCase()}</span>
                     ) : (
                       <span className={statusBadge[item.status]}>{item.status.replace(/-/g, ' ')}</span>
                     )}
@@ -316,6 +358,49 @@ export default function Admin() {
                             </button>
 
                             <p className="text-xs text-gray-400 italic">User since {format(new Date(item.createdAt), 'MMMM yyyy')}</p>
+                          </div>
+                        )}
+
+                        {activeTab === 'quotes' && (
+                          <div className="space-y-4">
+                            <div className="bg-white p-4 rounded-xl border border-gray-200">
+                              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Customer's Request</p>
+                              <p className="text-sm text-gray-700 mb-2">{item.description}</p>
+                              {item.phone && <p className="text-xs text-gray-500">📞 {item.phone}</p>}
+                            </div>
+                            {item.adminReply && (
+                              <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">Your Reply</p>
+                                <p className="text-sm text-blue-800">{item.adminReply}</p>
+                                {item.quotedPrice > 0 && <p className="text-sm font-bold text-blue-700 mt-1">Price: ₹{item.quotedPrice}</p>}
+                                {item.quotedTurnaround && <p className="text-xs text-blue-600">Turnaround: {item.quotedTurnaround}</p>}
+                              </div>
+                            )}
+                            <div className="bg-white p-4 rounded-xl border border-dashed border-gray-300">
+                              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Reply to Quote</p>
+                              <textarea
+                                value={quoteReply.adminReply}
+                                onChange={(e) => setQuoteReply(p => ({ ...p, adminReply: e.target.value }))}
+                                className="input-field min-h-[80px] resize-y mb-3 !text-sm"
+                                placeholder="Your response to the customer..."
+                              />
+                              <div className="grid grid-cols-2 gap-3 mb-3">
+                                <input type="number" placeholder="Quoted Price (₹)" value={quoteReply.quotedPrice}
+                                  onChange={(e) => setQuoteReply(p => ({ ...p, quotedPrice: e.target.value }))}
+                                  className="input-field !py-2 !text-sm" />
+                                <input type="text" placeholder="Turnaround (e.g. 24 hours)" value={quoteReply.quotedTurnaround}
+                                  onChange={(e) => setQuoteReply(p => ({ ...p, quotedTurnaround: e.target.value }))}
+                                  className="input-field !py-2 !text-sm" />
+                              </div>
+                              <div className="flex gap-2">
+                                <button onClick={() => replyToQuote(item._id)} className="btn-primary flex items-center gap-2 !py-2">
+                                  <Send className="w-4 h-4" /> Send Quote
+                                </button>
+                                <button onClick={() => deleteQuote(item._id)} className="px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
+                                  <Trash2 className="w-3.5 h-3.5" /> Delete
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         )}
                       </motion.div>

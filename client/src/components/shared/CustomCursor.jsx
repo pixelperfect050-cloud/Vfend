@@ -3,16 +3,13 @@ import { useEffect, useRef } from 'react';
 export default function CustomCursor() {
   const cursorRef = useRef(null);
   const trailRef = useRef(null);
-  const glowRef = useRef(null);
 
   useEffect(() => {
     const cursor = cursorRef.current;
     const trail = trailRef.current;
-    const glow = glowRef.current;
-    if (!cursor || !trail || !glow) return;
+    if (!cursor || !trail) return;
 
     let mouseX = 0, mouseY = 0;
-    let glowX = 0, glowY = 0;
 
     const move = (e) => {
       mouseX = e.clientX;
@@ -25,30 +22,17 @@ export default function CustomCursor() {
       }, 80);
     };
 
-    // Smooth glow follow with lerp
-    let rafId;
-    const animateGlow = () => {
-      glowX += (mouseX - glowX) * 0.06;
-      glowY += (mouseY - glowY) * 0.06;
-      glow.style.left = glowX + 'px';
-      glow.style.top = glowY + 'px';
-      rafId = requestAnimationFrame(animateGlow);
-    };
-    rafId = requestAnimationFrame(animateGlow);
-
-    const addHover = (cls) => () => cursor.classList.add(cls);
-    const removeHover = (cls) => () => cursor.classList.remove(cls);
+    const addHover = () => cursor.classList.add('cursor-hover-btn');
+    const removeHover = () => cursor.classList.remove('cursor-hover-btn');
 
     document.addEventListener('mousemove', move);
 
     const observe = () => {
-      document.querySelectorAll('.btn-pill, a, button').forEach((el) => {
-        el.addEventListener('mouseenter', addHover('cursor-hover-btn'));
-        el.addEventListener('mouseleave', removeHover('cursor-hover-btn'));
-      });
-      document.querySelectorAll('h1, h2, h3, p, span').forEach((el) => {
-        el.addEventListener('mouseenter', addHover('cursor-hover-text'));
-        el.addEventListener('mouseleave', removeHover('cursor-hover-text'));
+      document.querySelectorAll('.btn-pill, a, button, [role="button"]').forEach((el) => {
+        el.removeEventListener('mouseenter', addHover);
+        el.removeEventListener('mouseleave', removeHover);
+        el.addEventListener('mouseenter', addHover);
+        el.addEventListener('mouseleave', removeHover);
       });
     };
 
@@ -58,16 +42,20 @@ export default function CustomCursor() {
     return () => {
       document.removeEventListener('mousemove', move);
       clearInterval(interval);
-      cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
     <>
-      {/* Large soft glow that follows mouse with delay */}
-      <div ref={glowRef} className="cursor-glow hidden lg:block" />
-      {/* Main cursor dot */}
-      <div ref={cursorRef} className="custom-cursor hidden lg:block" />
+      {/* Main PenTool cursor */}
+      <div ref={cursorRef} className="custom-cursor hidden lg:block">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff7a18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 19 7-7 3 3-7 7-3-3z" />
+          <path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+          <path d="m2 2 7.586 7.586" />
+          <circle cx="11" cy="11" r="2" />
+        </svg>
+      </div>
       {/* Trail dot */}
       <div ref={trailRef} className="custom-cursor-trail hidden lg:block" />
     </>
