@@ -1,12 +1,37 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Coins, TrendingUp, History, Gift, CheckCircle2, Star, Zap, ShoppingBag } from 'lucide-react';
+import { Coins, TrendingUp, History, Gift, CheckCircle2, Star, Zap, ShoppingBag, Loader2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
 
 const fade = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 const stagger = { show: { transition: { staggerChildren: 0.1 } } };
 
 export default function Rewards() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
+  const [creditData, setCreditData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCredits = async () => {
+      try {
+        const { data } = await api.get('/credits');
+        if (data.success) {
+          setCreditData(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch credits:', err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCredits();
+    refreshUser(); // Also refresh auth context for latest credits
+  }, []);
+
+  const credits = creditData?.credits ?? user?.credits ?? 0;
+  const totalEarned = creditData?.totalCreditsEarned ?? user?.totalCreditsEarned ?? 0;
 
   const earnOptions = [
     { title: 'Welcome Bonus', amount: 10, detail: 'Awarded on first signup', icon: Gift, color: 'text-pink-500', bg: 'bg-pink-50' },
@@ -31,12 +56,12 @@ export default function Rewards() {
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div className="flex items-center gap-6">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ff7a18] to-[#ff5722] flex items-center justify-center shadow-lg shadow-orange-500/20">
-                <Coins className="w-8 h-8 text-white" />
+                {loading ? <Loader2 className="w-8 h-8 text-white animate-spin" /> : <Coins className="w-8 h-8 text-white" />}
               </div>
               <div>
                 <p className="text-sm text-gray-400 font-medium mb-1">Total Available Balance</p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl md:text-5xl font-display font-black tracking-tight">{user?.credits || 0}</span>
+                  <span className="text-4xl md:text-5xl font-display font-black tracking-tight">{credits}</span>
                   <span className="text-lg text-orange-400 font-bold uppercase tracking-widest">Coins</span>
                 </div>
               </div>
@@ -47,12 +72,12 @@ export default function Rewards() {
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Lifetime Earned</p>
-                <p className="text-xl font-display font-bold">{user?.totalCreditsEarned || 0} 🪙</p>
+                <p className="text-xl font-display font-bold">{totalEarned} 🪙</p>
               </div>
               <div>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Rank</p>
                 <p className="text-xl font-display font-bold flex items-center gap-2">
-                  {user?.totalCreditsEarned > 500 ? 'Platinum' : user?.totalCreditsEarned > 200 ? 'Gold' : 'Silver'}
+                  {totalEarned > 500 ? 'Platinum' : totalEarned > 200 ? 'Gold' : 'Silver'}
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                 </p>
               </div>
@@ -97,9 +122,9 @@ export default function Rewards() {
                 <p className="text-sm leading-relaxed opacity-80 mb-6">
                   Apply your available coins during the payment step for any order. There's no minimum balance required to start saving!
                 </p>
-                <button className="px-5 py-2.5 bg-white text-blue-600 rounded-xl text-sm font-bold shadow-lg shadow-black/10 hover:bg-blue-50 transition-colors">
+                <Link to="/orders" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-blue-600 rounded-xl text-sm font-bold shadow-lg shadow-black/10 hover:bg-blue-50 transition-colors">
                   Go to Orders
-                </button>
+                </Link>
               </div>
               <Coins className="absolute -right-8 -bottom-8 w-40 h-40 text-white/10 -rotate-12" />
             </div>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PenTool, ArrowRight, Send, Loader2, CheckCircle2, Upload, ArrowLeft, FileText, X, Image, Link2, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import api from '../services/api';
 
 const serviceOptions = [
   'Vector Tracing',
@@ -119,7 +119,7 @@ export default function RequestQuote() {
       formData.append('fileLink', form.fileLink);
       files.forEach(f => formData.append('files', f));
 
-      await axios.post('/api/quotes/submit', formData, {
+      await api.post('/quotes/submit', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setSubmitted(true);
