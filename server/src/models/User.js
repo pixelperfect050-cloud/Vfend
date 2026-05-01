@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema(
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     avatar: { type: String, default: '' },
     isActive: { type: Boolean, default: true },
+    credits: { type: Number, default: 0 },
+    totalCreditsEarned: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

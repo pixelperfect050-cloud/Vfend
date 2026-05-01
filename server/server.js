@@ -13,6 +13,8 @@ const orderRoutes = require('./src/routes/orderRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
 const quoteRoutes = require('./src/routes/quoteRoutes');
+const creditRoutes = require('./src/routes/creditRoutes');
+const notificationRoutes = require('./src/routes/notificationRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -67,6 +69,8 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/quotes', quoteRoutes);
+app.use('/api/credits', creditRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));

@@ -1,5 +1,7 @@
 const Order = require('../models/Order');
 const crypto = require('crypto');
+const { notify } = require('../services/notificationService');
+const { awardPaymentCashback } = require('../services/creditService');
 
 // Create payment order (Razorpay-style)
 exports.createPaymentOrder = async (req, res) => {
@@ -107,6 +109,9 @@ exports.verifyPayment = async (req, res) => {
       order.paymentId = razorpay_payment_id;
       await order.save();
 
+      // Payment success notification + cashback
+      _handlePaymentSuccess(order).catch(() => {});
+
       return res.json({ success: true, message: 'Payment verified!', order });
     }
 
@@ -115,6 +120,9 @@ exports.verifyPayment = async (req, res) => {
       order.paymentStatus = 'paid';
       order.paymentId = demoPaymentId || order.paymentId;
       await order.save();
+
+      // Payment success notification + cashback
+      _handlePaymentSuccess(order).catch(() => {});
 
       return res.json({ success: true, message: 'Demo payment verified!', order });
     }
@@ -142,3 +150,23 @@ exports.getPaymentStatus = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+/**
+ * Handle post-payment success: notify user + award cashback credits
+ */
+async function _handlePaymentSuccess(order) {
+  // Notify user about payment success
+  await notify({
+    userId: order.userId,
+    type: 'payment_success',
+    title: '💳 Payment Successful!',
+    message: `Payment of ₹${order.amount} for "${order.jobId?.title || 'your order'}" was successful.`,
+    link: '/orders',
+    meta: { orderId: order._id, amount: order.amount },
+  });
+
+  // Award cashback credits (5% of payment)
+  if (order.amount > 0) {
+    await awardPaymentCashback(order.userId, order.amount);
+  }
+}

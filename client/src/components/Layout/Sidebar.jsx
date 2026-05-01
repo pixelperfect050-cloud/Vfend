@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { LayoutDashboard, PlusCircle, Briefcase, Package, ShieldCheck, LogOut, PenTool, X, CreditCard } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, Briefcase, Package, ShieldCheck, LogOut, PenTool, X, Coins } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
@@ -48,6 +48,30 @@ export default function Sidebar({ open, onClose }) {
           </>
         )}
       </nav>
+
+      {/* Credits Card in Sidebar */}
+      {user && (
+        <div className="px-3 mb-2">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="rounded-xl p-3.5 border border-amber-100/60"
+            style={{ background: 'linear-gradient(135deg, #FFF7ED, #FFFBEB)' }}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: 'linear-gradient(135deg, #ff7a18, #ff5722)' }}>
+                <Coins className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="text-[10px] text-amber-600 font-medium uppercase tracking-wider">My Coins</p>
+                <p className="text-lg font-display font-bold text-amber-800">{user.credits || 0}</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       <div className="p-3 mt-auto">
         <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
           <div className="flex items-center gap-3 mb-3">

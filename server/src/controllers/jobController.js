@@ -1,6 +1,7 @@
 const Job = require('../models/Job');
 const Order = require('../models/Order');
 const { getIO } = require('../services/socketService');
+const { notify, notifyAdmins } = require('../services/notificationService');
 
 exports.createJob = async (req, res) => {
   try {
@@ -26,6 +27,26 @@ exports.createJob = async (req, res) => {
     });
 
     getIO()?.to('admin-room').emit('new-job', job);
+
+    // Notify admins about new job
+    notifyAdmins({
+      type: 'admin_alert',
+      title: '📋 New Job Submitted',
+      message: `${req.user.name} submitted a new ${serviceType.replace(/-/g, ' ')} job: "${title}"`,
+      link: '/admin',
+      meta: { jobId: job._id, serviceType },
+    }).catch(() => {});
+
+    // Notify user about job creation
+    notify({
+      userId: req.user._id,
+      type: 'job_status',
+      title: '✅ Job Submitted Successfully',
+      message: `Your job "${title}" has been submitted and is pending review.`,
+      link: '/jobs',
+      meta: { jobId: job._id },
+    }).catch(() => {});
+
     res.status(201).json({ success: true, job });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -91,6 +112,7 @@ exports.updateJobStatus = async (req, res) => {
     const job = await Job.findById(req.params.id);
     if (!job) return res.status(404).json({ success: false, message: 'Job not found.' });
 
+    const oldStatus = job.status;
     job.status = status || job.status;
     if (adminNotes !== undefined) job.adminNotes = adminNotes;
     if (estimatedDelivery) job.estimatedDelivery = estimatedDelivery;
@@ -103,14 +125,45 @@ exports.updateJobStatus = async (req, res) => {
     if (status === 'completed') {
       const existingOrder = await Order.findOne({ jobId: job._id });
       if (!existingOrder) {
-        await Order.create({
+        const order = await Order.create({
           jobId: job._id,
           userId: job.userId,
           status: 'processing',
           amount: job.price || 0,
           paymentStatus: job.price > 0 ? 'unpaid' : 'paid',
         });
+
+        // Notify user about order creation
+        notify({
+          userId: job.userId,
+          type: 'order_created',
+          title: '🎉 Order Created!',
+          message: `Your job "${job.title}" is complete! An order has been created for delivery.`,
+          link: '/orders',
+          meta: { jobId: job._id, orderId: order._id },
+        }).catch(() => {});
+
+        // Notify admins
+        notifyAdmins({
+          type: 'admin_alert',
+          title: '📦 New Order Auto-Created',
+          message: `Order created for job "${job.title}" (${job.price > 0 ? `₹${job.price}` : 'Free'})`,
+          link: '/admin',
+          meta: { orderId: order._id },
+        }).catch(() => {});
       }
+    }
+
+    // Notify user about job status change
+    if (status && status !== oldStatus) {
+      notify({
+        userId: job.userId,
+        type: 'job_status',
+        title: `📋 Job ${status.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
+        message: `Your job "${job.title}" has been updated to "${status.replace(/-/g, ' ')}".${adminNotes ? ` Note: ${adminNotes}` : ''}`,
+        link: '/jobs',
+        meta: { jobId: job._id, status, oldStatus },
+      }).catch(() => {});
     }
 
     getIO()?.to(`user-${job.userId}`).emit('job-updated', job);

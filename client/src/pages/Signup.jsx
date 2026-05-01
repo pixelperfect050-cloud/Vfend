@@ -61,6 +61,10 @@ export default function Signup() {
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
           <p className="text-sm text-gray-500 mt-1">Start your creative journey</p>
+          <div className="inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full text-xs font-semibold"
+            style={{ background: 'linear-gradient(135deg, #FFF7ED, #FFFBEB)', color: '#B45309', border: '1px solid #FDE68A' }}>
+            🪙 +10 bonus coins on signup!
+          </div>
         </div>
 
         <form onSubmit={handleSubmit}>

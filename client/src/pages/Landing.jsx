@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useInView, motion, useMotionValue, useTransform, animate } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Star, PenTool, Layers, ImageIcon, FileType, Upload, Monitor, Download } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Star, PenTool, Layers, ImageIcon, FileType, Upload, Monitor, Download, Coins, Gift, Zap, BadgePercent } from 'lucide-react';
 import BeforeAfterSlider from '../components/shared/BeforeAfterSlider';
 import CustomCursor from '../components/shared/CustomCursor';
 import TypingText from '../components/shared/TypingText';
@@ -113,7 +113,7 @@ export default function Landing() {
             <span className="text-lg font-display font-bold text-[#0B1220] tracking-tight">ArtFlow Studio</span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
-            {['Services', 'Portfolio', 'How It Works', 'Reviews'].map((item) => (
+            {['Services', 'Portfolio', 'Rewards', 'How It Works', 'Reviews'].map((item) => (
               <motion.a key={item} href={`#${item.toLowerCase().replace(/ /g, '')}`}
                 whileHover={{ y: -2, color: '#0B1220' }} transition={{ duration: 0.2 }}
                 className="hover:text-[#0B1220] transition-colors">{item}</motion.a>
@@ -343,6 +343,112 @@ export default function Landing() {
                 </motion.div>
               </div>
             </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ── EARN COINS — Rewards Marketing ── */}
+      <section id="rewards" className="bg-[#FAFBFC] border-y border-gray-100 py-20 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div animate={{ y: [0, -20, 0], rotate: [0, 360] }} transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-[10%] left-[8%] w-4 h-4 rounded-full opacity-15" style={{ background: '#ff7a18' }} />
+          <motion.div animate={{ y: [0, 15, 0], rotate: [0, -360] }} transition={{ duration: 15, repeat: Infinity, ease: 'linear', delay: 2 }}
+            className="absolute top-[20%] right-[12%] w-3 h-3 rounded-full opacity-10" style={{ background: '#ff7a18' }} />
+          <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            className="absolute bottom-[15%] left-[15%] w-5 h-5 rounded-full opacity-10" style={{ background: '#ff5722' }} />
+        </div>
+
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <FadeUp className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-100 mb-5">
+              <Coins className="w-4 h-4 text-amber-600" />
+              <span className="text-sm font-semibold text-amber-700">Rewards Program</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-[#0B1220] mb-4">
+              Earn Coins on Every Order
+            </h2>
+            <p className="text-gray-500 max-w-lg mx-auto">
+              Get rewarded for every job. Use your coins to unlock discounts on future orders.
+            </p>
+          </FadeUp>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                icon: Gift,
+                iconBg: 'bg-green-50',
+                iconColor: 'text-green-600',
+                coins: '+10',
+                title: 'Signup Bonus',
+                desc: 'Create a free account and instantly receive 10 bonus coins to get started.',
+                highlight: 'border-green-200 bg-green-50/30',
+              },
+              {
+                icon: Zap,
+                iconBg: 'bg-blue-50',
+                iconColor: 'text-blue-600',
+                coins: '+20',
+                title: 'Order Complete',
+                desc: 'Every completed order earns you 20 coins automatically credited to your wallet.',
+                highlight: 'border-blue-200 bg-blue-50/30',
+              },
+              {
+                icon: BadgePercent,
+                iconBg: 'bg-purple-50',
+                iconColor: 'text-purple-600',
+                coins: '5%',
+                title: 'Payment Cashback',
+                desc: 'Get 5% cashback in coins on every payment. The more you spend, the more you earn.',
+                highlight: 'border-purple-200 bg-purple-50/30',
+              },
+            ].map((item, i) => (
+              <ScaleIn key={i} delay={i * 0.12}>
+                <motion.div whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+                  className={`relative rounded-2xl border p-7 transition-all duration-300 bg-white ${item.highlight}`}>
+                  <motion.div whileHover={{ rotate: [0, -10, 10, 0] }} transition={{ duration: 0.5 }}
+                    className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center mb-5`}>
+                    <item.icon className={`w-5 h-5 ${item.iconColor}`} />
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: 'spring', stiffness: 200, delay: 0.3 + i * 0.1 }}
+                    className="absolute top-5 right-5 px-3 py-1.5 rounded-full font-display font-black text-xl"
+                    style={{
+                      background: 'linear-gradient(135deg, #ff7a18, #ff5722)',
+                      color: 'white',
+                      boxShadow: '0 4px 12px rgba(255,122,24,0.3)',
+                    }}>
+                    {item.coins}
+                  </motion.div>
+
+                  <h3 className="font-display font-semibold text-lg text-[#0B1220] mb-2">{item.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                </motion.div>
+              </ScaleIn>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <FadeUp delay={0.3} className="text-center">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+              <Link to="/signup"
+                className="inline-flex items-center gap-2.5 px-8 py-4 font-semibold text-white rounded-full text-sm transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, #ff7a18, #ff5722)',
+                  boxShadow: '0 6px 25px rgba(255,122,24,0.35)',
+                }}>
+                <Coins className="w-4.5 h-4.5" />
+                Start Earning Now
+                <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                  <ArrowRight className="w-4 h-4" />
+                </motion.span>
+              </Link>
+            </motion.div>
+            <p className="text-xs text-gray-400 mt-4">No credit card required · Instant signup bonus</p>
           </FadeUp>
         </div>
       </section>

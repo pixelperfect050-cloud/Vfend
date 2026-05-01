@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { notify } = require('../services/notificationService');
+const { awardSignupBonus } = require('../services/creditService');
 
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET || 'artflow_secret', { expiresIn: '7d' });
 
@@ -15,6 +17,16 @@ exports.signup = async (req, res) => {
     const hashed = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email: email.toLowerCase(), password: hashed, company: company || '', phone: phone || '' });
     const token = generateToken(user._id);
+
+    // Award signup bonus credits (10 coins) + send welcome notification
+    awardSignupBonus(user._id).catch(() => {});
+    notify({
+      userId: user._id,
+      type: 'welcome',
+      title: '🎉 Welcome to ArtFlow Studio!',
+      message: `Hi ${name.split(' ')[0]}, welcome aboard! You've received 10 bonus coins. Start your first job to earn more rewards.`,
+      link: '/dashboard',
+    }).catch(() => {});
 
     res.status(201).json({ success: true, token, user });
   } catch (err) {
