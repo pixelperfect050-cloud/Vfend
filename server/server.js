@@ -15,6 +15,7 @@ const paymentRoutes = require('./src/routes/paymentRoutes');
 const quoteRoutes = require('./src/routes/quoteRoutes');
 const creditRoutes = require('./src/routes/creditRoutes');
 const notificationRoutes = require('./src/routes/notificationRoutes');
+const scratchRoutes = require('./src/routes/scratchRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -72,6 +73,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/quotes', quoteRoutes);
 app.use('/api/credits', creditRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/scratch', scratchRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
