@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
     isActive: { type: Boolean, default: true },
     credits: { type: Number, default: 0 },
     totalCreditsEarned: { type: Number, default: 0 },
+    creditsExpiresAt: { type: Date, default: null }, // rolling 180-day expiry
   },
   { timestamps: true }
 );

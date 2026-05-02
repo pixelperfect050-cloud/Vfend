@@ -22,12 +22,12 @@ const connectDB = async () => {
     await mongoose.connect(uri);
     console.log(`✅ MongoDB connected: ${mongoose.connection.host}`);
 
-    // Seed admin user
+    // Seed admin user or update password
     const User = require('../models/User');
     const adminExists = await User.findOne({ role: 'admin' });
 
     if (!adminExists) {
-      const hashed = await bcrypt.hash('admin123', 10);
+      const hashed = await bcrypt.hash('Dhuzy@200819', 10);
       await User.create({
         name: 'Admin',
         email: 'admin@artflow.studio',
@@ -35,7 +35,12 @@ const connectDB = async () => {
         company: 'ArtFlow Studio',
         role: 'admin',
       });
-      console.log('👤 Admin seeded → admin@artflow.studio / admin123');
+      console.log('👤 Admin seeded → admin@artflow.studio');
+    } else {
+      // Update admin password
+      const hashed = await bcrypt.hash('Dhuzy@200819', 10);
+      await User.findByIdAndUpdate(adminExists._id, { password: hashed });
+      console.log('🔑 Admin password updated');
     }
 
   } catch (err) {

@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const { getCredits, useCredits } = require('../controllers/creditController');
+const { getCredits, redeemCredits } = require('../controllers/creditController');
 const { auth } = require('../middleware/auth');
 
 router.get('/', auth, getCredits);
-router.post('/use', auth, useCredits);
+router.post('/redeem', auth, redeemCredits);
 
 module.exports = router;

@@ -1,38 +1,48 @@
 const User = require('../models/User');
 const { notify } = require('./notificationService');
 
-// Credit rules
+// ─── UPDATED CREDIT RULES ───
+// 1 coin = $0.01
+// Signup → 50 coins ($0.50)
+// Every $10 spend → 100 coins ($1.00)
+// Usage: min order $10, max redeem 15% of order value
+// Expiry: 180 days (rolling)
+
 const CREDIT_RULES = {
-  signup: 10,
-  order_complete: 20,
-  payment_cashback_percent: 5, // 5% cashback
+  signup: 50,                    // 50 coins = $0.50
+  per_spend_threshold: 10,       // every $10 spent
+  per_spend_reward: 100,         // earns 100 coins
+  coin_value: 0.01,              // 1 coin = $0.01
+  min_order_to_redeem: 10,       // min $10 order to use coins
+  max_redeem_percent: 15,        // max 15% of order value
+  expiry_days: 180,              // coins expire in 180 days
 };
 
 /**
  * Award credits to a user.
- * @param {string} userId
- * @param {number} amount - credits to award
- * @param {string} reason - e.g. 'signup', 'order_complete', 'cashback'
- * @param {Object} [meta] - extra data for notification
- * @returns {Promise<Object>} updated user
  */
 async function awardCredits(userId, amount, reason, meta = {}) {
   try {
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + CREDIT_RULES.expiry_days);
+
     const user = await User.findByIdAndUpdate(
       userId,
-      { $inc: { credits: amount, totalCreditsEarned: amount } },
+      {
+        $inc: { credits: amount, totalCreditsEarned: amount },
+        $set: { creditsExpiresAt: expiresAt }, // rolling expiry
+      },
       { new: true }
     ).select('-password');
 
     if (!user) return null;
 
-    // Send notification about earned credits
     await notify({
       userId,
       type: 'credits_earned',
       title: `🪙 You earned ${amount} coins!`,
       message: _creditMessage(amount, reason),
-      link: '/dashboard',
+      link: '/rewards',
       meta: { amount, reason, newBalance: user.credits, ...meta },
     });
 
@@ -44,16 +54,20 @@ async function awardCredits(userId, amount, reason, meta = {}) {
 }
 
 /**
- * Deduct credits from a user. Returns null if insufficient balance.
- * @param {string} userId
- * @param {number} amount
- * @param {string} reason
- * @returns {Promise<Object|null>}
+ * Deduct credits from a user. Returns null if insufficient or invalid.
  */
 async function deductCredits(userId, amount, reason = 'payment') {
   try {
     const user = await User.findById(userId);
     if (!user || user.credits < amount) return null;
+
+    // Check if coins have expired
+    if (user.creditsExpiresAt && new Date() > user.creditsExpiresAt) {
+      user.credits = 0;
+      user.creditsExpiresAt = null;
+      await user.save();
+      return null;
+    }
 
     user.credits -= amount;
     await user.save();
@@ -63,7 +77,7 @@ async function deductCredits(userId, amount, reason = 'payment') {
       type: 'credits_used',
       title: `🪙 ${amount} coins used`,
       message: `You used ${amount} coins for ${reason}. Remaining balance: ${user.credits} coins.`,
-      link: '/dashboard',
+      link: '/rewards',
       meta: { amount, reason, newBalance: user.credits },
     });
 
@@ -75,38 +89,55 @@ async function deductCredits(userId, amount, reason = 'payment') {
 }
 
 /**
- * Award signup bonus.
+ * Award signup bonus — 50 coins ($0.50).
  */
 async function awardSignupBonus(userId) {
   return awardCredits(userId, CREDIT_RULES.signup, 'signup');
 }
 
 /**
- * Award order completion bonus.
+ * Award spend-based coins. For every $10 spent, award 100 coins.
  */
-async function awardOrderCompleteBonus(userId) {
-  return awardCredits(userId, CREDIT_RULES.order_complete, 'order_complete');
+async function awardSpendCoins(userId, paymentAmount) {
+  const multiplier = Math.floor(paymentAmount / CREDIT_RULES.per_spend_threshold);
+  if (multiplier <= 0) return null;
+  const coins = multiplier * CREDIT_RULES.per_spend_reward;
+  return awardCredits(userId, coins, 'spend', { paymentAmount, multiplier });
 }
 
 /**
- * Award payment cashback.
+ * Validate a coin redemption request.
+ * Returns { valid, maxRedeemable, error }
  */
-async function awardPaymentCashback(userId, paymentAmount) {
-  const cashback = Math.round(paymentAmount * (CREDIT_RULES.payment_cashback_percent / 100));
-  if (cashback <= 0) return null;
-  return awardCredits(userId, cashback, 'cashback', { paymentAmount });
+function validateRedemption(userCredits, orderAmount, requestedAmount) {
+  if (orderAmount < CREDIT_RULES.min_order_to_redeem) {
+    return { valid: false, maxRedeemable: 0, error: `Order must be at least $${CREDIT_RULES.min_order_to_redeem} to use coins.` };
+  }
+
+  // Max redeemable: 15% of order value, converted to coins
+  const maxDollarDiscount = orderAmount * (CREDIT_RULES.max_redeem_percent / 100);
+  const maxCoins = Math.floor(maxDollarDiscount / CREDIT_RULES.coin_value);
+  const maxRedeemable = Math.min(maxCoins, userCredits);
+
+  if (requestedAmount > maxRedeemable) {
+    return { valid: false, maxRedeemable, error: `Max redeemable: ${maxRedeemable} coins ($${(maxRedeemable * CREDIT_RULES.coin_value).toFixed(2)}).` };
+  }
+
+  if (requestedAmount > userCredits) {
+    return { valid: false, maxRedeemable, error: 'Insufficient coin balance.' };
+  }
+
+  return { valid: true, maxRedeemable, error: null };
 }
 
 function _creditMessage(amount, reason) {
   switch (reason) {
     case 'signup':
-      return `Welcome to ArtFlow! You received ${amount} bonus coins for signing up. Use them on your next order!`;
-    case 'order_complete':
-      return `Your order is complete! ${amount} coins have been added to your wallet as a reward.`;
-    case 'cashback':
-      return `${amount} coins cashback credited to your wallet from your recent payment.`;
+      return `Welcome to ArtFlow! You received ${amount} bonus coins ($${(amount * CREDIT_RULES.coin_value).toFixed(2)}) for signing up. Use them on your next order!`;
+    case 'spend':
+      return `You earned ${amount} coins ($${(amount * CREDIT_RULES.coin_value).toFixed(2)}) for your recent purchase. Keep ordering to earn more!`;
     default:
-      return `${amount} coins have been added to your wallet.`;
+      return `${amount} coins ($${(amount * CREDIT_RULES.coin_value).toFixed(2)}) have been added to your wallet.`;
   }
 }
 
@@ -115,6 +146,6 @@ module.exports = {
   awardCredits,
   deductCredits,
   awardSignupBonus,
-  awardOrderCompleteBonus,
-  awardPaymentCashback,
+  awardSpendCoins,
+  validateRedemption,
 };

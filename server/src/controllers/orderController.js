@@ -3,7 +3,7 @@ const Job = require('../models/Job');
 const path = require('path');
 const { getIO } = require('../services/socketService');
 const { notify, notifyAdmins } = require('../services/notificationService');
-const { awardOrderCompleteBonus } = require('../services/creditService');
+const { createLockedCoupon, unlockCoupon } = require('../services/scratchService');
 
 exports.createOrder = async (req, res) => {
   try {
@@ -27,11 +27,14 @@ exports.createOrder = async (req, res) => {
     const populated = await Order.findById(order._id).populate('jobId').populate('userId', 'name email');
     getIO()?.to('admin-room').emit('new-order', populated);
 
+    // Create locked scratch coupon for orders >= $10
+    createLockedCoupon(req.user._id, order._id, order.amount).catch(() => {});
+
     // Notify admins about new order
     notifyAdmins({
       type: 'order_created',
       title: '🛒 New Order Received',
-      message: `${req.user.name} placed a new order for "${job.title}" (${job.price > 0 ? `₹${job.price}` : 'Free'})`,
+      message: `${req.user.name} placed a new order for "${job.title}" ($${job.price > 0 ? job.price : '0'})`,
       link: '/admin',
       meta: { orderId: order._id, jobId: job._id },
     }).catch(() => {});
@@ -118,19 +121,19 @@ exports.downloadFile = async (req, res) => {
     order.status = 'delivered';
     await order.save();
 
-    // On first download, mark as delivered and award credits
+    // On first download, mark as delivered, unlock scratch coupon
     if (wasProcessing) {
       notify({
         userId: order.userId,
         type: 'order_delivered',
         title: '✅ Order Delivered',
-        message: `Your order has been marked as delivered. Enjoy your files! Leave a review to help us improve.`,
+        message: `Your order has been marked as delivered. Enjoy your files! Check your rewards for a scratch coupon.`,
         link: '/orders',
         meta: { orderId: order._id },
       }).catch(() => {});
 
-      // Award order completion credits
-      awardOrderCompleteBonus(order.userId).catch(() => {});
+      // Unlock scratch coupon for this order
+      unlockCoupon(order._id).catch(() => {});
     }
 
     res.download(path.resolve(file.path), file.originalName);
