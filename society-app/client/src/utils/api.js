@@ -1,0 +1,47 @@
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
+const getHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` })
+  };
+};
+
+const handleResponse = async (res) => {
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Something went wrong');
+  return data;
+};
+
+const api = {
+  get: async (url) => {
+    const res = await fetch(`${API_BASE}${url}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  post: async (url, body) => {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(body)
+    });
+    return handleResponse(res);
+  },
+  put: async (url, body) => {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(body)
+    });
+    return handleResponse(res);
+  },
+  delete: async (url) => {
+    const res = await fetch(`${API_BASE}${url}`, {
+      method: 'DELETE',
+      headers: getHeaders()
+    });
+    return handleResponse(res);
+  }
+};
+
+export default api;
