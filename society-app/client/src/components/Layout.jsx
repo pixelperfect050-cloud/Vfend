@@ -21,6 +21,8 @@ const Layout = () => {
     { path: '/blocks', icon: '🏢', label: 'Blocks & Flats' },
     { path: '/requests', icon: '👥', label: 'Member Requests', adminOnly: true },
     { path: '/payments', icon: '💰', label: 'Payments' },
+    { path: '/payment-verification', icon: '✅', label: 'Verify Payments', adminOnly: true },
+    { path: '/funds', icon: '📢', label: 'Society Funds' },
     { path: '/expenses', icon: '📋', label: 'Expenses', adminOnly: true },
     { path: '/reports', icon: '📈', label: 'Reports' },
     { path: '/notifications', icon: '🔔', label: 'Notifications' },

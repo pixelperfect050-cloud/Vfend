@@ -52,6 +52,8 @@ app.use('/api/expenses', require('./src/routes/expense'));
 app.use('/api/notifications', require('./src/routes/notification'));
 app.use('/api/dashboard', require('./src/routes/dashboard'));
 app.use('/api/reports', require('./src/routes/report'));
+app.use('/api/payment-requests', require('./src/routes/paymentRequest'));
+app.use('/api/funds', require('./src/routes/fund'));
 
 // Health check
 app.get('/api/health', (req, res) => {

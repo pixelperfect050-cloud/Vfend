@@ -48,7 +48,34 @@ const notifyAllUsers = async ({ societyId, title, message, type = 'info' }) => {
   }
 };
 
+/**
+ * Create a notification for all admins of a society
+ */
+const notifyAdmins = async ({ societyId, title, message, type = 'info' }) => {
+  try {
+    const admins = await User.find({ societyId, role: 'admin', status: 'approved' });
+    if (admins.length === 0) return;
+
+    const adminIds = admins.map(a => a._id);
+
+    const notification = new Notification({
+      societyId,
+      title,
+      message,
+      type,
+      targetAll: false,
+      targetUsers: adminIds
+    });
+
+    await notification.save();
+    return notification;
+  } catch (error) {
+    console.error('Error creating admin notification:', error);
+  }
+};
+
 module.exports = {
   notifyFlatOwner,
-  notifyAllUsers
+  notifyAllUsers,
+  notifyAdmins
 };

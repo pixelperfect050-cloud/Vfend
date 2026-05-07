@@ -18,7 +18,7 @@ const notificationSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['payment_reminder', 'expense_update', 'announcement', 'maintenance', 'general', 'success', 'info'],
+    enum: ['payment_reminder', 'expense_update', 'announcement', 'maintenance', 'general', 'success', 'info', 'payment_submitted', 'payment_approved', 'payment_rejected', 'fund_created', 'fund_reminder'],
     default: 'general'
   },
   targetUsers: [{

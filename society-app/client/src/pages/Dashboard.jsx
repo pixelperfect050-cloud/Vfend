@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import StatsCard from '../components/StatsCard';
+import Modal from '../components/Modal';
 import api from '../utils/api';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -13,6 +14,10 @@ const Dashboard = () => {
   const socket = useSocket();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  const [payForm, setPayForm] = useState({ amount: '', paymentMethod: 'upi', transactionId: '', notes: '' });
+  const [saving, setSaving] = useState(false);
   const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
@@ -62,6 +67,35 @@ const Dashboard = () => {
     }
   };
 
+  const openPayModal = (p) => {
+    setSelectedPayment(p);
+    setPayForm({ amount: p.amount - p.paidAmount, paymentMethod: 'upi', transactionId: '', notes: '' });
+    setShowPayModal(true);
+  };
+
+  const submitPaymentRequest = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await api.post('/api/payment-requests', {
+        paymentId: selectedPayment._id,
+        amount: parseFloat(payForm.amount),
+        month: selectedPayment.month,
+        year: selectedPayment.year,
+        paymentMethod: payForm.paymentMethod,
+        transactionId: payForm.transactionId,
+        notes: payForm.notes
+      });
+      setShowPayModal(false);
+      alert('Payment submitted for verification! Admin will review shortly.');
+      fetchStats();
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (loading) return <div className="page-loader"><div className="spinner"></div></div>;
 
   if (!user?.societyId) {
@@ -95,6 +129,17 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Alerts */}
+        {(stats.pendingPaymentRequests > 0 || stats.pendingFundVerifications > 0) && (
+          <div className="alert alert--warning" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <span>
+              {stats.pendingPaymentRequests > 0 && <span>💰 <strong>{stats.pendingPaymentRequests}</strong> payment(s) awaiting verification. </span>}
+              {stats.pendingFundVerifications > 0 && <span>📢 <strong>{stats.pendingFundVerifications}</strong> fund payment(s) need review.</span>}
+            </span>
+            <button className="btn btn--primary btn--sm" onClick={() => navigate('/payment-verification')}>Review Now</button>
+          </div>
+        )}
+
         {/* Stats Grid */}
         <div className="stats-grid">
           <StatsCard icon="💰" label="Total Collection" value={formatCurrency(stats.totalCollection)} color="success" />
@@ -102,6 +147,15 @@ const Dashboard = () => {
           <StatsCard icon="💎" label="Current Balance" value={formatCurrency(stats.currentBalance)} color="primary" />
           <StatsCard icon="📅" label="This Month" value={formatCurrency(stats.monthCollection)} subValue={`Due: ${formatCurrency(stats.monthDue)}`} color="warning" />
         </div>
+
+        {/* Fund Stats */}
+        {stats.activeFundsCount > 0 && (
+          <div className="stats-grid stats-grid--3" style={{ marginTop: '1rem' }}>
+            <StatsCard icon="📢" label="Fund Target" value={formatCurrency(stats.totalFundTarget)} color="primary" />
+            <StatsCard icon="✅" label="Fund Collected" value={formatCurrency(stats.totalFundCollected)} color="success" />
+            <StatsCard icon="⏳" label="Fund Pending" value={formatCurrency(stats.totalFundPending)} color="warning" />
+          </div>
+        )}
 
         {/* Flat Status Overview */}
         <div className="dashboard-row">
@@ -251,14 +305,23 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="stats-grid stats-grid--2">
-        <StatsCard icon="✅" label="Total Paid" value={formatCurrency(stats?.totalPaid)} color="success" />
-        <StatsCard icon="⏳" label="Total Due" value={formatCurrency(stats?.totalDue)} color="danger" />
+      {stats?.pendingRequests > 0 && (
+        <div className="alert alert--info" style={{ marginBottom: '1rem' }}>
+          ⏳ You have <strong>{stats.pendingRequests}</strong> payment(s) pending verification by admin.
+        </div>
+      )}
+
+      <div className="stats-grid">
+        <StatsCard icon="✅" label="Maintenance Paid" value={formatCurrency(stats?.totalPaid)} color="success" />
+        <StatsCard icon="⏳" label="Maintenance Due" value={formatCurrency(stats?.totalDue)} color="danger" />
+        <StatsCard icon="📢" label="Fund Paid" value={formatCurrency(stats?.totalFundPaid)} color="primary" />
+        <StatsCard icon="💰" label="Fund Due" value={formatCurrency(stats?.totalFundDue)} color="warning" />
       </div>
 
+      {/* Maintenance Section */}
       <div className="card">
         <div className="card-header">
-          <h3 className="card-title">Payment History</h3>
+          <h3 className="card-title">Maintenance Payments</h3>
         </div>
         <div className="table-wrapper">
           <table className="table">
@@ -281,9 +344,12 @@ const Dashboard = () => {
                   <td><span className={`status-badge status-badge--${p.status}`}>{p.status}</span></td>
                   <td>{p.paidDate ? new Date(p.paidDate).toLocaleDateString('en-IN') : '-'}</td>
                   <td>
-                    <button className="btn--icon" onClick={() => handleDownloadReceipt(p)} title="Download Receipt">
-                      📥
-                    </button>
+                    <div className="btn-group">
+                      {p.status !== 'paid' && (
+                        <button className="btn btn--sm btn--primary" onClick={() => openPayModal(p)}>💰 Pay</button>
+                      )}
+                      <button className="btn--icon" onClick={() => handleDownloadReceipt(p)} title="Download Receipt">📥</button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -294,6 +360,87 @@ const Dashboard = () => {
           </table>
         </div>
       </div>
+
+      {/* Fund Section */}
+      {stats?.fundPayments?.length > 0 && (
+        <div className="card" style={{ marginTop: '1.5rem' }}>
+          <div className="card-header">
+            <h3 className="card-title">Fund Contributions</h3>
+          </div>
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Fund</th>
+                  <th>Amount</th>
+                  <th>Paid</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.fundPayments.map((fp, i) => (
+                  <tr key={i}>
+                    <td className="font-medium">{fp.fundId?.name || 'Fund'}</td>
+                    <td>{formatCurrency(fp.amount)}</td>
+                    <td className="text-success">{formatCurrency(fp.paidAmount)}</td>
+                    <td>
+                      <span className={`status-badge status-badge--${fp.status === 'paid' ? 'paid' : fp.status === 'pending_verification' ? 'warning' : 'pending'}`}>
+                        {fp.status === 'paid' ? 'Paid' : fp.status === 'pending_verification' ? 'Verifying' : 'Pending'}
+                      </span>
+                    </td>
+                    <td>
+                      {fp.status === 'pending' && (
+                        <button className="btn btn--sm btn--primary" onClick={() => navigate('/funds')}>💰 Pay</button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Pay Maintenance Modal */}
+      <Modal isOpen={showPayModal} onClose={() => setShowPayModal(false)} title="Submit Payment">
+        {selectedPayment && (
+          <form onSubmit={submitPaymentRequest} className="modal-form">
+            <div className="payment-info-box">
+              <p>Paying for: <strong>{MONTHS[selectedPayment.month - 1]} {selectedPayment.year}</strong></p>
+              <p>Due: <strong>{formatCurrency(selectedPayment.amount - selectedPayment.paidAmount)}</strong></p>
+            </div>
+            <div className="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" min="1" value={payForm.amount} onChange={e => setPayForm({ ...payForm, amount: e.target.value })} required />
+            </div>
+            <div className="form-group">
+              <label>Payment Method</label>
+              <select value={payForm.paymentMethod} onChange={e => setPayForm({ ...payForm, paymentMethod: e.target.value })}>
+                <option value="upi">UPI</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="cash">Cash</option>
+                <option value="cheque">Cheque</option>
+                <option value="online">Online</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Transaction ID (Optional)</label>
+              <input type="text" value={payForm.transactionId} onChange={e => setPayForm({ ...payForm, transactionId: e.target.value })} placeholder="UPI/Bank ref number" />
+            </div>
+            <div className="form-group">
+              <label>Notes (Optional)</label>
+              <input type="text" value={payForm.notes} onChange={e => setPayForm({ ...payForm, notes: e.target.value })} />
+            </div>
+            <div className="modal-actions">
+              <button type="button" className="btn btn--ghost" onClick={() => setShowPayModal(false)}>Cancel</button>
+              <button type="submit" className="btn btn--primary" disabled={saving}>
+                {saving ? <span className="btn-spinner"></span> : 'Submit for Verification'}
+              </button>
+            </div>
+          </form>
+        )}
+      </Modal>
     </div>
   );
 };

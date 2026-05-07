@@ -5,6 +5,9 @@ const Expense = require('../models/Expense');
 const Flat = require('../models/Flat');
 const Block = require('../models/Block');
 const User = require('../models/User');
+const Fund = require('../models/Fund');
+const FundPayment = require('../models/FundPayment');
+const PaymentRequest = require('../models/PaymentRequest');
 const { auth } = require('../middleware/auth');
 
 // Admin dashboard stats
@@ -88,6 +91,23 @@ router.get('/stats/:societyId', auth, async (req, res) => {
       { $sort: { total: -1 } }
     ]);
 
+    // Fund stats
+    const activeFunds = await Fund.find({ societyId, status: 'active' });
+    const totalFundTarget = activeFunds.reduce((s, f) => s + f.totalTarget, 0);
+    const totalFundCollected = activeFunds.reduce((s, f) => s + f.totalCollected, 0);
+
+    // Pending payment requests
+    const pendingPaymentRequests = await PaymentRequest.countDocuments({
+      societyId,
+      status: 'pending_verification'
+    });
+
+    // Pending fund verifications
+    const pendingFundVerifications = await FundPayment.countDocuments({
+      societyId,
+      status: 'pending_verification'
+    });
+
     res.json({
       totalCollection,
       totalExpenses,
@@ -103,7 +123,13 @@ router.get('/stats/:societyId', auth, async (req, res) => {
       pendingMembersCount,
       totalBlocks,
       monthlyTrend,
-      expenseBreakdown
+      expenseBreakdown,
+      totalFundTarget,
+      totalFundCollected,
+      totalFundPending: totalFundTarget - totalFundCollected,
+      activeFundsCount: activeFunds.length,
+      pendingPaymentRequests,
+      pendingFundVerifications
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -124,7 +150,21 @@ router.get('/member-stats', auth, async (req, res) => {
     const totalPaid = payments.reduce((sum, p) => sum + p.paidAmount, 0);
     const totalDue = payments.reduce((sum, p) => sum + Math.max(0, p.amount + p.lateFee - p.paidAmount), 0);
 
-    res.json({ payments, totalPaid, totalDue });
+    // Fund payments for this member
+    const fundPayments = await FundPayment.find({ flatId: req.user.flatId })
+      .populate('fundId', 'name category dueDate amountPerFlat status')
+      .sort({ createdAt: -1 });
+
+    const totalFundPaid = fundPayments.reduce((s, p) => s + p.paidAmount, 0);
+    const totalFundDue = fundPayments.reduce((s, p) => s + Math.max(0, p.amount - p.paidAmount), 0);
+
+    // Pending payment requests
+    const pendingRequests = await PaymentRequest.countDocuments({
+      submittedBy: req.user._id,
+      status: 'pending_verification'
+    });
+
+    res.json({ payments, totalPaid, totalDue, fundPayments, totalFundPaid, totalFundDue, pendingRequests });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

@@ -17,6 +17,8 @@ import SetupSociety from './pages/SetupSociety';
 import JoinSociety from './pages/JoinSociety';
 import PendingApproval from './pages/PendingApproval';
 import MemberRequests from './pages/MemberRequests';
+import PaymentVerification from './pages/PaymentVerification';
+import Funds from './pages/Funds';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
@@ -73,6 +75,8 @@ function App() {
         <Route path="settings" element={<Settings />} />
         <Route path="setup" element={<SetupSociety />} />
         <Route path="requests" element={<ProtectedRoute adminOnly><MemberRequests /></ProtectedRoute>} />
+        <Route path="payment-verification" element={<ProtectedRoute adminOnly><PaymentVerification /></ProtectedRoute>} />
+        <Route path="funds" element={<Funds />} />
       </Route>
     </Routes>
   );
