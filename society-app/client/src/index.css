@@ -679,3 +679,176 @@ table, .table { width: 100%; border-collapse: collapse; }
 /* ============ BTN DANGER VARIANT ============ */
 .btn--danger { background: var(--danger); color: #fff; }
 .btn--danger:hover { background: #dc2626; }
+
+/* ============ GLOBAL MOBILE OVERFLOW PREVENTION ============ */
+#root { overflow-x: hidden; width: 100%; }
+
+/* ============ MEMBER REQUESTS - TAB GROUP & TABLE ============ */
+.tab-group { display: flex; gap: .4rem; flex-wrap: wrap; }
+.tab { padding: .4rem .8rem; border: 1px solid var(--border); background: var(--bg-card); border-radius: 20px; font-size: .8rem; cursor: pointer; transition: all .2s; color: var(--text); }
+.tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.member-info { display: flex; align-items: center; gap: .5rem; }
+.member-info .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; flex-shrink: 0; }
+.member-info .name-box { display: flex; flex-direction: column; min-width: 0; }
+.member-info .name { font-weight: 600; font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.member-info .email { font-size: .7rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge--outline { background: var(--bg-input); padding: .2rem .5rem; border-radius: 12px; font-size: .75rem; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.loader-container { display: flex; justify-content: center; padding: 3rem; }
+
+/* ============ ALL-PAGE MOBILE FIXES ============ */
+@media (max-width: 768px) {
+  /* Settings invite box */
+  .invite-box { width: 100% !important; }
+  .page-header .invite-box { margin-top: 0.5rem; }
+  
+  /* Fund cards mobile */
+  .fund-stats-row { grid-template-columns: 1fr 1fr 1fr; gap: .35rem; }
+  .fund-stat-value { font-size: .8rem; }
+  .fund-stat-label { font-size: .6rem; }
+  .fund-name { font-size: 1rem; }
+  .fund-description { font-size: .75rem; }
+  .fund-actions { flex-wrap: wrap; }
+  
+  /* Verification cards */
+  .vc-header { gap: .4rem; }
+  .vc-flat-number { font-size: .95rem; }
+  .vc-actions { flex-wrap: wrap; }
+  .vc-details { padding: .6rem; }
+  .vc-detail-row { gap: .3rem; }
+  .vc-value { font-size: .8rem; word-break: break-all; }
+  .vc-amount { font-size: 1rem; }
+  
+  /* Payment summary */
+  .payment-summary-item { padding: 1rem; }
+  .psi-value { font-size: 1.2rem; word-break: break-all; }
+  
+  /* Report summary */
+  .report-summary-card { padding: 1rem; }
+  .rs-value { font-size: 1.15rem; word-break: break-all; }
+  .report-tabs { gap: .35rem; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding-bottom: .25rem; }
+  .report-tab { white-space: nowrap; flex-shrink: 0; }
+  
+  /* Expense cards */
+  .expense-card { gap: .6rem; padding: .85rem; }
+  .expense-card__icon { width: 40px; height: 40px; font-size: 1.4rem; }
+  .expense-card__title { font-size: .85rem; }
+  .expense-card__amount { font-size: .9rem; }
+  
+  /* Notification cards */
+  .notification-card { gap: .6rem; padding: .75rem; }
+  .notification-icon { width: 38px; height: 38px; font-size: 1.2rem; }
+  .notification-title { font-size: .85rem; }
+  .notification-message { font-size: .75rem; }
+  
+  /* Block cards */
+  .block-card { padding: 1rem; }
+  .block-card__name { font-size: 1.1rem; }
+  .block-card__progress { width: 50px; height: 50px; }
+  .progress-ring { width: 50px; height: 50px; }
+  
+  /* Flat detail grid */
+  .info-row { flex-wrap: wrap; gap: .2rem; }
+  .info-value { word-break: break-all; text-align: right; }
+  .summary-value { font-size: 1.1rem; word-break: break-all; }
+  
+  /* Modals */
+  .modal { max-width: 95vw !important; margin: 0.5rem; }
+  .modal-overlay { padding: 0.5rem; }
+  .modal-header { padding: 1rem; }
+  .modal-body { padding: 1rem; }
+  .modal-actions { flex-wrap: wrap; }
+  .modal-actions .btn { flex: 1; min-width: 0; }
+  
+  /* Tables - smaller text */
+  .table thead th { padding: .5rem .4rem; font-size: .68rem; white-space: nowrap; }
+  .table tbody td { padding: .5rem .4rem; font-size: .78rem; }
+  
+  /* Flat grid cells */
+  .floor-sections div[style*="gridTemplateColumns"] { 
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)) !important; 
+    gap: 0.5rem !important;
+  }
+  
+  /* Filters */
+  .filters-bar { gap: .5rem; }
+  .filter-select { min-width: 100px; font-size: .8rem; padding: .4rem .5rem; }
+  .filter-group { flex-wrap: wrap; width: 100%; }
+  
+  /* Member requests */
+  .tab-group { gap: .3rem; }
+  .tab { padding: .35rem .6rem; font-size: .75rem; }
+  
+  /* Payment info box */
+  .payment-info-box { padding: .75rem; font-size: .8rem; }
+  
+  /* Settings */
+  .settings-form { padding: 1rem; }
+  .card-title { font-size: .9rem; }
+  
+  /* Breadcrumb */
+  .breadcrumb { font-size: .8rem; flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  /* Fund grid smaller */
+  .fund-stats-row { grid-template-columns: 1fr 1fr 1fr; gap: .25rem; }
+  .fund-stat { padding: .35rem; }
+  .fund-stat-value { font-size: .75rem; }
+  
+  /* Even smaller table */
+  .table thead th { padding: .4rem .3rem; font-size: .65rem; }
+  .table tbody td { padding: .4rem .3rem; font-size: .72rem; }
+  
+  /* Smaller flat grid */
+  .floor-sections div[style*="gridTemplateColumns"] { 
+    grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)) !important; 
+    gap: 0.4rem !important;
+  }
+  
+  /* Flat detail */
+  .info-label { font-size: .75rem; }
+  .info-value { font-size: .8rem; }
+  
+  /* Modal tighter */
+  .modal-body { padding: 0.75rem; }
+  .modal-header { padding: 0.75rem; }
+  .modal-title { font-size: 1rem; }
+  
+  /* Filter tabs scrollable */
+  .filter-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding-bottom: .25rem; }
+  .filter-tab { white-space: nowrap; flex-shrink: 0; padding: .35rem .6rem; font-size: .75rem; }
+  
+  /* Buttons smaller */
+  .btn { padding: .5rem 1rem; font-size: .85rem; }
+  .btn--lg { padding: .65rem 1rem; font-size: .9rem; }
+  .btn-group { gap: .3rem; }
+  
+  /* Empty state */
+  .empty-state { padding: 2rem 1rem; }
+  .empty-icon { font-size: 3rem; }
+  .empty-state h2 { font-size: 1.1rem; }
+  
+  /* Notification */
+  .notification-card { padding: .65rem; }
+  .notification-icon { width: 34px; height: 34px; font-size: 1rem; }
+}
+
+@media (max-width: 360px) {
+  /* Ultra small devices */
+  .fund-card { padding: 0.85rem; }
+  .fund-name { font-size: .9rem; }
+  .fund-stat-value { font-size: .7rem; }
+  
+  .btn { padding: .4rem .75rem; font-size: .8rem; }
+  .btn--sm { padding: .25rem .5rem; font-size: .7rem; }
+  
+  .card-header { padding: .75rem; }
+  .card-title { font-size: .85rem; }
+  
+  .table thead th { font-size: .6rem; padding: .35rem .25rem; }
+  .table tbody td { font-size: .68rem; padding: .35rem .25rem; }
+  
+  .report-tabs { gap: .25rem; }
+  .report-tab { padding: .35rem .6rem; font-size: .75rem; }
+}

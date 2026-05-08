@@ -59,13 +59,15 @@ const Settings = () => {
             border: '1px solid var(--primary)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.5rem'
+            gap: '0.5rem',
+            maxWidth: '100%',
+            overflow: 'hidden'
           }}>
             <span style={{ fontSize: '0.8rem', opacity: 0.8, fontWeight: 'bold' }}>SOCIETY INVITE CODE</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
               {user?.societyId?.inviteCode ? (
                 <>
-                  <span style={{ fontSize: '1.5rem', fontWeight: '900', letterSpacing: '0.1rem' }}>{user.societyId.inviteCode}</span>
+                  <span style={{ fontSize: '1.3rem', fontWeight: '900', letterSpacing: '0.1rem', wordBreak: 'break-all' }}>{user.societyId.inviteCode}</span>
                   <button className="btn btn--primary btn--sm" onClick={() => {
                     const link = `${window.location.origin}/join/${user.societyId.inviteCode}`;
                     navigator.clipboard.writeText(link);
