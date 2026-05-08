@@ -1,6 +1,12 @@
 {
-  "appId": "com.society.app",
-  "appName": "Society App",
+  "appId": "com.societysync.app",
+  "appName": "SocietySync",
   "webDir": "dist",
-  "bundledWebRuntime": false
+  "server": {
+    "url": "https://client-eight-roan-56.vercel.app",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
 }

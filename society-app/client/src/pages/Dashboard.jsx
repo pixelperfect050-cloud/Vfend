@@ -131,12 +131,12 @@ const Dashboard = () => {
 
         {/* Alerts */}
         {(stats.pendingPaymentRequests > 0 || stats.pendingFundVerifications > 0) && (
-          <div className="alert alert--warning" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <span>
+          <div className="alert alert--warning" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <span style={{ flex: 1, minWidth: 0 }}>
               {stats.pendingPaymentRequests > 0 && <span>💰 <strong>{stats.pendingPaymentRequests}</strong> payment(s) awaiting verification. </span>}
               {stats.pendingFundVerifications > 0 && <span>📢 <strong>{stats.pendingFundVerifications}</strong> fund payment(s) need review.</span>}
             </span>
-            <button className="btn btn--primary btn--sm" onClick={() => navigate('/payment-verification')}>Review Now</button>
+            <button className="btn btn--primary btn--sm" style={{ flexShrink: 0 }} onClick={() => navigate('/payment-verification')}>Review Now</button>
           </div>
         )}
 
@@ -285,10 +285,12 @@ const Dashboard = () => {
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'center',
-            marginBottom: '2rem' 
+            marginBottom: '2rem',
+            flexWrap: 'wrap',
+            gap: '0.75rem'
           }}>
-            <span>👋 You have <strong>{stats.pendingMembersCount}</strong> new resident join requests waiting for your approval.</span>
-            <button className="btn btn--primary btn--sm" onClick={() => navigate('/requests')}>Review Requests</button>
+            <span style={{ flex: 1, minWidth: 0 }}>👋 You have <strong>{stats.pendingMembersCount}</strong> new resident join requests waiting for your approval.</span>
+            <button className="btn btn--primary btn--sm" style={{ flexShrink: 0 }} onClick={() => navigate('/requests')}>Review Requests</button>
           </div>
         )}
       </div>
