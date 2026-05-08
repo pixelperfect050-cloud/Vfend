@@ -654,3 +654,184 @@ input:focus, select:focus, textarea:focus {
   cursor: pointer;
   box-shadow: var(--shadow);
 }
+/* -------------------------------------------------------------------------- */
+/* RESPONSIVE PATCHES - SURGICAL FIXES ONLY                                   */
+/* -------------------------------------------------------------------------- */
+
+/* Prevent Number Wrapping in Stats Cards */
+.stats-card__value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 480px) {
+  .stats-card__value {
+    font-size: 1.15rem; /* Scale down slightly on very small screens */
+  }
+  .stats-card__label {
+    font-size: 0.7rem;
+  }
+  .stats-card__icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Fix Card Compression on Mobile */
+.stats-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 320px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Improved Page Spacing for Mobile */
+.page {
+  padding: 1rem 1rem 2rem 1rem;
+}
+
+.main-content {
+  /* Ensure content doesn't feel squashed against edges */
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Flat Grid Spacing Fix */
+.flat-grid {
+  gap: 0.5rem;
+  padding: 0.25rem;
+}
+
+.flat-cell {
+  min-height: 70px;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Ensure Bottom Nav doesn't overlap content too much */
+.main-content {
+  padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 2rem);
+}
+
+/* Typography Fixes */
+h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Table Horizontal Scroll Shadow Indicator */
+.table-wrapper {
+  position: relative;
+  background: linear-gradient(to right, white 30%, rgba(255, 255, 255, 0)),
+              linear-gradient(to right, rgba(255, 255, 255, 0), white 70%) 100% 0,
+              linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)),
+              linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1)) 100% 0;
+  background-repeat: no-repeat;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+/* Prevent Button Compression */
+.btn {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Section Spacing */
+.card + .card, .dashboard-row + .dashboard-row {
+  margin-top: 1rem;
+}
+
+/* Filter Tabs Component Styles */
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.25rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.filter-tabs::-webkit-scrollbar { display: none; }
+
+.filter-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.filter-tab.active {
+  border-color: var(--primary);
+  background: var(--primary-glow);
+  color: var(--primary);
+}
+
+.filter-count {
+  background: var(--bg-input);
+  padding: 0.125rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+/* Status Bar Components */
+.status-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-input);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.status-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+.status-bar--paid { background: var(--success); }
+.status-bar--pending { background: var(--danger); }
+.status-bar--partial { background: var(--warning); }
+
+/* Quick Stats Enhancements */
+.quick-stat {
+  padding: 1rem;
+  background: var(--bg-input);
+  border-radius: var(--radius-sm);
+  transition: transform 0.2s;
+}
+.quick-stat:active { transform: scale(0.98); }
+
+/* Alerts */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+}
+.alert--warning { background: var(--warning-light); color: #92400e; border: 1px solid rgba(245, 158, 11, 0.2); }
+.alert--info { background: var(--primary-glow); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.2); }
+
