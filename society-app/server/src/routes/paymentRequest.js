@@ -17,6 +17,10 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ message: 'No flat assigned to your account' });
     }
 
+    if (!amount || !month || !year) {
+      return res.status(400).json({ message: 'Amount, month and year are required' });
+    }
+
     const societyId = req.user.societyId?._id || req.user.societyId;
 
     // Check for existing pending request for same month
@@ -33,10 +37,10 @@ router.post('/', auth, async (req, res) => {
       flatId: req.user.flatId,
       societyId,
       submittedBy: req.user._id,
-      paymentId,
+      paymentId: paymentId || null,
       amount: parseFloat(amount),
       month, year,
-      paymentMethod,
+      paymentMethod: paymentMethod || 'upi',
       transactionId: transactionId || '',
       screenshotUrl: screenshotUrl || '',
       notes: notes || ''
@@ -120,7 +124,7 @@ router.put('/:id/review', auth, adminOnly, async (req, res) => {
 
     const societyId = request.societyId.toString();
 
-    // If approved, update the actual payment record
+    // If approved, update or create the actual payment record
     if (status === 'approved') {
       let payment = await Payment.findOne({
         flatId: request.flatId,
@@ -130,6 +134,7 @@ router.put('/:id/review', auth, adminOnly, async (req, res) => {
       });
 
       if (payment) {
+        // Existing bill — update it
         payment.paidAmount += request.amount;
         payment.paymentMethod = request.paymentMethod;
         payment.transactionId = request.transactionId || payment.transactionId;
@@ -142,16 +147,34 @@ router.put('/:id/review', auth, adminOnly, async (req, res) => {
         else if (payment.paidAmount > 0) payment.status = 'partial';
 
         await payment.save();
-
-        // Update flat current month status
-        const now = new Date();
-        if (payment.month === now.getMonth() + 1 && payment.year === now.getFullYear()) {
-          await Flat.findByIdAndUpdate(request.flatId, { currentMonthStatus: payment.status });
-        }
-
-        request.paymentId = payment._id;
-        await request.save();
+      } else {
+        // No existing bill — create new payment record
+        payment = new Payment({
+          flatId: request.flatId,
+          societyId: request.societyId,
+          amount: request.amount,
+          paidAmount: request.amount,
+          month: request.month,
+          year: request.year,
+          status: 'paid',
+          paymentMethod: request.paymentMethod,
+          transactionId: request.transactionId || '',
+          notes: request.notes || '',
+          paidDate: new Date(),
+          dueDate: new Date(request.year, request.month - 1, 15),
+          recordedBy: req.user._id
+        });
+        await payment.save();
       }
+
+      // Update flat current month status
+      const now = new Date();
+      if (payment.month === now.getMonth() + 1 && payment.year === now.getFullYear()) {
+        await Flat.findByIdAndUpdate(request.flatId, { currentMonthStatus: payment.status });
+      }
+
+      request.paymentId = payment._id;
+      await request.save();
 
       // Notify member
       await notifyFlatOwner({

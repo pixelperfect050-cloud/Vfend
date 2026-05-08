@@ -11,7 +11,7 @@ const PaymentVerification = () => {
   const socket = useSocket();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('pending_verification');
+  const [filter, setFilter] = useState('all');
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedReq, setSelectedReq] = useState(null);
   const [reviewForm, setReviewForm] = useState({ status: 'approved', adminNotes: '' });
@@ -31,7 +31,10 @@ const PaymentVerification = () => {
     try {
       const sid = user?.societyId?._id || user?.societyId;
       if (!sid) return;
-      const data = await api.get(`/api/payment-requests/society/${sid}?status=${filter}`);
+      const url = filter === 'all'
+        ? `/api/payment-requests/society/${sid}`
+        : `/api/payment-requests/society/${sid}?status=${filter}`;
+      const data = await api.get(url);
       setRequests(data);
     } catch (err) {
       console.error(err);
@@ -90,7 +93,8 @@ const PaymentVerification = () => {
       {/* Filter Tabs */}
       <div className="filter-tabs" style={{ marginBottom: '1.5rem' }}>
         {[
-          { key: 'pending_verification', label: '⏳ Pending', count: null },
+          { key: 'all', label: '📋 All' },
+          { key: 'pending_verification', label: '⏳ Pending' },
           { key: 'approved', label: '✅ Approved' },
           { key: 'rejected', label: '❌ Rejected' },
           { key: 'correction_needed', label: '🔄 Correction' }

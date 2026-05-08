@@ -18,6 +18,7 @@ const Payments = () => {
   const [showBillModal, setShowBillModal] = useState(false);
   const [showManualModal, setShowManualModal] = useState(false);
   const [showPayModal, setShowPayModal] = useState(false);
+  const [showNewRequestModal, setShowNewRequestModal] = useState(false);
   const [billForm, setBillForm] = useState({ amount: 3000 });
   const [saving, setSaving] = useState(false);
   const [blocks, setBlocks] = useState([]);
@@ -30,9 +31,15 @@ const Payments = () => {
     transactionId: '', notes: '', month: new Date().getMonth() + 1, year: new Date().getFullYear()
   });
 
-  // Member pay form
+  // Member pay form (for existing bill)
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [payForm, setPayForm] = useState({
+    amount: '', paymentMethod: 'upi', transactionId: '', notes: ''
+  });
+
+  // Member new request form (manual - no existing bill needed)
+  const [newReqForm, setNewReqForm] = useState({
+    month: new Date().getMonth() + 1, year: new Date().getFullYear(),
     amount: '', paymentMethod: 'upi', transactionId: '', notes: ''
   });
 
@@ -180,6 +187,33 @@ const Payments = () => {
     }
   };
 
+  // Member: submit NEW manual payment request (no existing bill needed)
+  const submitNewRequest = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await api.post('/api/payment-requests', {
+        amount: parseFloat(newReqForm.amount),
+        month: parseInt(newReqForm.month),
+        year: parseInt(newReqForm.year),
+        paymentMethod: newReqForm.paymentMethod,
+        transactionId: newReqForm.transactionId,
+        notes: newReqForm.notes
+      });
+      setShowNewRequestModal(false);
+      setNewReqForm({
+        month: new Date().getMonth() + 1, year: new Date().getFullYear(),
+        amount: '', paymentMethod: 'upi', transactionId: '', notes: ''
+      });
+      alert('✅ Payment request submitted! Admin will verify shortly.');
+      fetchPayments();
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const formatCurrency = (amt) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amt || 0);
 
   const handleDownloadReceipt = async (p) => {
@@ -208,11 +242,19 @@ const Payments = () => {
           <h1 className="page-title">🏠 Maintenance</h1>
           <p className="page-subtitle">{isAdmin ? 'Manage maintenance bills & payments' : 'Your maintenance payments'}</p>
         </div>
-        {isAdmin && (
+        {isAdmin ? (
           <div className="btn-group">
             <button className="btn btn--primary" onClick={() => setShowBillModal(true)}>📄 Generate Bills</button>
             <button className="btn btn--success" onClick={openManualModal}>➕ Manual Entry</button>
           </div>
+        ) : (
+          <button className="btn btn--primary" onClick={() => {
+            setNewReqForm({
+              month: new Date().getMonth() + 1, year: new Date().getFullYear(),
+              amount: '', paymentMethod: 'upi', transactionId: '', notes: ''
+            });
+            setShowNewRequestModal(true);
+          }}>📤 Submit Payment Request</button>
         )}
       </div>
 
@@ -513,6 +555,63 @@ const Payments = () => {
             </div>
           </form>
         )}
+      </Modal>
+
+      {/* Member: New Payment Request Modal (manual submit) */}
+      <Modal isOpen={showNewRequestModal} onClose={() => setShowNewRequestModal(false)} title="📤 Submit Payment Request">
+        <form onSubmit={submitNewRequest} className="modal-form">
+          <div className="payment-info-box">
+            <p>💡 Submit your maintenance payment details here.</p>
+            <p style={{ fontSize: '.8rem', color: 'var(--text-muted)', marginTop: '.3rem' }}>
+              Admin will verify and approve your payment. Once approved, your status will update automatically.
+            </p>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Month *</label>
+              <select value={newReqForm.month} onChange={e => setNewReqForm({ ...newReqForm, month: e.target.value })}>
+                {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Year *</label>
+              <select value={newReqForm.year} onChange={e => setNewReqForm({ ...newReqForm, year: e.target.value })}>
+                {[2024, 2025, 2026, 2027].map(y => <option key={y} value={y}>{y}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Amount (₹) *</label>
+            <input type="number" min="1" value={newReqForm.amount}
+              onChange={e => setNewReqForm({ ...newReqForm, amount: e.target.value })} required placeholder="Enter paid amount" />
+          </div>
+          <div className="form-group">
+            <label>Payment Method *</label>
+            <select value={newReqForm.paymentMethod} onChange={e => setNewReqForm({ ...newReqForm, paymentMethod: e.target.value })}>
+              <option value="upi">📱 UPI</option>
+              <option value="bank_transfer">🏦 Bank Transfer</option>
+              <option value="cash">💵 Cash</option>
+              <option value="cheque">📝 Cheque</option>
+              <option value="online">🌐 Online</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Transaction ID / Reference</label>
+            <input type="text" value={newReqForm.transactionId}
+              onChange={e => setNewReqForm({ ...newReqForm, transactionId: e.target.value })} placeholder="UPI ref / Bank ref number (optional)" />
+          </div>
+          <div className="form-group">
+            <label>Notes / Message</label>
+            <input type="text" value={newReqForm.notes}
+              onChange={e => setNewReqForm({ ...newReqForm, notes: e.target.value })} placeholder="Any message for admin (optional)" />
+          </div>
+          <div className="modal-actions">
+            <button type="button" className="btn btn--ghost" onClick={() => setShowNewRequestModal(false)}>Cancel</button>
+            <button type="submit" className="btn btn--primary btn--lg" disabled={saving} style={{ flex: 1 }}>
+              {saving ? <span className="btn-spinner"></span> : '📤 Submit Payment Request'}
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );
