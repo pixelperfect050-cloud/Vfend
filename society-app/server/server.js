@@ -74,4 +74,14 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  
+  // Self-ping to keep Render instance awake
+  const https = require('https');
+  setInterval(() => {
+    https.get('https://society-backend-b004.onrender.com/api/health', (res) => {
+      console.log('Self-ping successful: Server is keeping itself awake ⚡');
+    }).on('error', (err) => {
+      console.error('Self-ping failed:', err.message);
+    });
+  }, 10 * 60 * 1000); // Ping every 10 minutes
 });

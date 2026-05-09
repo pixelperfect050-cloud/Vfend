@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import TourGuide from './TourGuide';
 
 const Layout = () => {
   const { user, logout } = useAuth();
@@ -26,8 +27,26 @@ const Layout = () => {
     { path: '/expenses', icon: '📋', label: 'Expenses', adminOnly: true },
     { path: '/reports', icon: '📈', label: 'Reports' },
     { path: '/notifications', icon: '🔔', label: 'Notifications' },
-    { path: '/settings', icon: '⚙️', label: 'Settings', adminOnly: true },
+    { path: '/settings', icon: '⚙️', label: 'Settings' },
   ].filter(item => !item.adminOnly || isAdmin);
+
+  const [runTour, setRunTour] = useState(false);
+
+  useEffect(() => {
+    const tourSeen = localStorage.getItem('tour_seen');
+    if (!tourSeen && user) {
+      // Small delay to ensure layout is rendered
+      setTimeout(() => setRunTour(true), 1500);
+    }
+  }, [user]);
+
+  const handleTourComplete = () => {
+    setRunTour(false);
+    localStorage.setItem('tour_seen', 'true');
+  };
+
+  // Expose tour trigger to window for Settings page access
+  window.triggerTour = () => setRunTour(true);
 
   return (
     <div className="app-layout">
@@ -68,6 +87,7 @@ const Layout = () => {
             <NavLink
               key={item.path}
               to={item.path}
+              id={`nav-${item.path.replace('/', '') || 'home'}`}
               className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
               onClick={() => setSidebarOpen(false)}
             >
@@ -84,6 +104,20 @@ const Layout = () => {
           <button className="logout-btn" onClick={handleLogout} id="logout-btn">
             🚪 Logout
           </button>
+          
+          <div className="branding-footer" style={{ 
+            marginTop: 'auto', 
+            paddingTop: '1.5rem', 
+            borderTop: '1px solid rgba(255,255,255,0.1)',
+            textAlign: 'center',
+            fontSize: '0.75rem',
+            opacity: 0.6
+          }}>
+            <p>Powered by <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>Funkariya</span></p>
+            <a href="mailto:funkariya.shop@gmail.com" style={{ color: 'inherit', textDecoration: 'none', display: 'block', marginTop: '0.25rem' }}>
+              📧 Contact Support
+            </a>
+          </div>
         </div>
       </aside>
 
@@ -108,6 +142,8 @@ const Layout = () => {
       <main className="main-content">
         <Outlet />
       </main>
+
+      <TourGuide run={runTour} onComplete={handleTourComplete} />
     </div>
   );
 };

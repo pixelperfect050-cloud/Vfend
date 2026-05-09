@@ -130,6 +130,23 @@ const Login = () => {
             <p><strong>Admin:</strong> admin@society.com / admin123</p>
             <p><strong>Member:</strong> member1@society.com / member123</p>
           </div>
+
+          <div style={{ 
+            marginTop: '2rem', 
+            textAlign: 'center', 
+            fontSize: '0.8rem', 
+            opacity: 0.5,
+            borderTop: '1px solid rgba(255,255,255,0.1)',
+            paddingTop: '1rem'
+          }}>
+            <p>Powered by <span style={{ fontWeight: 'bold' }}>Funkariya</span></p>
+            <a href="mailto:funkariya.shop@gmail.com" style={{ color: 'inherit', textDecoration: 'none', display: 'block', marginBottom: '0.5rem' }}>
+              funkariya.shop@gmail.com
+            </a>
+            <Link to="/privacy-policy" style={{ color: 'var(--primary)', fontSize: '0.75rem', textDecoration: 'none' }}>
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
     </div>

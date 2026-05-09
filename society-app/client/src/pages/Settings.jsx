@@ -83,61 +83,108 @@ const Settings = () => {
       </div>
 
       <div className="settings-grid">
-        <div className="card">
-          <h3 className="card-title" style={{ padding: '1.5rem 1.5rem 0' }}>Society Information</h3>
-          <form onSubmit={handleSubmit} className="settings-form">
-            {message && <div className={`alert ${message.includes('success') ? 'alert--success' : 'alert--error'}`}>{message}</div>}
+        {user?.role === 'admin' && (
+          <div className="card">
+            <h3 className="card-title" style={{ padding: '1.5rem 1.5rem 0' }}>Society Information</h3>
+            <form onSubmit={handleSubmit} className="settings-form">
+              {message && <div className={`alert ${message.includes('success') ? 'alert--success' : 'alert--error'}`}>{message}</div>}
 
-            <div className="form-group">
-              <label htmlFor="set-name">Society Name</label>
-              <input type="text" id="set-name" value={societyForm.name}
-                onChange={e => setSocietyForm({ ...societyForm, name: e.target.value })} required />
+              <div className="form-group">
+                <label htmlFor="set-name">Society Name</label>
+                <input type="text" id="set-name" value={societyForm.name}
+                  onChange={e => setSocietyForm({ ...societyForm, name: e.target.value })} required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="set-address">Address</label>
+                <input type="text" id="set-address" value={societyForm.address}
+                  onChange={e => setSocietyForm({ ...societyForm, address: e.target.value })} required />
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="set-maintenance">Maintenance Amount (₹)</label>
+                  <input type="number" id="set-maintenance" value={societyForm.maintenanceAmount}
+                    onChange={e => setSocietyForm({ ...societyForm, maintenanceAmount: parseInt(e.target.value) })} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="set-billing">Billing Day</label>
+                  <input type="number" id="set-billing" min="1" max="28" value={societyForm.billingDay}
+                    onChange={e => setSocietyForm({ ...societyForm, billingDay: parseInt(e.target.value) })} />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="set-contact">Contact Number</label>
+                  <input type="text" id="set-contact" value={societyForm.contactNumber}
+                    onChange={e => setSocietyForm({ ...societyForm, contactNumber: e.target.value })} placeholder="e.g. 9876543210" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="set-upi">UPI ID (for payments)</label>
+                  <input type="text" id="set-upi" value={societyForm.upiId}
+                    onChange={e => setSocietyForm({ ...societyForm, upiId: e.target.value })} placeholder="e.g. society@upi" />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="set-latefee">Late Fee/Day (₹)</label>
+                  <input type="number" id="set-latefee" value={societyForm.lateFeePerDay}
+                    onChange={e => setSocietyForm({ ...societyForm, lateFeePerDay: parseInt(e.target.value) })} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="set-latedays">Late Fee After Days</label>
+                  <input type="number" id="set-latedays" value={societyForm.lateFeeAfterDays}
+                    onChange={e => setSocietyForm({ ...societyForm, lateFeeAfterDays: parseInt(e.target.value) })} />
+                </div>
+              </div>
+              <button type="submit" className="btn btn--primary" disabled={saving} id="save-settings-btn">
+                {saving ? <span className="btn-spinner"></span> : '💾 Save Settings'}
+              </button>
+            </form>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div className="card">
+            <h3 className="card-title" style={{ padding: '1.5rem 1.5rem 0' }}>App Preferences</h3>
+            <div style={{ padding: '1.5rem' }}>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                Need help understanding the app? You can replay the guided tour anytime.
+              </p>
+              <button 
+                className="btn btn--outline btn--full" 
+                onClick={() => window.triggerTour && window.triggerTour()}
+              >
+                ✨ Show App Tour Again
+              </button>
             </div>
-            <div className="form-group">
-              <label htmlFor="set-address">Address</label>
-              <input type="text" id="set-address" value={societyForm.address}
-                onChange={e => setSocietyForm({ ...societyForm, address: e.target.value })} required />
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="set-maintenance">Maintenance Amount (₹)</label>
-                <input type="number" id="set-maintenance" value={societyForm.maintenanceAmount}
-                  onChange={e => setSocietyForm({ ...societyForm, maintenanceAmount: parseInt(e.target.value) })} />
+          </div>
+
+          <div className="card" style={{ height: 'fit-content' }}>
+            <h3 className="card-title" style={{ padding: '1.5rem 1.5rem 0' }}>About & Support</h3>
+            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
+                <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 'bold' }}>Contact Support</p>
+                <p style={{ fontSize: '0.85rem', opacity: 0.8 }}>For any technical issues or feature requests, reach out to us at:</p>
+                <a href="mailto:funkariya.shop@gmail.com" style={{ 
+                  color: 'var(--primary)', 
+                  textDecoration: 'none', 
+                  fontWeight: 'bold',
+                  fontSize: '1rem',
+                  display: 'block',
+                  marginTop: '0.5rem'
+                }}>funkariya.shop@gmail.com</a>
               </div>
-              <div className="form-group">
-                <label htmlFor="set-billing">Billing Day</label>
-                <input type="number" id="set-billing" min="1" max="28" value={societyForm.billingDay}
-                  onChange={e => setSocietyForm({ ...societyForm, billingDay: parseInt(e.target.value) })} />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="set-contact">Contact Number</label>
-                <input type="text" id="set-contact" value={societyForm.contactNumber}
-                  onChange={e => setSocietyForm({ ...societyForm, contactNumber: e.target.value })} placeholder="e.g. 9876543210" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="set-upi">UPI ID (for payments)</label>
-                <input type="text" id="set-upi" value={societyForm.upiId}
-                  onChange={e => setSocietyForm({ ...societyForm, upiId: e.target.value })} placeholder="e.g. society@upi" />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="set-latefee">Late Fee/Day (₹)</label>
-                <input type="number" id="set-latefee" value={societyForm.lateFeePerDay}
-                  onChange={e => setSocietyForm({ ...societyForm, lateFeePerDay: parseInt(e.target.value) })} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="set-latedays">Late Fee After Days</label>
-                <input type="number" id="set-latedays" value={societyForm.lateFeeAfterDays}
-                  onChange={e => setSocietyForm({ ...societyForm, lateFeeAfterDays: parseInt(e.target.value) })} />
+
+              <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Version 1.0.0 (Production)</p>
+                <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                  Powered by <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>Funkariya</span>
+                </p>
+                <p style={{ fontSize: '0.75rem', marginTop: '0.25rem', opacity: 0.5 }}>
+                  © 2026 All Rights Reserved
+                </p>
               </div>
             </div>
-            <button type="submit" className="btn btn--primary" disabled={saving} id="save-settings-btn">
-              {saving ? <span className="btn-spinner"></span> : '💾 Save Settings'}
-            </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

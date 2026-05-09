@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { StatusBar } from '@capacitor/status-bar';
 import { useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -19,6 +21,7 @@ import PendingApproval from './pages/PendingApproval';
 import MemberRequests from './pages/MemberRequests';
 import PaymentVerification from './pages/PaymentVerification';
 import Funds from './pages/Funds';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
@@ -45,6 +48,31 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 function App() {
   const { user, loading } = useAuth();
 
+  useEffect(() => {
+    // Hide the status bar for a game-like full screen experience
+    const hideStatusBar = async () => {
+      try {
+        await StatusBar.hide();
+      } catch (e) {
+        console.log('StatusBar not available');
+      }
+    };
+    hideStatusBar();
+
+    // Keep-alive ping to prevent Render backend from sleeping
+    const pingBackend = () => {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://society-backend-b004.onrender.com';
+      fetch(`${apiUrl}/api/health`)
+        .then(() => console.log('Backend pinged to keep it awake 🚀'))
+        .catch(err => console.error('Ping failed:', err));
+    };
+
+    // Ping immediately and then every 14 minutes
+    pingBackend();
+    const interval = setInterval(pingBackend, 14 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   if (loading) {
     return <div className="page-loader"><div className="spinner"></div></div>;
   }
@@ -55,6 +83,7 @@ function App() {
       <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
       <Route path="/join" element={<JoinSociety />} />
       <Route path="/join/:code" element={<JoinSociety />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       
       <Route path="/pending-approval" element={
         <ProtectedRoute>
