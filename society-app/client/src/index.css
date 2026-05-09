@@ -842,6 +842,78 @@ table, .table { width: 100%; border-collapse: collapse; }
   .fund-name { font-size: .88rem; }
 }
 
+/* ========== TOUR TOOLTIP ========== */
+.tour-tooltip {
+  background: var(--bg-card) !important;
+  color: var(--text) !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  max-width: 350px !important;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1) !important;
+  border: 1px solid var(--border) !important;
+  position: relative;
+}
+.tour-title {
+  color: var(--primary) !important;
+  margin: 0 0 10px 0 !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+}
+.tour-content {
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 20px !important;
+  opacity: 0.9;
+}
+.tour-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 10px;
+}
+.tour-actions {
+  display: flex !important;
+  gap: 8px !important;
+}
+.tour-btn-next {
+  background: var(--primary) !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 20px !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tour-btn-back {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+}
+.tour-btn-skip {
+  background: transparent !important;
+  color: var(--primary) !important;
+  border: none !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  font-size: 0.9rem !important;
+}
+.tour-close-x {
+  position: absolute !important;
+  top: 15px !important;
+  right: 15px !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-muted) !important;
+  font-size: 1.1rem !important;
+  cursor: pointer;
+}
+@media (max-width: 480px) {
+  .tour-tooltip { max-width: 90vw !important; }
+}
+
 /* ========== BOTTOM NAV ========== */
 .bottom-nav {
   display: none;

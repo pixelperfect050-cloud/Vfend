@@ -2,6 +2,41 @@ import { useState, useEffect } from 'react';
 import { Joyride, STATUS } from 'react-joyride';
 import { useAuth } from '../context/AuthContext';
 
+const Tooltip = ({
+  continuous,
+  index,
+  step,
+  backProps,
+  closeProps,
+  primaryProps,
+  skipProps,
+  tooltipProps,
+  isLastStep
+}) => (
+  <div {...tooltipProps} className="tour-tooltip">
+    {step.title && <h4 className="tour-title">{step.title}</h4>}
+    <div className="tour-content">{step.content}</div>
+    <div className="tour-footer">
+      {!isLastStep && (
+        <button {...skipProps} className="tour-btn-skip">
+          Skip Tour
+        </button>
+      )}
+      <div className="tour-actions">
+        {index > 0 && (
+          <button {...backProps} className="tour-btn-back">
+            Back
+          </button>
+        )}
+        <button {...primaryProps} className="tour-btn-next">
+          {isLastStep ? 'Done' : 'Next'}
+        </button>
+      </div>
+    </div>
+    <button {...closeProps} className="tour-close-x">✕</button>
+  </div>
+);
+
 const TourGuide = ({ run, onComplete }) => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
@@ -79,53 +114,13 @@ const TourGuide = ({ run, onComplete }) => {
       steps={steps}
       run={run}
       continuous={true}
-      showProgress={true}
+      showProgress={false}
       showSkipButton={true}
       callback={handleJoyrideCallback}
-      locale={{
-        last: 'Done',
-        skip: 'Skip Tour'
-      }}
+      tooltipComponent={Tooltip}
       styles={{
         options: {
-          primaryColor: '#6366f1',
           zIndex: 10000,
-          backgroundColor: 'var(--bg-card)',
-          arrowColor: 'var(--bg-card)',
-          textColor: 'var(--text)',
-        },
-        tooltip: {
-          borderRadius: '16px',
-          padding: '20px',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        },
-        tooltipContainer: {
-          textAlign: 'left',
-        },
-        tooltipTitle: {
-          fontWeight: 700,
-          fontSize: '1.2rem',
-          marginBottom: '10px',
-          color: 'var(--primary)',
-        },
-        tooltipContent: {
-          padding: '0',
-          fontSize: '0.95rem',
-          lineHeight: '1.5',
-        },
-        buttonNext: {
-          borderRadius: '25px',
-          padding: '10px 25px',
-          fontWeight: 600,
-        },
-        buttonBack: {
-          marginRight: '10px',
-          fontWeight: 600,
-          color: 'var(--text-secondary)',
-        },
-        buttonSkip: {
-          color: 'var(--text-muted)',
-          fontSize: '0.85rem',
         }
       }}
     />
