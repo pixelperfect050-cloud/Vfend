@@ -76,36 +76,39 @@ router.post('/', auth, adminOnly, async (req, res) => {
     }
 
     // Send success response FIRST to ensure UI doesn't retry
-    res.status(isNew ? 201 : 200).json(payment);
+    res.status(isNew ? 201 : 200).json({ ...payment.toObject(), success: true });
 
     // Everything below this is secondary and won't crash the main response
-    try {
-      const monthName = new Date(mYear, mMonth - 1).toLocaleString('default', { month: 'long' });
+    // Using setImmediate to truly push it to the next event loop tick
+    setImmediate(async () => {
+      try {
+        const monthName = new Date(mYear, mMonth - 1).toLocaleString('default', { month: 'long' });
 
-      // Real-time update via Socket.io
-      emitToSociety(societyId, 'payment_recorded', { 
-        payment, 
-        flatId,
-        message: `Payment of ₹${mPaidAmount} recorded for ${monthName} ${mYear}`
-      });
+        // Real-time update via Socket.io
+        emitToSociety(societyId, 'payment_recorded', { 
+          payment, 
+          flatId,
+          message: `Payment of ₹${mPaidAmount} recorded for ${monthName} ${mYear}`
+        });
 
-      // Notify flat owner
-      notifyFlatOwner({
-        flatId,
-        societyId,
-        title: 'Payment Recorded',
-        message: `A payment of ₹${mPaidAmount} has been recorded for ${monthName} ${mYear}.`,
-        type: 'success'
-      }).catch(e => console.error('Notification error:', e));
+        // Notify flat owner
+        notifyFlatOwner({
+          flatId,
+          societyId,
+          title: 'Payment Recorded',
+          message: `A payment of ₹${mPaidAmount} has been recorded for ${monthName} ${mYear}.`,
+          type: 'success'
+        }).catch(e => console.error('Notification error:', e));
 
-      // Update flat's current month status if it's the current month
-      const now = new Date();
-      if (mMonth === now.getMonth() + 1 && mYear === now.getFullYear()) {
-        await Flat.findByIdAndUpdate(flatId, { currentMonthStatus: payment.status });
+        // Update flat's current month status if it's the current month
+        const now = new Date();
+        if (mMonth === now.getMonth() + 1 && mYear === now.getFullYear()) {
+          await Flat.findByIdAndUpdate(flatId, { currentMonthStatus: payment.status });
+        }
+      } catch (secondaryError) {
+        console.error('Secondary task error (sockets/notifications):', secondaryError);
       }
-    } catch (secondaryError) {
-      console.error('Secondary task error (sockets/notifications):', secondaryError);
-    }
+    });
   } catch (error) {
     console.error('Payment Recording Error:', error);
     if (!res.headersSent) {
