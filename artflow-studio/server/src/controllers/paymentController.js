@@ -1,7 +1,7 @@
 const Order = require('../models/Order');
 const crypto = require('crypto');
 const { notify } = require('../services/notificationService');
-const { awardPaymentCashback } = require('../services/creditService');
+const { awardSpendCoins } = require('../services/creditService');
 
 // Create payment order (Razorpay-style)
 exports.createPaymentOrder = async (req, res) => {
@@ -167,6 +167,6 @@ async function _handlePaymentSuccess(order) {
 
   // Award cashback credits (5% of payment)
   if (order.amount > 0) {
-    await awardPaymentCashback(order.userId, order.amount);
+    await awardSpendCoins(order.userId, order.amount);
   }
 }
