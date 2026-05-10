@@ -5,7 +5,8 @@ const CREDIT_RULES = { signup: 50, per_spend_threshold: 10, per_spend_reward: 10
 
 module.exports = async function handler(req, res) {
   await connectDB();
-  const { method, url } = req;
+  const { method } = req;
+  const path = req.url.replace(/^\/api\/credits/, '') || '/';
   const authModule = await import('../../middleware/auth.js');
 
   const wrapAuth = (mw, fn) => new Promise((resolve) => { mw(req, res, () => { fn().then(resolve).catch((e) => { res.status(500).json({ success: false, message: e.message }); resolve(); }); }); });
@@ -15,9 +16,7 @@ module.exports = async function handler(req, res) {
       if (res.headersSent) return;
       const user = await User.findById(req.user._id).select('credits totalCreditsEarned creditsExpiresAt');
       if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
-      if (user.creditsExpiresAt && new Date() > user.creditsExpiresAt) {
-        user.credits = 0; user.creditsExpiresAt = null; await user.save();
-      }
+      if (user.creditsExpiresAt && new Date() > user.creditsExpiresAt) { user.credits = 0; user.creditsExpiresAt = null; await user.save(); }
       return res.json({ success: true, credits: user.credits, totalCreditsEarned: user.totalCreditsEarned, creditsExpiresAt: user.creditsExpiresAt, coinValue: CREDIT_RULES.coin_value, rules: { minOrderToRedeem: CREDIT_RULES.min_order_to_redeem, maxRedeemPercent: CREDIT_RULES.max_redeem_percent, expiryDays: CREDIT_RULES.expiry_days, signupBonus: CREDIT_RULES.signup } });
     });
   }

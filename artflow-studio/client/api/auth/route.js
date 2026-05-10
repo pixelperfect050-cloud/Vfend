@@ -28,8 +28,9 @@ async function notify(userId, type, title, message, link = '', meta = {}) {
 module.exports = async function handler(req, res) {
   await connectDB();
   const { method } = req;
+  const path = req.url.replace(/^\/api\/auth/, '') || '/';
 
-  if (method === 'POST' && req.url === '/signup') {
+  if (method === 'POST' && path === '/signup') {
     try {
       const { name, email, password, company, phone } = req.body;
       if (!name || !email || !password) return res.status(400).json({ success: false, message: 'Name, email and password are required.' });
@@ -46,7 +47,7 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  if (method === 'POST' && req.url === '/login') {
+  if (method === 'POST' && path === '/login') {
     try {
       const { email, password } = req.body;
       if (!email || !password) return res.status(400).json({ success: false, message: 'Email and password required.' });
@@ -61,7 +62,7 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  if (method === 'GET' && req.url === '/me') {
+  if (method === 'GET' && path === '/me') {
     const authModule = await import('../middleware/auth.js');
     return new Promise((resolve) => {
       authModule.auth(req, res, () => {

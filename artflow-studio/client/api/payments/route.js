@@ -5,8 +5,9 @@ const crypto = require('crypto');
 module.exports = async function handler(req, res) {
   await connectDB();
   const { method } = req;
+  const path = req.url.replace(/^\/api\/payments/, '') || '/';
 
-  if (method === 'POST' && req.url === '/create-order') {
+  if (method === 'POST' && path === '/create-order') {
     try {
       const { orderId } = req.body;
       const order = await Order.findById(orderId).populate('jobId');
@@ -41,7 +42,7 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  if (method === 'POST' && req.url === '/verify') {
+  if (method === 'POST' && path === '/verify') {
     try {
       const { orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature, demoPaymentId } = req.body;
       const order = await Order.findById(orderId).populate('jobId');
@@ -72,8 +73,8 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  if (method === 'GET' && req.url?.match(/^\/\w+\/status\/\w+/)) {
-    const id = req.url.split('/')[2];
+  if (method === 'GET' && path?.match(/^\/\w+\/status\/\w+$/)) {
+    const id = path.match(/^\/(\w+)/)[1];
     try {
       const order = await Order.findById(id).populate('jobId');
       if (!order) return res.status(404).json({ success: false, message: 'Order not found.' });

@@ -3,7 +3,8 @@ const Notification = require('../../models/Notification');
 
 module.exports = async function handler(req, res) {
   await connectDB();
-  const { method, url } = req;
+  const { method } = req;
+  const path = req.url.replace(/^\/api\/notifications/, '') || '/';
   const authModule = await import('../../middleware/auth.js');
 
   const wrapAuth = (mw, fn) => new Promise((resolve) => { mw(req, res, () => { fn().then(resolve).catch((e) => { res.status(500).json({ success: false, message: e.message }); resolve(); }); }); });
@@ -17,21 +18,21 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'PATCH' && url?.match(/\/\w+\/read$/)) {
-    return wrapAuth(authModule.auth, async () => {
-      if (res.headersSent) return;
-      const id = url.split('/')[2];
-      const notification = await Notification.findOneAndUpdate({ _id: id, userId: req.user._id }, { isRead: true }, { new: true });
-      if (!notification) return res.status(404).json({ success: false, message: 'Not found.' });
-      return res.json({ success: true, notification });
-    });
-  }
-
-  if (method === 'PATCH' && url === '/read-all') {
+  if (method === 'PATCH' && path === '/read-all') {
     return wrapAuth(authModule.auth, async () => {
       if (res.headersSent) return;
       await Notification.updateMany({ userId: req.user._id, isRead: false }, { isRead: true });
       return res.json({ success: true, message: 'All notifications marked as read.' });
+    });
+  }
+
+  if (method === 'PATCH' && path?.match(/^\/\w+\/read$/)) {
+    return wrapAuth(authModule.auth, async () => {
+      if (res.headersSent) return;
+      const id = path.slice(1, -5);
+      const notification = await Notification.findOneAndUpdate({ _id: id, userId: req.user._id }, { isRead: true }, { new: true });
+      if (!notification) return res.status(404).json({ success: false, message: 'Not found.' });
+      return res.json({ success: true, notification });
     });
   }
 

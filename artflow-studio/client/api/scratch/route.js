@@ -3,7 +3,8 @@ const ScratchCoupon = require('../../models/ScratchCoupon');
 
 module.exports = async function handler(req, res) {
   await connectDB();
-  const { method, url } = req;
+  const { method } = req;
+  const path = req.url.replace(/^\/api\/scratch/, '') || '/';
   const authModule = await import('../../middleware/auth.js');
 
   const wrapAuth = (mw, fn) => new Promise((resolve) => { mw(req, res, () => { fn().then(resolve).catch((e) => { res.status(500).json({ success: false, message: e.message }); resolve(); }); }); });
@@ -16,8 +17,8 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'POST' && url?.match(/\/\w+\/scratch$/)) {
-    const id = url.split('/')[2];
+  if (method === 'POST' && path?.match(/^\/\w+\/scratch$/)) {
+    const id = path.match(/^\/(\w+)/)[1];
     return wrapAuth(authModule.auth, async () => {
       if (res.headersSent) return;
       const coupon = await ScratchCoupon.findOne({ _id: id, userId: req.user._id, isLocked: false, isScratched: false });
@@ -29,8 +30,8 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'POST' && url?.match(/\/\w+\/redeem$/)) {
-    const id = url.split('/')[2];
+  if (method === 'POST' && path?.match(/^\/\w+\/redeem$/)) {
+    const id = path.match(/^\/(\w+)/)[1];
     return wrapAuth(authModule.auth, async () => {
       if (res.headersSent) return;
       const { orderId, orderAmount, existingCoinDiscount } = req.body;

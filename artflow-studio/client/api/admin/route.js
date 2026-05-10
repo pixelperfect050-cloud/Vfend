@@ -2,12 +2,12 @@ const { connectDB } = require('../../db');
 const User = require('../../models/User');
 const Job = require('../../models/Job');
 const Order = require('../../models/Order');
-
 const authModule = await import('../../middleware/auth.js');
 
 module.exports = async function handler(req, res) {
   await connectDB();
-  const { method, url } = req;
+  const { method } = req;
+  const path = req.url.replace(/^\/api\/admin/, '') || '/';
 
   const wrapAdmin = (handler) => {
     return new Promise((resolve) => {
@@ -18,7 +18,7 @@ module.exports = async function handler(req, res) {
     });
   };
 
-  if (method === 'GET' && url === '/stats') {
+  if (method === 'GET' && path === '/stats') {
     return wrapAdmin(async () => {
       if (res.headersSent) return;
       const [totalUsers, totalJobs, totalOrders, paidOrders] = await Promise.all([User.countDocuments(), Job.countDocuments(), Order.countDocuments(), Order.countDocuments({ paymentStatus: 'paid' })]);
@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'GET' && url === '/users') {
+  if (method === 'GET' && path === '/users') {
     return wrapAdmin(async () => {
       if (res.headersSent) return;
       const users = await User.find().select('-password').sort({ createdAt: -1 });
@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'GET' && url === '/jobs') {
+  if (method === 'GET' && path === '/jobs') {
     return wrapAdmin(async () => {
       if (res.headersSent) return;
       const jobs = await Job.find().populate('userId', 'name email company').sort({ createdAt: -1 });
@@ -46,7 +46,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'GET' && url === '/orders') {
+  if (method === 'GET' && path === '/orders') {
     return wrapAdmin(async () => {
       if (res.headersSent) return;
       const orders = await Order.find().populate('jobId').populate('userId', 'name email').sort({ createdAt: -1 });
@@ -54,10 +54,10 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'PUT' && url?.includes('/users/') && url?.includes('/role')) {
+  if (method === 'PUT' && path?.match(/^\/users\/\w+\/role$/)) {
     return wrapAdmin(async () => {
       if (res.headersSent) return;
-      const id = url.split('/')[2];
+      const id = path.match(/^\/users\/(\w+)/)[1];
       const { role } = req.body;
       if (!['user', 'admin'].includes(role)) return res.status(400).json({ success: false, message: 'Invalid role.' });
       const user = await User.findByIdAndUpdate(id, { role }, { new: true }).select('-password');
@@ -66,10 +66,10 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (method === 'PUT' && url?.includes('/users/') && url?.includes('/toggle')) {
+  if (method === 'PUT' && path?.match(/^\/users\/\w+\/toggle$/)) {
     return wrapAdmin(async () => {
       if (res.headersSent) return;
-      const id = url.split('/')[2];
+      const id = path.match(/^\/users\/(\w+)/)[1];
       const user = await User.findById(id);
       if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
       user.isActive = !user.isActive;

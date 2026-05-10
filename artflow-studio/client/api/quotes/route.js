@@ -3,7 +3,8 @@ const Quote = require('../../models/Quote');
 
 module.exports = async function handler(req, res) {
   await connectDB();
-  const { method, url } = req;
+  const { method } = req;
+  const path = req.url.replace(/^\/api\/quotes/, '') || '/';
 
   if (method === 'POST') {
     try {

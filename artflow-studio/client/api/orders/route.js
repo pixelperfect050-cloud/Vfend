@@ -3,16 +3,10 @@ const Order = require('../../models/Order');
 const Job = require('../../models/Job');
 const authModule = await import('../../middleware/auth.js');
 
-async function notify(userId, type, title, message, link = '', meta = {}) {
-  try {
-    const Notification = (await import('../../models/Notification.js')).default;
-    await Notification.create({ userId, type, title, message, link, meta });
-  } catch (_) {}
-}
-
 module.exports = async function handler(req, res) {
   await connectDB();
-  const { method, url } = req;
+  const { method } = req;
+  const path = req.url.replace(/^\/api\/orders/, '') || '/';
 
   const wrapAuth = (mw, handler) => {
     return new Promise((resolve) => {
@@ -22,8 +16,7 @@ module.exports = async function handler(req, res) {
     });
   };
 
-  // POST /api/orders
-  if (method === 'POST' && url === '/') {
+  if (method === 'POST' && path === '/') {
     return wrapAuth(authModule.auth, async () => {
       if (res.headersSent) return;
       const { jobId } = req.body;
@@ -37,8 +30,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // GET /api/orders/user
-  if (method === 'GET' && url === '/user') {
+  if (method === 'GET' && path === '/user') {
     return wrapAuth(authModule.auth, async () => {
       if (res.headersSent) return;
       const orders = await Order.find({ userId: req.user._id }).populate('jobId').sort({ createdAt: -1 });
@@ -46,8 +38,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // GET /api/orders/all
-  if (method === 'GET' && url === '/all') {
+  if (method === 'GET' && path === '/all') {
     return wrapAuth(authModule.adminAuth, async () => {
       if (res.headersSent) return;
       const orders = await Order.find().populate('jobId').populate('userId', 'name email').sort({ createdAt: -1 });
@@ -55,9 +46,8 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // GET /api/orders/:id
-  if (method === 'GET' && url?.match(/\/\w+\/\w+$/) && !url?.includes('/feedback')) {
-    const id = url.split('/')[2];
+  if (method === 'GET' && path?.match(/^\/\w+$/) && !path?.includes('/feedback')) {
+    const id = path.slice(1);
     return wrapAuth(authModule.auth, async () => {
       if (res.headersSent) return;
       const order = await Order.findById(id).populate('jobId').populate('userId', 'name email');
@@ -66,9 +56,8 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // POST /api/orders/:id/feedback
-  if (method === 'POST' && url?.match(/\/\w+\/feedback$/)) {
-    const id = url.split('/')[2];
+  if (method === 'POST' && path?.match(/^\/\w+\/feedback$/)) {
+    const id = path.match(/^\/(\w+)/)[1];
     return wrapAuth(authModule.auth, async () => {
       if (res.headersSent) return;
       const { rating, feedback } = req.body;
