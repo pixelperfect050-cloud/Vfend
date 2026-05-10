@@ -25,19 +25,8 @@ const initializeSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log(`🔌 Client connected: ${socket.id}`);
-
-    socket.on('join-user', (userId) => {
-      socket.join(`user-${userId}`);
-      console.log(`👤 User ${userId} joined their room`);
-    });
-
-    socket.on('join-admin', () => {
-      socket.join('admin-room');
-      console.log('🛡️  Admin joined admin room');
-    });
-
-    socket.on('disconnect', () => console.log(`❌ Client disconnected: ${socket.id}`));
+    socket.on('join-user', (userId) => socket.join(`user-${userId}`));
+    socket.on('join-admin', () => socket.join('admin-room'));
   });
 
   return io;

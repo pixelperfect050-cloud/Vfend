@@ -93,7 +93,6 @@ if (process.env.NODE_ENV === 'production') {
 
 // Global error handler
 app.use((err, _req, res, _next) => {
-  console.error(err.stack);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
@@ -104,28 +103,16 @@ const PORT = process.env.PORT || 5000;
 (async () => {
   await connectDB();
   server.listen(PORT, () => {
-    console.log(`\n🚀 ArtFlow Studio API → http://localhost:${PORT}`);
-    console.log(`📡 WebSocket ready`);
-    console.log(`💳 Payments → ${process.env.RAZORPAY_KEY_ID ? 'Razorpay LIVE' : 'Demo Mode'}`);
-    console.log(`🌍 ${process.env.NODE_ENV || 'development'}\n`);
-
-    // 🔄 Self-ping keep-alive — prevents Render free tier from sleeping
     if (process.env.NODE_ENV === 'production') {
       const https = require('https');
       const keepAliveUrl = process.env.RENDER_EXTERNAL_URL || 'https://antig-backend-y4uy.onrender.com';
-      const KEEP_ALIVE_MS = 10 * 60 * 1000; // 10 minutes
-      // Immediate first ping after 30 seconds
+      const KEEP_ALIVE_MS = 10 * 60 * 1000;
       setTimeout(() => {
-        https.get(`${keepAliveUrl}/api/health`, (res) => {
-          console.log(`♻️  Keep-alive warmup → ${res.statusCode}`);
-        }).on('error', (e) => console.log('♻️  Keep-alive error:', e.message));
+        https.get(`${keepAliveUrl}/api/health`).on('error', () => {});
       }, 30000);
       setInterval(() => {
-        https.get(`${keepAliveUrl}/api/health`, (res) => {
-          console.log(`♻️  Keep-alive ping → ${res.statusCode}`);
-        }).on('error', (e) => console.log('♻️  Keep-alive error:', e.message));
+        https.get(`${keepAliveUrl}/api/health`).on('error', () => {});
       }, KEEP_ALIVE_MS);
-      console.log(`♻️  Keep-alive enabled (every 10 min) → ${keepAliveUrl}`);
     }
   });
 })();

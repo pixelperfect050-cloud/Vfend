@@ -603,7 +603,7 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-[#ff7a18] flex items-center justify-center"><PenTool className="w-3.5 h-3.5 text-white" /></div>
-            <span className="text-sm text-gray-400">© 2024 ArtFlow Studio</span>
+            <span className="text-sm text-gray-400">© 2024 ArtFlow Studio — Powered by FUNKARIYA</span>
           </div>
           <div className="flex gap-6 text-sm text-gray-400">
             <a href="#" className="hover:text-[#0B1220] transition-colors">Privacy</a>
