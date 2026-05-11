@@ -3,10 +3,8 @@ services:
     name: antig-backend
     env: node
     region: oregon
-    repo: https://github.com/pixelperfect050-cloud/Antig
-    branch: main
-    rootDir: artflow-studio
-    buildCommand: npm install && cd server && npm install
+    rootDir: artflow-studio/server
+    buildCommand: npm install
     startCommand: node server.js
     healthCheckPath: /api/health
     envVars:
