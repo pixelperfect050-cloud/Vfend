@@ -3,26 +3,53 @@ const bcrypt = require('bcryptjs');
 
 const connectDB = async () => {
   try {
-    let uri = process.env.MONGODB_URI;
+    let uri = (process.env.MONGODB_URI || '').trim();
+    const isProduction = process.env.NODE_ENV === 'production';
+    let connectWithMemory = false;
 
-    if (!uri && process.env.NODE_ENV === 'production') {
+    if (!uri && isProduction) {
       console.error('MONGODB_URI required in production');
       process.exit(1);
     }
 
     if (!uri) {
-      const { MongoMemoryServer } = require('mongodb-memory-server');
-      const mongod = await MongoMemoryServer.create();
-      uri = mongod.getUri();
+      connectWithMemory = true;
+    } else if (!isProduction) {
+      try {
+        await mongoose.connect(uri, {
+          serverSelectionTimeoutMS: 10000,
+          socketTimeoutMS: 10000,
+          connectTimeoutMS: 10000,
+        });
+        await mongoose.connection.db.admin().ping();
+      } catch (err) {
+        console.warn('Unable to connect to provided MongoDB URI, falling back to in-memory MongoDB for development.');
+        console.warn(err.message || err);
+        connectWithMemory = true;
+      }
     }
 
-    await mongoose.connect(uri);
+    if (connectWithMemory) {
+      if (mongoose.connection.readyState !== 0) {
+        await mongoose.disconnect();
+      }
+      const { MongoMemoryServer } = require('mongodb-memory-server');
+      const mongod = await MongoMemoryServer.create({ instance: { port: 0 } });
+      const memoryUri = mongod.getUri();
+      console.log('Using in-memory MongoDB for development:', memoryUri);
+      await mongoose.connect(memoryUri, {
+        serverSelectionTimeoutMS: 30000,
+        socketTimeoutMS: 30000,
+        connectTimeoutMS: 30000,
+      });
+    }
 
     const User = require('../models/User');
     const adminExists = await User.findOne({ role: 'admin' });
+    const defaultAdminPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'admin123';
 
     if (!adminExists) {
-      const hashed = await bcrypt.hash('Dhuzy@200819', 10);
+      const hashed = await bcrypt.hash(defaultAdminPassword, 10);
       await User.create({
         name: 'Admin',
         email: 'admin@artflow.studio',
@@ -31,7 +58,7 @@ const connectDB = async () => {
         role: 'admin',
       });
     } else {
-      const hashed = await bcrypt.hash('Dhuzy@200819', 10);
+      const hashed = await bcrypt.hash(defaultAdminPassword, 10);
       await User.findByIdAndUpdate(adminExists._id, { password: hashed });
     }
 

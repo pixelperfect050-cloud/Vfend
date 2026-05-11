@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=devicewidth, initial-scale=1.0">
+    <title>SocietySync - Smart Society Management</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Animated Background */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+
+        .bg-orb:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: #667eea;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .bg-orb:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            background: #f093fb;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        .bg-orb:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: #764ba2;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.02); }
+        }
+
+        .container {
+            display: flex;
+            gap: 80px;
+            max-width: 1400px;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* LEFT SIDE - Details */
+        .details {
+            flex: 0 0 450px;
+            color: white;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 60px;
+        }
+
+        .app-logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .app-name {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .detail-content {
+            min-height: 220px;
+        }
+
+        .detail-item {
+            display: none;
+            animation: slideLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .detail-item.active {
+            display: block;
+        }
+
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .scene-number {
+            font-size: 11px;
+            color: #a78bfa;
+            font-weight: 600;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scene-number::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: linear-gradient(90deg, #a78bfa, transparent);
+        }
+
+        .scene-title {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            line-height: 1.2;
+            color: white;
+        }
+
+        .scene-desc {
+            font-size: 16px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 15px;
+            color: rgba(255,255,255,0.75);
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* RIGHT SIDE - Phone */
+        .phone-wrapper {
+            flex: 0 0 auto;
+            position: relative;
+        }
+
+        .phone-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 550px;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .phone {
+            width: 300px;
+            height: 600px;
+            background: #ffffff;
+            border-radius: 35px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 0 4px rgba(255,255,255,0.1),
+                0 0 80px rgba(102, 126, 234, 0.2),
+                0 60px 100px rgba(0,0,0,0.5);
+        }
+
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 24px;
+            background: #111;
+            border-radius: 0 0 16px 16px;
+            z-index: 100;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            background: #f8f9fc;
+        }
+
+        .scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.94);
+        }
+
+        .scene.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* === APP UI STYLES === */
+        
+        /* Header */
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 15px 16px;
+            color: white;
+        }
+
+        .app-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .app-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .app-menu span {
+            width: 18px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        .app-logo-text {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .app-profile {
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .app-subtitle {
+            font-size: 11px;
+            opacity: 0.85;
+        }
+
+        .app-content {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        /* Balance Card */
+        .balance-card-app {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 0 12px 12px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-card-app::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+        }
+
+        .balance-label-app {
+            font-size: 10px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .balance-amount-app {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 3px 0;
+        }
+
+        .balance-change-app {
+            font-size: 10px;
+            opacity: 0.85;
+        }
+
+        /* Stats Grid */
+        .stats-grid-app {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card-app {
+            background: white;
+            border-radius: 12px;
+            padding: 11px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .stat-icon-app {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .stat-value-app {
+            color: #1f2937;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .stat-label-app {
+            color: #9ca3af;
+            font-size: 8px;
+            margin-top: 2px;
+        }
+
+        /* Section Title */
+        .section-title-app {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 12px 12px 8px;
+        }
+
+        /* Recent List */
+        .recent-list-app {
+            padding: 0 12px;
+        }
+
+        .recent-item-app {
+            background: white;
+            border-radius: 11px;
+            padding: 10px;
+            margin-bottom: 7px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .recent-icon-app {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .recent-icon-app.paid { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+        .recent-icon-app.pending { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+
+        .recent-info-app {
+            flex: 1;
+        }
+
+        .recent-name-app {
+            color: #1f2937;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .recent-amount-app {
+            color: #9ca3af;
+            font-size: 10px;
+        }
+
+        .recent-status-app {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 4px 9px;
+            border-radius: 20px;
+        }
+
+        .recent-status-app.paid {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .recent-status-app.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        /* Blocks */
+        .blocks-header-app {
+            padding: 16px 12px 8px;
+        }
+
+        .blocks-title-app {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 3px;
+        }
+
+        .blocks-subtitle-app {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .block-tabs-app {
+            display: flex;
+            gap: 7px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .block-tab-app {
+            padding: 6px 16px;
+            background: white;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .block-tab-app.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .flats-view-app {
+            background: white;
+            margin: 0 12px;
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .flats-header-app {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .flats-info-app {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .flats-count-app {
+            font-size: 10px;
+            color: #9ca3af;
+        }
+
+        .flats-grid-app {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .flat-cell-app {
+            aspect-ratio: 1;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+
+        .flat-cell-app:hover {
+            transform: scale(1.1);
+        }
+
+        .flat-cell-app.paid {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .flat-cell-app.pending {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            color: white;
+        }
+
+        .flat-cell-app.partial {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #92400e;
+        }
+
+        .flat-legend-app {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .legend-item-app {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            color: #6b7280;
+        }
+
+        .legend-dot-app {
+            width: 9px;
+            height: 9px;
+            border-radius: 3px;
+        }
+
+        .legend-dot-app.paid { background: #10b981; }
+        .legend-dot-app.pending { background: #db2777; }
+        .legend-dot-app.partial { background: #f59e0b; }
+
+        /* Payment Methods */
+        .payment-methods-app {
+            padding: 12px;
+        }
+
+        .method-card-app {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 9px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+        }
+
+        .method-card-app:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .method-icon-app {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .method-icon-app.cash { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+        .method-icon-app.upi { background: linear-gradient(135deg, #10b981, #059669); }
+        .method-icon-app.bank { background: linear-gradient(135deg, #60a5fa, #2563eb); }
+
+        .method-info-app {
+            flex: 1;
+        }
+
+        .method-name-app {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .method-desc-app {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-top: 1px;
+        }
+
+        .method-arrow-app {
+            color: #d1d5db;
+            font-size: 16px;
+        }
+
+        .payment-actions-app {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            padding: 0 12px;
+        }
+
+        .action-btn-app {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 11px;
+            padding: 12px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .action-btn-app:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+        }
+
+        .action-btn-app.secondary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        /* Funds */
+        .funds-list-app {
+            padding: 12px;
+        }
+
+        .fund-card-app {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 9px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .fund-header-app {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .fund-name-app {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .fund-status-app {
+            font-size: 9px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            background: #d1fae5;
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .fund-desc-app {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-bottom: 9px;
+        }
+
+        .fund-progress-app {
+            background: #f3f4f6;
+            height: 7px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .fund-progress-fill-app {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fund-progress-fill-app.civil { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+        .fund-progress-fill-app.lift { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+        .fund-progress-fill-app.parking { background: linear-gradient(90deg, #60a5fa, #2563eb); }
+
+        .fund-stats-app {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+        }
+
+        .fund-stat-app {
+            color: #6b7280;
+        }
+
+        .fund-stat-app span {
+            color: #1f2937;
+            font-weight: 700;
+        }
+
+        /* Expenses */
+        .expense-tabs-app {
+            display: flex;
+            gap: 7px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .expense-tab-app {
+            padding: 6px 12px;
+            background: white;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .expense-tab-app.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .expense-chart-app {
+            background: white;
+            margin: 0 12px;
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .chart-title-app {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .chart-container-app {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 90px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .chart-bar-app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 36px;
+        }
+
+        .chart-bar-fill-app {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .chart-bar-label-app {
+            font-size: 8px;
+            color: #9ca3af;
+            margin-top: 3px;
+        }
+
+        .chart-bar-value-app {
+            font-size: 8px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        /* Notifications */
+        .notification-card-app {
+            background: white;
+            margin: 0 12px 7px;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            gap: 10px;
+        }
+
+        .notif-icon-app {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .notif-icon-app.payment { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+        .notif-icon-app.alert { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .notif-icon-app.approval { background: linear-gradient(135deg, #e5e7eb, #d1d5db); }
+
+        .notif-content-app {
+            flex: 1;
+        }
+
+        .notif-title-app {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        .notif-desc-app {
+            font-size: 9px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .notif-time-app {
+            font-size: 8px;
+            color: #d1d5db;
+            margin-top: 3px;
+        }
+
+        /* Approval */
+        .approval-flow-app {
+            padding: 16px 12px;
+        }
+
+        .flow-card-app {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .flow-header-app {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .flow-avatar-app {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .flow-user-app {
+            flex: 1;
+        }
+
+        .flow-name-app {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .flow-flat-app {
+            font-size: 9px;
+            color: #9ca3af;
+        }
+
+        .flow-amount-app {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .flow-steps-app {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .flow-step-app {
+            text-align: center;
+            flex: 1;
+        }
+
+        .flow-step-icon-app {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 4px;
+            font-size: 11px;
+        }
+
+        .flow-step-icon-app.pending {
+            background: #f3f4f6;
+            color: #d1d5db;
+        }
+
+        .flow-step-icon-app.current {
+            background: linear-gradient(135deg, #fef3c7, #f59e0b);
+            color: #b45309;
+        }
+
+        .flow-step-icon-app.done {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .flow-step-label-app {
+            font-size: 8px;
+            color: #9ca3af;
+        }
+
+        /* Devices */
+        .devices-view-app {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .device-preview-app {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .device-mock-app {
+            background: white;
+            border-radius: 8px;
+            padding: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .device-mock-app.mobile {
+            width: 50px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-mock-app.tablet {
+            width: 70px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-mock-app.desktop {
+            width: 95px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-screen-app {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .device-mock-app.mobile .device-screen-app {
+            width: 30px;
+            height: 50px;
+            font-size: 12px;
+        }
+
+        .device-mock-app.tablet .device-screen-app {
+            width: 50px;
+            height: 32px;
+            font-size: 14px;
+        }
+
+        .device-mock-app.desktop .device-screen-app {
+            width: 75px;
+            height: 28px;
+            font-size: 14px;
+        }
+
+        .device-label-app {
+            font-size: 7px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .sync-info-app {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        /* Outro */
+        .outro-screen-app {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .outro-screen-app::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .outro-logo-app {
+            width: 85px;
+            height: 85px;
+            background: white;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            animation: logoPop 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes logoPop {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .outro-name-app {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .outro-tagline-app {
+            color: rgba(255,255,255,0.9);
+            font-size: 13px;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .outro-cta-app {
+            margin-top: 30px;
+            background: white;
+            padding: 10px 26px;
+            border-radius: 20px;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Progress */
+        .progress-container {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #a78bfa);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #667eea;
+            width: 12px;
+            border-radius: 3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: row;
+                gap: 40px;
+                align-items: center;
+            }
+            
+            .details {
+                flex: 1;
+                min-width: 300px;
+            }
+            
+            .phone-wrapper {
+                flex: 0 0 auto;
+            }
+            
+            .feature-item {
+                justify-content: flex-start;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .details {
+                flex: 0 0 auto;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .logo-section {
+                justify-content: center;
+            }
+            
+            .feature-item {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-effects">
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+    </div>
+
+    <div class="container">
+        <!-- LEFT SIDE - Details -->
+        <div class="details">
+            <div class="logo-section">
+                <div class="app-logo">🏢</div>
+                <div class="app-name">SocietySync</div>
+            </div>
+
+            <div class="detail-content">
+                <!-- Detail 1 -->
+                <div class="detail-item active" data-detail="1">
+                    <div class="scene-number">INTRO</div>
+                    <div class="scene-title">Smart Society<br>Management</div>
+                    <div class="scene-desc">The all-in-one platform for modern residential societies. Track payments, manage flats, handle expenses seamlessly.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">🏢</div><span>Multi-block & flat management</span></div>
+                        <div class="feature-item"><div class="feature-icon">💳</div><span>Automated payment tracking</span></div>
+                        <div class="feature-item"><div class="feature-icon">📊</div><span>Real-time analytics dashboard</span></div>
+                        <div class="feature-item"><div class="feature-icon">🔔</div><span>Instant notifications</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 2 -->
+                <div class="detail-item" data-detail="2">
+                    <div class="scene-number">DASHBOARD</div>
+                    <div class="scene-title">Financial Overview</div>
+                    <div class="scene-desc">Complete view of society finances with real-time collection, expenses, pending dues and current balance.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">💰</div><span>Balance: ₹93,118</span></div>
+                        <div class="feature-item"><div class="feature-icon">📥</div><span>₹1.2L collected this month</span></div>
+                        <div class="feature-item"><div class="feature-icon">📤</div><span>₹98K expenses this month</span></div>
+                        <div class="feature-item"><div class="feature-icon">⏳</div><span>₹39K pending dues</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 3 -->
+                <div class="detail-item" data-detail="3">
+                    <div class="scene-number">FLAT MANAGEMENT</div>
+                    <div class="scene-title">Visual Flat Tracking</div>
+                    <div class="scene-desc">Beautiful grid showing payment status for every flat. Tap any flat to view complete payment history.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">🟢</div><span>Green = Paid (13 flats)</span></div>
+                        <div class="feature-item"><div class="feature-icon">🔴</div><span>Pink = Pending (7 flats)</span></div>
+                        <div class="feature-item"><div class="feature-icon">🟡</div><span>Yellow = Partial (4 flats)</span></div>
+                        <div class="feature-item"><div class="feature-icon">👆</div><span>Tap for full history</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 4 -->
+                <div class="detail-item" data-detail="4">
+                    <div class="scene-number">PAYMENTS</div>
+                    <div class="scene-title">Easy Collection</div>
+                    <div class="scene-desc">Multiple payment options - cash, UPI, bank transfer. Admin gets instant alerts for verification.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">💵</div><span>Cash - Manual entry</span></div>
+                        <div class="feature-item"><div class="feature-icon">📱</div><span>UPI - Instant transfer</span></div>
+                        <div class="feature-item"><div class="feature-icon">🏦</div><span>Bank - NEFT/RTGS</span></div>
+                        <div class="feature-item"><div class="feature-icon">⚡</div><span>Quick approve button</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 5 -->
+                <div class="detail-item" data-detail="5">
+                    <div class="scene-number">FUNDS</div>
+                    <div class="scene-title">Special Funds</div>
+                    <div class="scene-desc">Create funds for repairs, events, emergencies. Transparent tracking with progress bars.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">🏗️</div><span>Civil Fund: 80% complete</span></div>
+                        <div class="feature-item"><div class="feature-icon">🛗</div><span>Lift Repair: 48% complete</span></div>
+                        <div class="feature-item"><div class="feature-icon">🚗</div><span>Parking: 40% complete</span></div>
+                        <div class="feature-item"><div class="feature-icon">📈</div><span>Per-flat tracking</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 6 -->
+                <div class="detail-item" data-detail="6">
+                    <div class="scene-number">EXPENSES</div>
+                    <div class="scene-title">Expense Reports</div>
+                    <div class="scene-desc">Track all society expenses with beautiful bar charts. Generate professional reports for meetings.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">🛡️</div><span>Security: ₹25,090</span></div>
+                        <div class="feature-item"><div class="feature-icon">🧹</div><span>Cleaning: ₹18,362</span></div>
+                        <div class="feature-item"><div class="feature-icon">⚡</div><span>Electricity: ₹16,053</span></div>
+                        <div class="feature-item"><div class="feature-icon">📊</div><span>Monthly breakdown</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 7 -->
+                <div class="detail-item" data-detail="7">
+                    <div class="scene-number">NOTIFICATIONS</div>
+                    <div class="scene-title">Real-Time Alerts</div>
+                    <div class="scene-desc">Stay updated with instant notifications for payments, approvals, and important announcements.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">💳</div><span>Payment received alerts</span></div>
+                        <div class="feature-item"><div class="feature-icon">✅</div><span>Approval requests</span></div>
+                        <div class="feature-item"><div class="feature-icon">📢</div><span>Society announcements</span></div>
+                        <div class="feature-item"><div class="feature-icon">⏰</div><span>Due date reminders</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 8 -->
+                <div class="detail-item" data-detail="8">
+                    <div class="scene-number">APPROVAL</div>
+                    <div class="scene-title">Secure Verification</div>
+                    <div class="scene-desc">Complete approval workflow - member submits, admin verifies, status auto-updates.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">1️⃣</div><span>Member submits payment</span></div>
+                        <div class="feature-item"><div class="feature-icon">2️⃣</div><span>Admin reviews details</span></div>
+                        <div class="feature-item"><div class="feature-icon">3️⃣</div><span>Verify & approve</span></div>
+                        <div class="feature-item"><div class="feature-icon">✓</div><span>Auto status update</span></div>
+                    </div>
+                </div>
+
+                <!-- Detail 9 -->
+                <div class="detail-item" data-detail="9">
+                    <div class="scene-number">OUTRO</div>
+                    <div class="scene-title">Start Free Trial</div>
+                    <div class="scene-desc">Join 500+ societies already managing smarter. Works beautifully on all devices.</div>
+                    <div class="features-list">
+                        <div class="feature-item"><div class="feature-icon">🎁</div><span>14-day free trial</span></div>
+                        <div class="feature-item"><div class="feature-icon">🛡️</div><span>Secure & reliable</span></div>
+                        <div class="feature-item"><div class="feature-icon">💬</div><span>24/7 support</span></div>
+                        <div class="feature-item"><div class="feature-icon">🚀</div><span>5-minute setup</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE - Phone -->
+        <div class="phone-wrapper">
+            <div class="phone-glow"></div>
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <!-- Scene 1: Intro -->
+                    <div class="scene active" data-scene="1">
+                        <div class="outro-screen-app">
+                            <div class="outro-logo-app">🏢</div>
+                            <div class="outro-name-app">SocietySync</div>
+                            <div class="outro-tagline-app">Smart Society. Smart Living.</div>
+                            <div class="outro-cta-app">Get Started →</div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 2: Dashboard -->
+                    <div class="scene" data-scene="2">
+                        <div class="app-header">
+                            <div class="app-top-bar">
+                                <div class="app-menu"><span></span><span></span><span></span></div>
+                                <div class="app-logo-text">SocietySync</div>
+                                <div class="app-profile">👤</div>
+                            </div>
+                            <div class="app-title">Dashboard</div>
+                            <div class="app-subtitle">Sunrise Heights</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="balance-card-app">
+                                <div class="balance-label-app">Current Balance</div>
+                                <div class="balance-amount-app">₹93,118</div>
+                                <div class="balance-change-app">↑ 12% from last month</div>
+                            </div>
+                            <div class="stats-grid-app">
+                                <div class="stat-card-app">
+                                    <div class="stat-icon-app">📥</div>
+                                    <div class="stat-value-app">₹1.2L</div>
+                                    <div class="stat-label-app">Collection</div>
+                                </div>
+                                <div class="stat-card-app">
+                                    <div class="stat-icon-app">📤</div>
+                                    <div class="stat-value-app">₹98K</div>
+                                    <div class="stat-label-app">Expenses</div>
+                                </div>
+                                <div class="stat-card-app">
+                                    <div class="stat-icon-app">⏳</div>
+                                    <div class="stat-value-app">₹39K</div>
+                                    <div class="stat-label-app">Pending</div>
+                                </div>
+                            </div>
+                            <div class="section-title-app">Recent Payments</div>
+                            <div class="recent-list-app">
+                                <div class="recent-item-app">
+                                    <div class="recent-icon-app paid">✓</div>
+                                    <div class="recent-info-app">
+                                        <div class="recent-name-app">Rajesh Patel</div>
+                                        <div class="recent-amount-app">Flat A-101 • ₹3,000</div>
+                                    </div>
+                                    <div class="recent-status-app paid">Paid</div>
+                                </div>
+                                <div class="recent-item-app">
+                                    <div class="recent-icon-app pending">!</div>
+                                    <div class="recent-info-app">
+                                        <div class="recent-name-app">Amit Shah</div>
+                                        <div class="recent-amount-app">Flat B-205 • ₹3,000</div>
+                                    </div>
+                                    <div class="recent-status-app pending">Pending</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 3: Blocks -->
+                    <div class="scene" data-scene="3">
+                        <div class="app-header">
+                            <div class="app-top-bar">
+                                <div class="app-menu"><span></span><span></span><span></span></div>
+                                <div class="app-logo-text">SocietySync</div>
+                                <div class="app-profile">👤</div>
+                            </div>
+                            <div class="app-title">Flat Management</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="blocks-header-app">
+                                <div class="blocks-title-app">Block A</div>
+                                <div class="blocks-subtitle-app">60 flats • 3 blocks</div>
+                            </div>
+                            <div class="block-tabs-app">
+                                <div class="block-tab-app active">Block A</div>
+                                <div class="block-tab-app">Block B</div>
+                                <div class="block-tab-app">Block C</div>
+                            </div>
+                            <div class="flats-view-app">
+                                <div class="flats-header-app">
+                                    <div class="flats-info-app">Payment Status</div>
+                                    <div class="flats-count-app">13/20 paid</div>
+                                </div>
+                                <div class="flats-grid-app">
+                                    <div class="flat-cell-app paid">101</div>
+                                    <div class="flat-cell-app paid">102</div>
+                                    <div class="flat-cell-app pending">103</div>
+                                    <div class="flat-cell-app paid">104</div>
+                                    <div class="flat-cell-app paid">201</div>
+                                    <div class="flat-cell-app pending">202</div>
+                                    <div class="flat-cell-app paid">203</div>
+                                    <div class="flat-cell-app partial">204</div>
+                                    <div class="flat-cell-app paid">301</div>
+                                    <div class="flat-cell-app paid">302</div>
+                                    <div class="flat-cell-app pending">303</div>
+                                    <div class="flat-cell-app paid">304</div>
+                                    <div class="flat-cell-app pending">401</div>
+                                    <div class="flat-cell-app paid">402</div>
+                                    <div class="flat-cell-app pending">403</div>
+                                    <div class="flat-cell-app paid">404</div>
+                                    <div class="flat-cell-app partial">501</div>
+                                    <div class="flat-cell-app paid">502</div>
+                                    <div class="flat-cell-app partial">503</div>
+                                    <div class="flat-cell-app pending">504</div>
+                                </div>
+                                <div class="flat-legend-app">
+                                    <div class="legend-item-app"><div class="legend-dot-app paid"></div> Paid</div>
+                                    <div class="legend-item-app"><div class="legend-dot-app pending"></div> Pending</div>
+                                    <div class="legend-item-app"><div class="legend-dot-app partial"></div> Partial</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 4: Payments -->
+                    <div class="scene" data-scene="4">
+                        <div class="app-header">
+                            <div class="app-top-bar">
+                                <div class="app-menu"><span></span><span></span><span></span></div>
+                                <div class="app-logo-text">SocietySync</div>
+                                <div class="app-profile">👤</div>
+                            </div>
+                            <div class="app-title">Add Payment</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="payment-methods-app">
+                                <div class="method-card-app">
+                                    <div class="method-icon-app cash">💵</div>
+                                    <div class="method-info-app">
+                                        <div class="method-name-app">Cash Payment</div>
+                                        <div class="method-desc-app">Record cash collection</div>
+                                    </div>
+                                    <div class="method-arrow-app">→</div>
+                                </div>
+                                <div class="method-card-app">
+                                    <div class="method-icon-app upi">📱</div>
+                                    <div class="method-info-app">
+                                        <div class="method-name-app">UPI Transfer</div>
+                                        <div class="method-desc-app">Google Pay, PhonePe, Paytm</div>
+                                    </div>
+                                    <div class="method-arrow-app">→</div>
+                                </div>
+                                <div class="method-card-app">
+                                    <div class="method-icon-app bank">🏦</div>
+                                    <div class="method-info-app">
+                                        <div class="method-name-app">Bank Transfer</div>
+                                        <div class="method-desc-app">NEFT / RTGS / IMPS</div>
+                                    </div>
+                                    <div class="method-arrow-app">→</div>
+                                </div>
+                            </div>
+                            <div class="payment-actions-app">
+                                <button class="action-btn-app">Quick Receive</button>
+                                <button class="action-btn-app secondary">Generate Bill</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 5: Funds -->
+                    <div class="scene" data-scene="5">
+                        <div class="app-header">
+                            <div class="app-top-bar">
+                                <div class="app-menu"><span></span><span></span><span></span></div>
+                                <div class="app-logo-text">SocietySync</div>
+                                <div class="app-profile">👤</div>
+                            </div>
+                            <div class="app-title">Society Funds</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="funds-list-app">
+                                <div class="fund-card-app">
+                                    <div class="fund-header-app">
+                                        <div class="fund-name-app">Civil Repair Fund</div>
+                                        <div class="fund-status-app">Active</div>
+                                    </div>
+                                    <div class="fund-desc-app">For building repairs & maintenance</div>
+                                    <div class="fund-progress-app">
+                                        <div class="fund-progress-fill-app civil" style="width: 80%;"></div>
+                                    </div>
+                                    <div class="fund-stats-app">
+                                        <div class="fund-stat-app">₹8L <span>collected</span></div>
+                                        <div class="fund-stat-app">₹10L <span>target</span></div>
+                                    </div>
+                                </div>
+                                <div class="fund-card-app">
+                                    <div class="fund-header-app">
+                                        <div class="fund-name-app">Lift Repair Fund</div>
+                                        <div class="fund-status-app">Active</div>
+                                    </div>
+                                    <div class="fund-desc-app">Elevator maintenance & repairs</div>
+                                    <div class="fund-progress-app">
+                                        <div class="fund-progress-fill-app lift" style="width: 48%;"></div>
+                                    </div>
+                                    <div class="fund-stats-app">
+                                        <div class="fund-stat-app">₹2.4L <span>collected</span></div>
+                                        <div class="fund-stat-app">₹5L <span>target</span></div>
+                                    </div>
+                                </div>
+                                <div class="fund-card-app">
+                                    <div class="fund-header-app">
+                                        <div class="fund-name-app">Parking Fund</div>
+                                        <div class="fund-status-app">Active</div>
+                                    </div>
+                                    <div class="fund-desc-app">Parking area development</div>
+                                    <div class="fund-progress-app">
+                                        <div class="fund-progress-fill-app parking" style="width: 40%;"></div>
+                                    </div>
+                                    <div class="fund-stats-app">
+                                        <div class="fund-stat-app">₹1.2L <span>collected</span></div>
+                                        <div class="fund-stat-app">₹3L <span>target</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 6: Expenses -->
+                    <div class="scene" data-scene="6">
+                        <div class="app-header">
+                            <div class="app-top-bar">
+                                <div class="app-menu"><span></span><span></span><span></span></div>
+                                <div class="app-logo-text">SocietySync</div>
+                                <div class="app-profile">👤</div>
+                            </div>
+                            <div class="app-title">Expenses</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="expense-tabs-app">
+                                <div class="expense-tab-app active">This Month</div>
+                                <div class="expense-tab-app">Last Month</div>
+                                <div class="expense-tab-app">Yearly</div>
+                            </div>
+                            <div class="expense-chart-app">
+                                <div class="chart-title-app">May 2026 Expenses</div>
+                                <div class="chart-container-app">
+                                    <div class="chart-bar-app">
+                                        <div class="chart-bar-value-app">₹25K</div>
+                                        <div class="chart-bar-fill-app" style="height: 65px; background: linear-gradient(180deg, #a78bfa, #7c3aed);"></div>
+                                        <div class="chart-bar-label-app">Security</div>
+                                    </div>
+                                    <div class="chart-bar-app">
+                                        <div class="chart-bar-value-app">₹18K</div>
+                                        <div class="chart-bar-fill-app" style="height: 46px; background: linear-gradient(180deg, #fbbf24, #f59e0b);"></div>
+                                        <div class="chart-bar-label-app">Cleaning</div>
+                                    </div>
+                                    <div class="chart-bar-app">
+                                        <div class="chart-bar-value-app">₹16K</div>
+                                        <div class="chart-bar-fill-app" style="height: 40px; background: linear-gradient(180deg, #10b981, #059669);"></div>
+                                        <div class="chart-bar-label-app">Electric</div>
+                                    </div>
+                                    <div class="chart-bar-app">
+                                        <div class="chart-bar-value-app">₹8K</div>
+                                        <div class="chart-bar-fill-app" style="height: 20px; background: linear-gradient(180deg, #60a5fa, #2563eb);"></div>
+                                        <div class="chart-bar-label-app">Lift</div>
+                                    </div>
+                                    <div class="chart-bar-app">
+                                        <div class="chart-bar-value-app">₹12K</div>
+                                        <div class="chart-bar-fill-app" style="height: 30px; background: linear-gradient(180deg, #ec4899, #db2777);"></div>
+                                        <div class="chart-bar-label-app">Water</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 7: Notifications -->
+                    <div class="scene" data-scene="7">
+                        <div class="app-header">
+                            <div class="app-top-bar">
+                                <div class="app-menu"><span></span><span></span><span></span></div>
+                                <div class="app-logo-text">SocietySync</div>
+                                <div class="app-profile">👤</div>
+                            </div>
+                            <div class="app-title">Notifications</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="notification-card-app">
+                                <div class="notif-icon-app payment">💳</div>
+                                <div class="notif-content-app">
+                                    <div class="notif-title-app">Payment Received</div>
+                                    <div class="notif-desc-app">Rajesh Patel paid ₹3,000 for May maintenance</div>
+                                    <div class="notif-time-app">2 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="notification-card-app">
+                                <div class="notif-icon-app alert">⚠️</div>
+                                <div class="notif-content-app">
+                                    <div class="notif-title-app">Pending Approval</div>
+                                    <div class="notif-desc-app">Amit Shah submitted payment proof - Verify now</div>
+                                    <div class="notif-time-app">15 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="notification-card-app">
+                                <div class="notif-icon-app approval">📢</div>
+                                <div class="notif-content-app">
+                                    <div class="notif-title-app">Society Announcement</div>
+                                    <div class="notif-desc-app">Generator maintenance scheduled for Sunday</div>
+                                    <div class="notif-time-app">1 hour ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 8: Approval -->
+                    <div class="scene" data-scene="8">
+                        <div class="app-header">
+                            <div class="app-top-bar">
+                                <div class="app-menu"><span></span><span></span><span></span></div>
+                                <div class="app-logo-text">SocietySync</div>
+                                <div class="app-profile">👤</div>
+                            </div>
+                            <div class="app-title">Verify Payment</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="approval-flow-app">
+                                <div class="flow-card-app">
+                                    <div class="flow-header-app">
+                                        <div class="flow-avatar-app">AS</div>
+                                        <div class="flow-user-app">
+                                            <div class="flow-name-app">Amit Shah</div>
+                                            <div class="flow-flat-app">Flat B-205 • Block B</div>
+                                        </div>
+                                        <div class="flow-amount-app">₹3,000</div>
+                                    </div>
+                                    <div class="flow-steps-app">
+                                        <div class="flow-step-app">
+                                            <div class="flow-step-icon-app done">✓</div>
+                                            <div class="flow-step-label-app">Submitted</div>
+                                        </div>
+                                        <div class="flow-step-app">
+                                            <div class="flow-step-icon-app current">2</div>
+                                            <div class="flow-step-label-app">Verify</div>
+                                        </div>
+                                        <div class="flow-step-app">
+                                            <div class="flow-step-icon-app pending">3</div>
+                                            <div class="flow-step-label-app">Done</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="payment-actions-app">
+                                    <button class="action-btn-app">✅ Approve</button>
+                                    <button class="action-btn-app secondary">✕ Reject</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 9: Outro -->
+                    <div class="scene" data-scene="9">
+                        <div class="outro-screen-app">
+                            <div class="outro-logo-app">🏢</div>
+                            <div class="outro-name-app">SocietySync</div>
+                            <div class="outro-tagline-app">Works on Mobile, Tablet & Desktop</div>
+                            <div class="device-preview-app">
+                                <div class="device-mock-app mobile">
+                                    <div class="device-screen-app">📱</div>
+                                    <div class="device-label-app">Mobile</div>
+                                </div>
+                                <div class="device-mock-app tablet">
+                                    <div class="device-screen-app">📲</div>
+                                    <div class="device-label-app">Tablet</div>
+                                </div>
+                                <div class="device-mock-app desktop">
+                                    <div class="device-screen-app">💻</div>
+                                    <div class="device-label-app">Desktop</div>
+                                </div>
+                            </div>
+                            <div class="outro-cta-app">Start Free Trial</div>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 11%;"></div>
+                        </div>
+                        <div class="dots">
+                            <div class="dot active"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scenes = document.querySelectorAll('.scene');
+        const details = document.querySelectorAll('.detail-item');
+        const dots = document.querySelectorAll('.dot');
+        const progressFill = document.querySelector('.progress-fill');
+        let currentScene = 0;
+        const totalScenes = scenes.length;
+        const sceneDuration = 6000;
+
+        function showScene(index) {
+            scenes.forEach((scene, i) => {
+                scene.classList.toggle('active', i === index);
+            });
+            details.forEach((detail, i) => {
+                detail.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            progressFill.style.width = ((index + 1) / totalScenes * 100) + '%';
+        }
+
+        function nextScene() {
+            if (currentScene < totalScenes - 1) {
+                currentScene++;
+                showScene(currentScene);
+            } else {
+                currentScene = 0;
+                showScene(currentScene);
+            }
+        }
+
+        setTimeout(() => { nextScene(); }, sceneDuration);
+        setInterval(nextScene, sceneDuration);
+    </script>
+</body>
+</html>

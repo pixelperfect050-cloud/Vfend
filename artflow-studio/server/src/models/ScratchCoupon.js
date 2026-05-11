@@ -16,7 +16,6 @@ const scratchCouponSchema = new mongoose.Schema(
 
 // Indexes for fast queries
 scratchCouponSchema.index({ userId: 1, isLocked: 1, isUsed: 1 });
-scratchCouponSchema.index({ orderId: 1 }, { unique: true });
 scratchCouponSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 }); // TTL - auto-delete expired
 
 module.exports = mongoose.model('ScratchCoupon', scratchCouponSchema);

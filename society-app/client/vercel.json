@@ -5,6 +5,7 @@
     }
   },
   "rewrites": [
+    { "source": "/socket.io/:path*", "destination": "https://society-backend-b004.onrender.com/socket.io/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
