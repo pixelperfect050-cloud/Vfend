@@ -14,20 +14,19 @@ const connectDB = async () => {
 
     if (!uri) {
       connectWithMemory = true;
-    } else if (!isProduction) {
-      try {
-        await mongoose.connect(uri, {
-          serverSelectionTimeoutMS: 10000,
-          socketTimeoutMS: 10000,
-          connectTimeoutMS: 10000,
-        });
-        await mongoose.connection.db.admin().ping();
-      } catch (err) {
-        console.warn('Unable to connect to provided MongoDB URI, falling back to in-memory MongoDB for development.');
-        console.warn(err.message || err);
-        connectWithMemory = true;
-      }
+    // Try production connection with longer timeout
+    try {
+      await mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 30000,
+        socketTimeoutMS: 30000,
+        connectTimeoutMS: 30000,
+      });
+      await mongoose.connection.db.admin().ping();
+    } catch (err) {
+      console.warn('MongoDB connection failed, falling back to in-memory:', err.message);
+      connectWithMemory = true;
     }
+  }
 
     if (connectWithMemory) {
       if (mongoose.connection.readyState !== 0) {
@@ -57,9 +56,6 @@ const connectDB = async () => {
         company: 'ArtFlow Studio',
         role: 'admin',
       });
-    } else {
-      const hashed = await bcrypt.hash(defaultAdminPassword, 10);
-      await User.findByIdAndUpdate(adminExists._id, { password: hashed });
     }
 
   } catch (err) {

@@ -10,10 +10,10 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('af_token'));
   const [loading, setLoading] = useState(true);
 
-  // 🔄 Load user on refresh
   useEffect(() => {
     const loadUser = async () => {
       try {
+        const token = localStorage.getItem('af_token');
         if (token) {
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           const { data } = await api.get('/auth/me');
@@ -21,15 +21,15 @@ export function AuthProvider({ children }) {
         }
       } catch (err) {
         localStorage.removeItem('af_token');
+        delete api.defaults.headers.common['Authorization'];
         setToken(null);
         setUser(null);
       } finally {
         setLoading(false);
       }
     };
-
     loadUser();
-  }, [token]);
+  }, []);
 
   // 🔐 LOGIN
   const login = async (email, password) => {

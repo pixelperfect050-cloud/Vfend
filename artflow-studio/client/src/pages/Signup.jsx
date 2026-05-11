@@ -9,6 +9,7 @@ export default function Signup() {
   const { signup } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const [form, setForm] = useState({
     name: "",
@@ -19,20 +20,28 @@ export default function Signup() {
     phone: "",
   });
 
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors((p) => ({ ...p, [e.target.name]: '' }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (form.password.length < 6) return toast.error("Password must be at least 6 characters");
-    if (form.password !== form.confirmPassword) return toast.error("Passwords do not match");
-
+    const errs = {};
+    if (!form.name?.trim()) errs.name = 'Full name is required';
+    if (!form.email?.trim()) errs.email = 'Email is required';
+    else if (!validateEmail(form.email)) errs.email = 'Enter a valid email address';
+    if (!form.password) errs.password = 'Password is required';
+    else if (form.password.length < 6) errs.password = 'Must be at least 6 characters';
+    if (form.password !== form.confirmPassword) errs.confirmPassword = 'Passwords do not match';
+    if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
+    setErrors({});
     try {
       await signup(form.name, form.email, form.password, form.company, form.phone);
-      toast.success("Account created! 🎉");
+      toast.success("Account created!");
       navigate("/dashboard");
     } catch (err) {
       toast.error(err.response?.data?.message || "Signup failed");
@@ -42,6 +51,8 @@ export default function Signup() {
   };
 
   const inputClass = "w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 text-sm outline-none transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/15";
+  const inputErrorClass = "w-full px-4 py-3 bg-white border border-red-400 rounded-xl text-gray-900 placeholder-gray-400 text-sm outline-none transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/15";
+  const errorMsg = "text-[11px] text-red-500 mt-1";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4 py-8">
@@ -74,7 +85,8 @@ export default function Signup() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-400">*</span></label>
                 <input type="text" name="name" value={form.name} onChange={handleChange}
-                  className={inputClass} placeholder="John Doe" required />
+                  className={errors.name ? inputErrorClass : inputClass} placeholder="John Doe" />
+                {errors.name && <p className={errorMsg}>{errors.name}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Company</label>
@@ -92,7 +104,8 @@ export default function Signup() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Email <span className="text-red-400">*</span></label>
                 <input type="email" name="email" value={form.email} onChange={handleChange}
-                  className={inputClass} placeholder="you@company.com" required />
+                  className={errors.email ? inputErrorClass : inputClass} placeholder="you@company.com" />
+                {errors.email && <p className={errorMsg}>{errors.email}</p>}
               </div>
             </div>
 
@@ -100,12 +113,14 @@ export default function Signup() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Password <span className="text-red-400">*</span></label>
                 <input type="password" name="password" value={form.password} onChange={handleChange}
-                  className={inputClass} placeholder="Min 6 chars" required />
+                  className={errors.password ? inputErrorClass : inputClass} placeholder="Min 6 chars" />
+                {errors.password && <p className={errorMsg}>{errors.password}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm <span className="text-red-400">*</span></label>
                 <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange}
-                  className={inputClass} placeholder="Re-enter" required />
+                  className={errors.confirmPassword ? inputErrorClass : inputClass} placeholder="Re-enter" />
+                {errors.confirmPassword && <p className={errorMsg}>{errors.confirmPassword}</p>}
               </div>
             </div>
 

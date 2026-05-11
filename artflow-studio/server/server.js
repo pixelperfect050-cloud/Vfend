@@ -103,9 +103,9 @@ const PORT = process.env.PORT || 5000;
 (async () => {
   await connectDB();
   server.listen(PORT, () => {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
       const https = require('https');
-      const keepAliveUrl = process.env.RENDER_EXTERNAL_URL || 'https://antig-backend-y4uy.onrender.com';
+      const keepAliveUrl = process.env.RENDER_EXTERNAL_URL;
       const KEEP_ALIVE_MS = 10 * 60 * 1000;
       setTimeout(() => {
         https.get(`${keepAliveUrl}/api/health`).on('error', () => {});

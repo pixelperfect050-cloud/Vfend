@@ -1,0 +1,1739 @@
+[
+    {
+        "aqavit_results_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/AQAvitTapFiles.tar.gz",
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 25,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "0b0dbc927cf59c48f3b0a2431c26aba6a325969c263bda53bd79ff84abf39945",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.11_10.zip.sha256.txt",
+                    "download_count": 25,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.11_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.11_10.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.11_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.11_10.zip.sig",
+                    "size": 16541432
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.11+10_adopt",
+                "updated_at": "2026-04-28T14:58:50Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 28,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "b62beca753a5aaab16cb0c0d4476e03209fe8bf541e4b9c0255c316eaea5f5b5",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.11_10.zip.sha256.txt",
+                    "download_count": 28,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.11_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.11_10.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.11_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.11_10.zip.sig",
+                    "size": 18036325
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.11+10_adopt",
+                "updated_at": "2026-04-28T14:59:44Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 47,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "b8bf1a32dff7a2ff8764420944525d59f208741c9080557779ab078f7893f2ce",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.11_10.zip.sha256.txt",
+                    "download_count": 47,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.11_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.11_10.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.11_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.11_10.zip.sig",
+                    "size": 50104389
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.11+10_adopt",
+                "updated_at": "2026-04-28T14:59:40Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 17,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "52e3512edc151dfe171b93a88bf45697d6929cab276b8abad047e1e312c0a005",
+                    "download_count": 17,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-sbom_x64_windows_hotspot_21.0.11_10.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.11_10.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-sbom_x64_windows_hotspot_21.0.11_10.json.sig",
+                    "size": 172254
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.11+10_adopt",
+                "updated_at": "2026-04-28T14:59:27Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 279046,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "93a9c20f4ce967d78992edc5e6fdcc250a56019080553d5d20846decb51d9c01",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.msi.sha256.txt",
+                    "download_count": 121309,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.msi.sig",
+                    "size": 179359744
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "d3625e7cadf23787ea540229544b6e2ab494b3b54da1801879e583e1dfee0a64",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.zip.sha256.txt",
+                    "download_count": 157737,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.zip.sig",
+                    "size": 205073954
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.11+10_adopt",
+                "updated_at": "2026-04-28T14:59:07Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 224874,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "570b2b7f4d39638afe416e14285e08f27fd14995e0716dcbc07f936a5b91868a",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.msi.sha256.txt",
+                    "download_count": 53871,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.msi.sig",
+                    "size": 34938880
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "be26677aaa20b39a62edcaab4c8857a8b76673b0f45abc0b6143b142b62717e4",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.zip.sha256.txt",
+                    "download_count": 171003,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.11_10.zip.sig",
+                    "size": 49005708
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.11+10_adopt",
+                "updated_at": "2026-04-28T14:59:11Z"
+            }
+        ],
+        "download_count": 1456482,
+        "id": "RE_kwDOI-qQc84SoXyG.tEgifC1Ag1oTzw==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.11%2B10",
+        "release_name": "jdk-21.0.11+10",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk-release-notes_21.0.11_10.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.11_10.json",
+            "size": 51546
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk-sources_21.0.11_10.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.11_10.tar.gz",
+            "size": 114935577
+        },
+        "timestamp": "2026-04-23T06:32:33Z",
+        "updated_at": "2026-05-04T13:23:30Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 10,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.11+10-LTS",
+            "optional": "LTS",
+            "security": 11,
+            "semver": "21.0.11+10.0.LTS"
+        }
+    },
+    {
+        "aqavit_results_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/AQAvitTapFiles.tar.gz",
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 114,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "ef6f2ecb5c7df694af6fd4a49c3c17dc3c734b20b3edfac86b0f488197942ce8",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.10_7.zip.sha256.txt",
+                    "download_count": 114,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.10_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.10_7.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.10_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.10_7.zip.sig",
+                    "size": 16539245
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.10+7_adopt",
+                "updated_at": "2026-02-03T16:17:01Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1144083,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "6be8643444ec20758a34ddb1231e998ac77e72f661a0d5525a8ac3e078bcbcb0",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.msi.sha256.txt",
+                    "download_count": 540892,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.msi.sig",
+                    "size": 179212288
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "08cae782814f027f8b159d6b68823f0f87422eb475c1a0ea1abc7a4357aaf11f",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.zip.sha256.txt",
+                    "download_count": 603191,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.10_7.zip.sig",
+                    "size": 204939612
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.10+7_adopt",
+                "updated_at": "2026-02-03T16:17:49Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1340586,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "a841118d4959b6b6eb6156fa1f2487f112afaecd124b1eb5bba203d5556efd32",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.msi.sha256.txt",
+                    "download_count": 263993,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.msi.sig",
+                    "size": 34889728
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "a6ac6789e51a2c245f41430c42e72b39ec706a449812fc5e4cbfc55ceed1e5ae",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.zip.sha256.txt",
+                    "download_count": 1076593,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.10_7.zip.sig",
+                    "size": 48963112
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.10+7_adopt",
+                "updated_at": "2026-02-03T16:17:09Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 84,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "184c509947b49e8fbb7eab87cddec57f1331d20f5317ea086379fa3d7cd029be",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.10_7.zip.sha256.txt",
+                    "download_count": 84,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.10_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.10_7.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.10_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.10_7.zip.sig",
+                    "size": 49902129
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.10+7_adopt",
+                "updated_at": "2026-02-03T16:17:55Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 109,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "6681ca264173e3a114f6fec777020b94a2ddbf94bd7845e090d6ccf1bccd668e",
+                    "download_count": 109,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-sbom_x64_windows_hotspot_21.0.10_7.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.10_7.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-sbom_x64_windows_hotspot_21.0.10_7.json.sig",
+                    "size": 167718
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.10+7_adopt",
+                "updated_at": "2026-02-03T16:17:04Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 88,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "e1acb450fa4bc0ecb4c5471f41e785586fd9453f32fdebd414161233467fb613",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.10_7.zip.sha256.txt",
+                    "download_count": 88,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.10_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.10_7.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.10_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.10_7.zip.sig",
+                    "size": 17786621
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.10+7_adopt",
+                "updated_at": "2026-02-03T16:17:03Z"
+            }
+        ],
+        "download_count": 7218283,
+        "id": "RE_kwDOI-qQc84QmwMQ.gTLOTSgndZDaeA==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.10%2B7",
+        "release_name": "jdk-21.0.10+7",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk-release-notes_21.0.10_7.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.10_7.json",
+            "size": 110894
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.10%2B7/OpenJDK21U-jdk-sources_21.0.10_7.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.10_7.tar.gz",
+            "size": 114820169
+        },
+        "timestamp": "2026-01-21T11:30:56Z",
+        "updated_at": "2026-02-05T00:46:27Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 7,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.10+7-LTS",
+            "optional": "LTS",
+            "security": 10,
+            "semver": "21.0.10+7.0.LTS"
+        }
+    },
+    {
+        "aqavit_results_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/AQAvitTapFiles.tar.gz",
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 1045,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "4ec01d346d37891024c4cc3625552857b672f870215a06ebb5c07963661d621f",
+                    "download_count": 1045,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-sbom_x64_windows_hotspot_21.0.9_10.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.9_10.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-sbom_x64_windows_hotspot_21.0.9_10.json.sig",
+                    "size": 166798
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.9+10_adopt",
+                "updated_at": "2025-10-30T22:24:53Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1736297,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "e97f44c7915866c3127565a91373d03adb639916186b24fc5e0f818a3bde8d3f",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.msi.sha256.txt",
+                    "download_count": 739900,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.msi.sig",
+                    "size": 179253248
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "1c67df516e9795c0b09f5714bfe151da2e3cc988082042f5bbb60d75e4e63fb5",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip.sha256.txt",
+                    "download_count": 996397,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip.sig",
+                    "size": 204962060
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.9+10_adopt",
+                "updated_at": "2025-10-30T22:25:14Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 266,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "c53b67d08e68708e086faf98b308fd1563739c36f46dacc7078521078b519f17",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.9_10.zip.sha256.txt",
+                    "download_count": 266,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.9_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.9_10.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.9_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.9_10.zip.sig",
+                    "size": 50325470
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.9+10_adopt",
+                "updated_at": "2025-10-30T22:24:59Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 268,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "5056681c0ef0e7f149cd69b872447120df5fddeb51e62388952607a659cb9279",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.9_10.zip.sha256.txt",
+                    "download_count": 268,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.9_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.9_10.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.9_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.9_10.zip.sig",
+                    "size": 17867602
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.9+10_adopt",
+                "updated_at": "2025-10-30T22:24:25Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 2084471,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "56b167659821fe125ea3b2974b0da1bac725b886b77193629d8ef880d38517e1",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.msi.sha256.txt",
+                    "download_count": 347087,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.msi.sig",
+                    "size": 34885632
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "39c5e23f3ce4d420663afba8ffde28034b72e2b3e240943dc2321bc1f912eef9",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip.sha256.txt",
+                    "download_count": 1737384,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip.sig",
+                    "size": 48957446
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.9+10_adopt",
+                "updated_at": "2025-10-30T22:24:34Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 100,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "2462071aa6496ff511c8f118df01d2aa73c484a5ddfa5ebdc46c4afc8476fe84",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.9_10.zip.sha256.txt",
+                    "download_count": 100,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.9_10.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.9_10.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.9_10.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-testimage_x64_windows_hotspot_21.0.9_10.zip.sig",
+                    "size": 16534091
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.9+10_adopt",
+                "updated_at": "2025-10-30T22:24:27Z"
+            }
+        ],
+        "download_count": 9031017,
+        "id": "RE_kwDOI-qQc84PTq2J.CSIS1fKdtOrSBQ==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.9%2B10",
+        "release_name": "jdk-21.0.9+10",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk-release-notes_21.0.9_10.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.9_10.json",
+            "size": 93850
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk-sources_21.0.9_10.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.9_10.tar.gz",
+            "size": 114646198
+        },
+        "timestamp": "2025-10-23T19:54:37Z",
+        "updated_at": "2026-01-23T17:11:23Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 10,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.9+10-LTS",
+            "optional": "LTS",
+            "security": 9,
+            "semver": "21.0.9+10.0.LTS"
+        }
+    },
+    {
+        "aqavit_results_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/AQAvitTapFiles.tar.gz",
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 916194,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "9e38a94eed115fb834c2c4375bc493cef1a47e28c82bd83f623efe3fca017e7a",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.msi.sha256.txt",
+                    "download_count": 358996,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.msi.sig",
+                    "size": 34877440
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "238d74ec4ec9422d416fa98805ba375eecd8bc8f971bd0c61a21051a4fe42db8",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.zip.sha256.txt",
+                    "download_count": 557198,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.zip.sig",
+                    "size": 48928520
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.8+9_adopt",
+                "updated_at": "2025-07-22T15:04:37Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 178,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "bf939fac49957768a8aeb46f3cc16a6adc3fa2130e9c3387a55dddf9d45272f7",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.8_9.zip.sha256.txt",
+                    "download_count": 178,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.8_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.8_9.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.8_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.8_9.zip.sig",
+                    "size": 50191477
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.8+9_adopt",
+                "updated_at": "2025-07-22T15:03:40Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 488,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "a6e80dc69bba91a3485d22ba367f83ec644324ebb5d64e157bfb382acd0f9d41",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.8_9.zip.sha256.txt",
+                    "download_count": 488,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.8_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.8_9.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.8_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.8_9.zip.sig",
+                    "size": 17575259
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.8+9_adopt",
+                "updated_at": "2025-07-22T15:04:32Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 192,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "18399e48a3203a64ff7c6ae49ce82a66b5805495fab8eb3327569ca43933d78f",
+                    "download_count": 192,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-sbom_x64_windows_hotspot_21.0.8_9.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.8_9.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-sbom_x64_windows_hotspot_21.0.8_9.json.sig",
+                    "size": 166372
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.8+9_adopt",
+                "updated_at": "2025-07-22T15:03:44Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1765287,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "d82030e8689b19efedfbce50ce38351ca81b302c06936584c6a27bda18339df8",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.msi.sha256.txt",
+                    "download_count": 1107236,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.msi.sig",
+                    "size": 179138560
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "5dbb74a4edda94c2aae97a1e30f448db0ad9023a9466fe31a8c68377d9dfbac4",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.zip.sha256.txt",
+                    "download_count": 658051,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.8_9.zip.sig",
+                    "size": 204850009
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.8+9_adopt",
+                "updated_at": "2025-07-22T15:04:05Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 86,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "1357f4cf1b4d0cb9a019b922a9e8f03016b328ebd4f1a929dabb5d69b7ff0ac4",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.8_9.zip.sha256.txt",
+                    "download_count": 86,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.8_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.8_9.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.8_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.8_9.zip.sig",
+                    "size": 16357710
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.8+9_adopt",
+                "updated_at": "2025-07-22T15:04:09Z"
+            }
+        ],
+        "download_count": 8264755,
+        "id": "RE_kwDOI-qQc84N5Gqk.yYNJgmgzq+4hTQ==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.8%2B9",
+        "release_name": "jdk-21.0.8+9",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk-release-notes_21.0.8_9.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.8_9.json",
+            "size": 118716
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jdk-sources_21.0.8_9.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.8_9.tar.gz",
+            "size": 114599750
+        },
+        "timestamp": "2025-07-17T08:02:15Z",
+        "updated_at": "2025-08-01T17:54:29Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 9,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.8+9-LTS",
+            "optional": "LTS",
+            "security": 8,
+            "semver": "21.0.8+9.0.LTS"
+        }
+    },
+    {
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 209,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "6b28f7ab666f8876c6b4c115155b1f3f1adebfc004f58723fac17fca0b18d221",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.7_6.zip.sha256.txt",
+                    "download_count": 209,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.7_6.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.7_6.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.7_6.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.7_6.zip.sig",
+                    "size": 50019154
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.7+6_adopt",
+                "updated_at": "2025-04-20T13:24:39Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 2038747,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "168e3c710448dbdd7e6fe2463b867339a72be11a7c8615d72d19fb26572d3619",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.msi.sha256.txt",
+                    "download_count": 1222642,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.msi.sig",
+                    "size": 179208192
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "38f4b9fa0b36def9812f6576fd45f6224630477db8c4e669ee78eaa35abb9195",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.zip.sha256.txt",
+                    "download_count": 816105,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.zip.sig",
+                    "size": 204726581
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.7+6_adopt",
+                "updated_at": "2025-04-20T13:24:05Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 330,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "37b44cd41c345b3803337ce84e313fc8b5b22305f3b22a64eebc0769f1a1a0ab",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.7_6.zip.sha256.txt",
+                    "download_count": 330,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.7_6.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.7_6.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.7_6.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.7_6.zip.sig",
+                    "size": 17389760
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.7+6_adopt",
+                "updated_at": "2025-04-20T13:24:08Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 828301,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "7c75fbd2c99649580b7869b756effa5b6b30e6808fae1ebc7eeb63921aafd096",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.msi.sha256.txt",
+                    "download_count": 328542,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.msi.sig",
+                    "size": 35008512
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "b2850a96293048ed3020f8bfca2d92a785ae9bf80c7d96bbfe3ec4ccf45aef98",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.zip.sha256.txt",
+                    "download_count": 499759,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.zip.sig",
+                    "size": 48875360
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.7+6_adopt",
+                "updated_at": "2025-04-20T13:24:14Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 50,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "8a926fe51cf3ef881d08b7c002f2e1d3de94c6493b9cf5f1d14b2ed18025ad8f",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-testimage_x64_windows_hotspot_21.0.7_6.zip.sha256.txt",
+                    "download_count": 50,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-testimage_x64_windows_hotspot_21.0.7_6.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-testimage_x64_windows_hotspot_21.0.7_6.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.7_6.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-testimage_x64_windows_hotspot_21.0.7_6.zip.sig",
+                    "size": 16346989
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.7+6_adopt",
+                "updated_at": "2025-04-20T13:24:10Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1915,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "b80b8f93bab61b5b7aea388754534ff1ab7c34ff88b53f31bdf4c62f7f18ce02",
+                    "download_count": 1915,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-sbom_x64_windows_hotspot_21.0.7_6.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.7_6.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-sbom_x64_windows_hotspot_21.0.7_6.json.sig",
+                    "size": 166237
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.7+6_adopt",
+                "updated_at": "2025-04-20T13:24:35Z"
+            }
+        ],
+        "download_count": 9536489,
+        "id": "RE_kwDOI-qQc84Mr3wU.huK+NdStksAwPA==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.7%2B6",
+        "release_name": "jdk-21.0.7+6",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk-release-notes_21.0.6_7.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.6_7.json",
+            "size": 79536
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk-sources_21.0.7_6.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.7_6.tar.gz",
+            "size": 114179704
+        },
+        "timestamp": "2025-04-16T14:21:40Z",
+        "updated_at": "2025-04-25T13:54:18Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 6,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.7+6-LTS",
+            "optional": "LTS",
+            "security": 7,
+            "semver": "21.0.7+6.0.LTS"
+        }
+    },
+    {
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 86,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "745b6ac8626929436bd29430f5e0726553eac24feebf96dcdf38e93adc3f83f6",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.6_7.zip.sha256.txt",
+                    "download_count": 86,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.6_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.6_7.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.6_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.6_7.zip.sig",
+                    "size": 16334017
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.6+7_adopt",
+                "updated_at": "2025-01-23T15:26:20Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 270,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "1a3465be73c9534a4cb7655fe810f8558bababd8e2f2f87b3944a82eb5a011f1",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.6_7.zip.sha256.txt",
+                    "download_count": 270,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.6_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.6_7.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.6_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.6_7.zip.sig",
+                    "size": 50017446
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.6+7_adopt",
+                "updated_at": "2025-01-23T15:25:45Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1759822,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "c361f8a018cffdad1ad0a0ce3e5032fc7314dec3f73642dc626a6121d487008b",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.msi.sha256.txt",
+                    "download_count": 1162827,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.msi.sig",
+                    "size": 179159040
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "897c8eebb0f85a99ccecbd482ebae9a45d88c19d6077054f6529ebab49b6d259",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.zip.sha256.txt",
+                    "download_count": 596995,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.6_7.zip.sig",
+                    "size": 204643847
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.6+7_adopt",
+                "updated_at": "2025-01-23T15:26:44Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 3516596,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "3f511d4edbb81fdb7d044cabede018b0823b2f277103f5f47e8c72b526e9c256",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.msi.sha256.txt",
+                    "download_count": 397399,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.msi.sig",
+                    "size": 34988032
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "707c981a4ff9e680a9ea5d6f625eafe8bc47e1f89140a67d761fde24fc02ab49",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.zip.sha256.txt",
+                    "download_count": 3119197,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.zip.sig",
+                    "size": 48865456
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.6+7_adopt",
+                "updated_at": "2025-01-23T15:25:40Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 330,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "181de88ec739abf495e8c5677e41394f554c16191afe15ce502fb5d11f11827a",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.6_7.zip.sha256.txt",
+                    "download_count": 330,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.6_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.6_7.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.6_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.6_7.zip.sig",
+                    "size": 17389582
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.6+7_adopt",
+                "updated_at": "2025-01-23T15:25:47Z"
+            }
+        ],
+        "download_count": 10852617,
+        "id": "RE_kwDOI-qQc84LsPZ-.yzZc7C32yBYddw==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.6%2B7",
+        "release_name": "jdk-21.0.6+7",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk-release-notes_21.0.6_7.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.6_7.json",
+            "size": 77762
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk-sources_21.0.6_7.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.6_7.tar.gz",
+            "size": 114041430
+        },
+        "timestamp": "2025-01-22T17:42:31Z",
+        "updated_at": "2025-01-28T17:06:40Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 7,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.6+7-LTS",
+            "optional": "LTS",
+            "security": 6,
+            "semver": "21.0.6+7.0.LTS"
+        }
+    },
+    {
+        "aqavit_results_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/AQAvitTapFiles.tar.gz",
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 827892,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "baa356843cbe2cbc8e49bad1cfef27eaaf5e59748a1627be40492804753c706a",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.msi.sha256.txt",
+                    "download_count": 399313,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.msi.sig",
+                    "size": 35102720
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "1749b36cfac273cee11802bf3e90caada5062de6a3fef1a3814c0568b25fd654",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.zip.sha256.txt",
+                    "download_count": 428579,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jre_x64_windows_hotspot_21.0.5_11.zip.sig",
+                    "size": 49281474
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.5+11_adopt",
+                "updated_at": "2024-10-21T09:25:53Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 110,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "88efceeba60c611348cc6adaacc248e796e8b52e3532983dde91ca4ed98b2d3b",
+                    "download_count": 110,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-sbom_x64_windows_hotspot_21.0.5_11.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.5_11.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-sbom_x64_windows_hotspot_21.0.5_11.json.sig",
+                    "size": 39660
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.5+11_adopt",
+                "updated_at": "2024-10-21T09:25:54Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 65,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "628f56287065b92ca13606e4aab8a5e3f48e8f058e534060f7fa27251c39cbed",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-testimage_x64_windows_hotspot_21.0.5_11.zip.sha256.txt",
+                    "download_count": 65,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-testimage_x64_windows_hotspot_21.0.5_11.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-testimage_x64_windows_hotspot_21.0.5_11.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.5_11.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-testimage_x64_windows_hotspot_21.0.5_11.zip.sig",
+                    "size": 16325884
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.5+11_adopt",
+                "updated_at": "2024-10-21T09:26:09Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 169,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "b59561accd15366539ac3ef8085bcf3d53ebdf506b35a116d0ac6f681f588931",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.5_11.zip.sha256.txt",
+                    "download_count": 169,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.5_11.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.5_11.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.5_11.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.5_11.zip.sig",
+                    "size": 50667317
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.5+11_adopt",
+                "updated_at": "2024-10-21T09:25:56Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 338,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "0a72323ec35d6568727bc175d0b31638daaf3e6f7c736afdd6dfccbfef8973ac",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.5_11.zip.sha256.txt",
+                    "download_count": 338,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.5_11.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.5_11.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.5_11.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.5_11.zip.sig",
+                    "size": 17389340
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.5+11_adopt",
+                "updated_at": "2024-10-21T09:25:50Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1818059,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "8ef78a37811529d73d37e29a9fa24bf2d46d0d5d97c4f6e403ea9adebc55eaf3",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.msi.sha256.txt",
+                    "download_count": 1028228,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.msi.sig",
+                    "size": 179625984
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "6f09d4a3598542313cca1540106d537c7092a54e415d569f7b928160a90d3128",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.zip.sha256.txt",
+                    "download_count": 789831,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_windows_hotspot_21.0.5_11.zip.sig",
+                    "size": 205427401
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.5+11_adopt",
+                "updated_at": "2024-10-21T09:26:31Z"
+            }
+        ],
+        "download_count": 9624932,
+        "id": "RE_kwDOI-qQc84KvtIq.TIHoH+KLk6SDfw==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.5%2B11",
+        "release_name": "jdk-21.0.5+11",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk-release-notes_21.0.5_11.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.5_11.json",
+            "size": 106354
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk-sources_21.0.5_11.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.5_11.tar.gz",
+            "size": 113570167
+        },
+        "timestamp": "2024-10-16T16:34:23Z",
+        "updated_at": "2024-10-30T21:40:26Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 11,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.5+11-LTS",
+            "optional": "LTS",
+            "security": 5,
+            "semver": "21.0.5+11.0.LTS"
+        }
+    },
+    {
+        "aqavit_results_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/AQAvitTapFiles.tar.gz",
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 379,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "cd1e1a121ec222024e4984740bfc32572b8faa766638862d0424ffb56f50d8a7",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.4_7.zip.sha256.txt",
+                    "download_count": 379,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.4_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.4_7.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.4_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.4_7.zip.sig",
+                    "size": 20880254
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.4+7_adopt",
+                "updated_at": "2024-07-19T12:17:03Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 95,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "c84e8cb32525a77c41f6dad418f1a10d41f58b2e7f2e0fd32f6a68bbc9c4d658",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.4_7.zip.sha256.txt",
+                    "download_count": 95,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.4_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.4_7.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.4_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-testimage_x64_windows_hotspot_21.0.4_7.zip.sig",
+                    "size": 16316825
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.4+7_adopt",
+                "updated_at": "2024-07-19T12:16:21Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1451388,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "5eadbdeabdca1a7abf6416a6b35bf7afd86e7edade7b5d44059fbcecacaef372",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.msi.sha256.txt",
+                    "download_count": 966102,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.msi.sig",
+                    "size": 178606080
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "c725540d911531c366b985e5919efc8a73dd4030965cd9a740c3d2cd92c72c74",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.zip.sha256.txt",
+                    "download_count": 485286,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.zip.sig",
+                    "size": 203910854
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.4+7_adopt",
+                "updated_at": "2024-07-19T12:17:01Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 104,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "31196f1b420b3d02ea8c99f04254b218c2652a68498e6c3fdef82c4d95c04d12",
+                    "download_count": 104,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-sbom_x64_windows_hotspot_21.0.4_7.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.4_7.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-sbom_x64_windows_hotspot_21.0.4_7.json.sig",
+                    "size": 40697
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.4+7_adopt",
+                "updated_at": "2024-07-19T12:16:33Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 701,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "0fc12cf89686b3d9861b4337c32b6c6ea64eb638eb1bfa5ee96e19a22b7e9c5a",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.4_7.zip.sha256.txt",
+                    "download_count": 701,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.4_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.4_7.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.4_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.4_7.zip.sig",
+                    "size": 51559707
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.4+7_adopt",
+                "updated_at": "2024-07-19T12:16:26Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 13926711,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "cf5b9440680994f1571eb1b83fe017eafbec9e6e8a9cd033b3c099e967c1a553",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.msi.sha256.txt",
+                    "download_count": 399506,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.msi.sig",
+                    "size": 34836480
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "b58f6117d26a138da4cb962b974efc4be4b88b65093366146965d16ad3c45e75",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.zip.sha256.txt",
+                    "download_count": 13527205,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.4_7.zip.sig",
+                    "size": 48583923
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.4+7_adopt",
+                "updated_at": "2024-07-19T12:17:10Z"
+            }
+        ],
+        "download_count": 24689752,
+        "id": "RE_kwDOI-qQc84J4xmL.E60VKAhYKTNV9A==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.4%2B7",
+        "release_name": "jdk-21.0.4+7",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk-release-notes_21.0.4_7.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.4_7.json",
+            "size": 110162
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk-sources_21.0.4_7.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.4_7.tar.gz",
+            "size": 113336757
+        },
+        "timestamp": "2024-07-17T15:29:34Z",
+        "updated_at": "2024-07-30T21:07:13Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 7,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.4+7-LTS",
+            "optional": "LTS",
+            "security": 4,
+            "semver": "21.0.4+7.0.LTS"
+        }
+    },
+    {
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 407,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "b962d7bdc0f3a81a233d5f3a5a58dc76bf62e0ea20cd87e445ce082f457fac54",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.3_9.zip.sha256.txt",
+                    "download_count": 407,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.3_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.3_9.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.3_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.3_9.zip.sig",
+                    "size": 20856564
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.3+9_adopt",
+                "updated_at": "2024-04-18T17:23:57Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 84,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "54fd1201ef72e40190c74c42347bb7b5901f9d2de72a80df6eb3cc3436bacdd4",
+                    "download_count": 84,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-sbom_x64_windows_hotspot_21.0.3_9.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.3_9.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-sbom_x64_windows_hotspot_21.0.3_9.json.sig",
+                    "size": 38753
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.3+9_adopt",
+                "updated_at": "2024-04-18T17:23:47Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 771353,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "790bd6bd823618ce33e366294159282b92d3fcd41886e375fd4b876843e0d90f",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.msi.sha256.txt",
+                    "download_count": 380681,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.msi.sig",
+                    "size": 34918400
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "f79eaa741cb9ec4d20c7fd57a0fc52c715da183bc68eb19f4778b816b89ef003",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip.sha256.txt",
+                    "download_count": 390672,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip.sig",
+                    "size": 48772289
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.3+9_adopt",
+                "updated_at": "2024-04-18T17:23:37Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 366,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "10bb2ed3076c17f273647f4e32e07f6cb3a0233befca8189ac47500f90ebcc77",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.3_9.zip.sha256.txt",
+                    "download_count": 366,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.3_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.3_9.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.3_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.3_9.zip.sig",
+                    "size": 51416141
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.3+9_adopt",
+                "updated_at": "2024-04-18T17:23:49Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1513334,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "264db89e74213f3ea2d7b7379d1c2ac346797d03b4d88cbf4ce72c3ff96477a1",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.msi.sha256.txt",
+                    "download_count": 891177,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.msi.sig",
+                    "size": 179679232
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "c43a66cff7a403d56c5c5e1ff10d3d5f95961abf80f97f0e35380594909f0e4d",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.zip.sha256.txt",
+                    "download_count": 622157,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.3_9.zip.sig",
+                    "size": 204441348
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.3+9_adopt",
+                "updated_at": "2024-04-18T17:24:08Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 93,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "ba7cfb14ebba927b8c292b3a5dc8c3057ca0e882bbc6f42622aad2f29fae4b36",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.3_9.zip.sha256.txt",
+                    "download_count": 93,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.3_9.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.3_9.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.3_9.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-testimage_x64_windows_hotspot_21.0.3_9.zip.sig",
+                    "size": 16308094
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.3+9_adopt",
+                "updated_at": "2024-04-18T17:23:51Z"
+            }
+        ],
+        "download_count": 8888245,
+        "id": "RE_kwDOI-qQc84JDDAC.NfaTTem3TYxcjw==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.3%2B9",
+        "release_name": "jdk-21.0.3+9",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk-release-notes_21.0.3_9.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.3_9.json",
+            "size": 86498
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk-sources_21.0.3_9.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.3_9.tar.gz",
+            "size": 113237856
+        },
+        "timestamp": "2024-04-18T17:23:34Z",
+        "updated_at": "2024-04-23T17:39:04Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 9,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.3+9-LTS",
+            "optional": "LTS",
+            "security": 3,
+            "semver": "21.0.3+9.0.LTS"
+        }
+    },
+    {
+        "binaries": [
+            {
+                "architecture": "x64",
+                "download_count": 527,
+                "heap_size": "normal",
+                "image_type": "sbom",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "fce2f3596b5653292e2521079cbc08597eb9cb075bbce2ce6a81bcd9b6b02551",
+                    "download_count": 527,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-sbom_x64_windows_hotspot_21.0.2_13.json",
+                    "name": "OpenJDK21U-sbom_x64_windows_hotspot_21.0.2_13.json",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-sbom_x64_windows_hotspot_21.0.2_13.json.sig",
+                    "size": 37375
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.2+13_adopt",
+                "updated_at": "2024-01-20T14:04:15Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 342,
+                "heap_size": "normal",
+                "image_type": "debugimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "579a670a9124b0509b4443cfe1f46f585051ca050daf38586d79d7537a88c784",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.2_13.zip.sha256.txt",
+                    "download_count": 342,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.2_13.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.2_13.zip.json",
+                    "name": "OpenJDK21U-debugimage_x64_windows_hotspot_21.0.2_13.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-debugimage_x64_windows_hotspot_21.0.2_13.zip.sig",
+                    "size": 51364548
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.2+13_adopt",
+                "updated_at": "2024-01-20T04:15:38Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 519,
+                "heap_size": "normal",
+                "image_type": "staticlibs",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "af7d11ee845ff8a883c0c99bb7fe36f47be911d8886c31ea15667f9a867d2c99",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.2_13.zip.sha256.txt",
+                    "download_count": 519,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.2_13.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.2_13.zip.json",
+                    "name": "OpenJDK21U-static-libs_x64_windows_hotspot_21.0.2_13.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-static-libs_x64_windows_hotspot_21.0.2_13.zip.sig",
+                    "size": 20857777
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.2+13_adopt",
+                "updated_at": "2024-01-20T04:15:40Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 99,
+                "heap_size": "normal",
+                "image_type": "testimage",
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "3567907cc664f8b2bf1c50e581439f97fdc83452512c4816765f73e9a79686f2",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-testimage_x64_windows_hotspot_21.0.2_13.zip.sha256.txt",
+                    "download_count": 99,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-testimage_x64_windows_hotspot_21.0.2_13.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-testimage_x64_windows_hotspot_21.0.2_13.zip.json",
+                    "name": "OpenJDK21U-testimage_x64_windows_hotspot_21.0.2_13.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-testimage_x64_windows_hotspot_21.0.2_13.zip.sig",
+                    "size": 16301247
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.2+13_adopt",
+                "updated_at": "2024-01-20T04:15:45Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 1427319,
+                "heap_size": "normal",
+                "image_type": "jdk",
+                "installer": {
+                    "checksum": "d0c53b1bfa741b7f6484200faf8452e5a779357c2a29aa6b0dfdedf7173e903f",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.msi.sha256.txt",
+                    "download_count": 832537,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.msi.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.msi.sig",
+                    "size": 179634176
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "8780b07ae0a9836285a86a5b6d2b8a0b82acf97258622d44c619d59998a1da7b",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.zip.sha256.txt",
+                    "download_count": 594782,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.zip.json",
+                    "name": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_windows_hotspot_21.0.2_13.zip.sig",
+                    "size": 204413373
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.2+13_adopt",
+                "updated_at": "2024-01-20T04:15:58Z"
+            },
+            {
+                "architecture": "x64",
+                "download_count": 408228,
+                "heap_size": "normal",
+                "image_type": "jre",
+                "installer": {
+                    "checksum": "20a07730d415bda3f90ebdd6270fd11f68ba60c082b23218ef79076f3fc8392c",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.msi.sha256.txt",
+                    "download_count": 345633,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.msi",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.msi.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.msi",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.msi.sig",
+                    "size": 34922496
+                },
+                "jvm_impl": "hotspot",
+                "os": "windows",
+                "package": {
+                    "checksum": "a29b88541bc11276de4c4cbdfac60e374ef8a34a415f61cb02a2b6a46f0e1064",
+                    "checksum_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip.sha256.txt",
+                    "download_count": 62595,
+                    "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip",
+                    "metadata_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip.json",
+                    "name": "OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip",
+                    "signature_link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip.sig",
+                    "size": 48763644
+                },
+                "project": "jdk",
+                "scm_ref": "jdk-21.0.2+13_adopt",
+                "updated_at": "2024-01-20T04:15:43Z"
+            }
+        ],
+        "download_count": 6916817,
+        "id": "RE_kwDOI-qQc84IM10l.GpKksR021FRz2w==",
+        "release_link": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.2%2B13",
+        "release_name": "jdk-21.0.2+13",
+        "release_notes": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk-release-notes_21.0.2_13.json",
+            "name": "OpenJDK21U-jdk-release-notes_21.0.2_13.json",
+            "size": 97807
+        },
+        "release_type": "ga",
+        "source": {
+            "link": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk-sources_21.0.2_13.tar.gz",
+            "name": "OpenJDK21U-jdk-sources_21.0.2_13.tar.gz",
+            "size": 113080197
+        },
+        "timestamp": "2024-01-18T15:30:24Z",
+        "updated_at": "2024-03-13T12:53:35Z",
+        "vendor": "eclipse",
+        "version_data": {
+            "build": 13,
+            "major": 21,
+            "minor": 0,
+            "openjdk_version": "21.0.2+13-LTS",
+            "optional": "LTS",
+            "security": 2,
+            "semver": "21.0.2+13.0.LTS"
+        }
+    }
+]

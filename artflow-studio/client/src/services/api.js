@@ -20,10 +20,14 @@ api.interceptors.request.use((req) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
+    if (err.code === 'ECONNABORTED' || err.message?.includes('timeout') || err.message?.includes('Network Error')) {
+      err.response = { data: { message: 'Network error. Please check your connection and try again.' } };
+    } else if (err.code === 'ERR_NETWORK' || !err.response) {
+      err.response = { data: { message: 'Unable to connect to server. Please try again later.' } };
+    }
     if (err.response?.status === 401) {
       localStorage.removeItem('af_token');
       delete api.defaults.headers.common['Authorization'];
-      // Only redirect if not already on auth pages
       if (!window.location.pathname.match(/\/(login|signup|)$/)) {
         window.location.href = '/login';
       }
