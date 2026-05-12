@@ -7,26 +7,30 @@ const connectDB = async () => {
     const isProduction = process.env.NODE_ENV === 'production';
     let connectWithMemory = false;
 
-    if (!uri && isProduction) {
-      console.error('MONGODB_URI required in production');
-      process.exit(1);
-    }
-
     if (!uri) {
+      if (isProduction) {
+        console.error('MONGODB_URI required in production');
+        process.exit(1);
+      }
       connectWithMemory = true;
-    // Try production connection with longer timeout
-    try {
-      await mongoose.connect(uri, {
-        serverSelectionTimeoutMS: 30000,
-        socketTimeoutMS: 30000,
-        connectTimeoutMS: 30000,
-      });
-      await mongoose.connection.db.admin().ping();
-    } catch (err) {
-      console.warn('MongoDB connection failed, falling back to in-memory:', err.message);
-      connectWithMemory = true;
+    } else {
+      // Try production connection with longer timeout
+      try {
+        await mongoose.connect(uri, {
+          serverSelectionTimeoutMS: 30000,
+          socketTimeoutMS: 30000,
+          connectTimeoutMS: 30000,
+        });
+        await mongoose.connection.db.admin().ping();
+      } catch (err) {
+        console.warn('MongoDB connection failed, falling back to in-memory:', err.message);
+        if (isProduction) {
+          console.error('Production database connection failed and cannot fallback to memory');
+          process.exit(1);
+        }
+        connectWithMemory = true;
+      }
     }
-  }
 
     if (connectWithMemory) {
       if (mongoose.connection.readyState !== 0) {
@@ -35,7 +39,7 @@ const connectDB = async () => {
       const { MongoMemoryServer } = require('mongodb-memory-server');
       const mongod = await MongoMemoryServer.create({ instance: { port: 0 } });
       const memoryUri = mongod.getUri();
-      console.log('Using in-memory MongoDB for development:', memoryUri);
+      console.log('Using in-memory MongoDB:', memoryUri);
       await mongoose.connect(memoryUri, {
         serverSelectionTimeoutMS: 30000,
         socketTimeoutMS: 30000,
