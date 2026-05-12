@@ -36,21 +36,26 @@ const connectDB = async () => {
       console.log('Memory DB Connected');
     }
 
-    const User = require('../models/User');
-    const adminExists = await User.findOne({ role: 'admin' }).catch(() => null);
-    if (!adminExists) {
-      const hashed = await require('bcryptjs').hash(process.env.DEFAULT_ADMIN_PASSWORD || 'admin123', 10);
-      await User.create({
-        name: 'Admin',
-        email: 'admin@artflow.studio',
-        password: hashed,
-        company: 'ArtFlow Studio',
-        role: 'admin',
-      });
+    // Only check/create admin if connection was successful
+    if (mongoose.connection.readyState === 1) {
+      const User = require('../models/User');
+      const adminExists = await User.findOne({ role: 'admin' }).catch(() => null);
+      if (!adminExists) {
+        const hashed = await require('bcryptjs').hash(process.env.DEFAULT_ADMIN_PASSWORD || 'admin123', 10);
+        await User.create({
+          name: 'Admin',
+          email: 'admin@artflow.studio',
+          password: hashed,
+          company: 'ArtFlow Studio',
+          role: 'admin',
+        });
+        console.log('Default admin created');
+      }
+    } else {
+      console.warn('Skipping admin check because DB is not ready');
     }
   } catch (err) {
     console.error('Fatal DB error:', err.message);
-    process.exit(1);
   }
 };
 
