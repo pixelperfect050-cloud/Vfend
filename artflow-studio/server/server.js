@@ -100,8 +100,8 @@ app.use((err, _req, res, _next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(PORT, '0.0.0.0', async () => {
+  console.log(`Server running on port ${PORT} at 0.0.0.0`);
   // Connect to DB in background so we don't block Render health check
   connectDB().catch(err => console.error('Background DB connection failed:', err.message));
 
