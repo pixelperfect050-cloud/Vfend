@@ -24,15 +24,17 @@ const connectDB = async () => {
       }
 
       try {
-        console.log('Connecting to MongoDB Atlas...');
+        const obfuscatedUri = uri.replace(/\/\/.*@/, '//****:****@');
+        console.log('Connecting to MongoDB Atlas with URI:', obfuscatedUri);
+        
         await mongoose.connect(uri, {
-          serverSelectionTimeoutMS: 5000,
+          serverSelectionTimeoutMS: 30000, // Increased to 30s
           socketTimeoutMS: 45000,
-          family: 4, // Force IPv4 to avoid potential DNS issues on some hosts
+          family: 4,
         });
         console.log('MongoDB Connected successfully to:', mongoose.connection.name);
       } catch (err) {
-        console.error('MongoDB connection failed:', err.message);
+        console.error('MongoDB connection failed after timeout:', err.message);
         if (isProduction) {
           console.error('Production DB connection failed. Staying alive for health checks.');
           return;

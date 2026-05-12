@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const http = require('http');
 const path = require('path');
+const logger = require('./src/utils/logger');
 const { connectDB } = require('./src/config/db');
 const { initializeSocket } = require('./src/services/socketService');
 const authRoutes = require('./src/routes/authRoutes');
@@ -54,7 +55,7 @@ app.options('*', cors(corsOptions)); // explicit preflight for all routes
 
 // Request Logger
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.get('origin') || 'no-origin'}`);
+  logger.info(`${req.method} ${req.url}`, { origin: req.get('origin') || 'no-origin' });
   next();
 });
 
@@ -100,7 +101,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Global error handler
 app.use((err, _req, res, _next) => {
-  console.error('Error:', err.stack);
+  logger.error(err.stack);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
@@ -109,27 +110,27 @@ app.use((err, _req, res, _next) => {
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, '0.0.0.0', async () => {
-  console.log(`Server running on port ${PORT} at 0.0.0.0`);
+  logger.info(`Server running on port ${PORT} at 0.0.0.0`);
   // Connect to DB in background so we don't block Render health check
-  connectDB().catch(err => console.error('Background DB connection failed:', err.message));
+  connectDB().catch(err => logger.error('Background DB connection failed:', err.message));
 
   if (process.env.RENDER_EXTERNAL_URL) {
     const https = require('https');
     const keepAliveUrl = process.env.RENDER_EXTERNAL_URL;
     const KEEP_ALIVE_MS = 10 * 60 * 1000;
     
-    console.log(`Keep-alive enabled for: ${keepAliveUrl}`);
+    logger.info(`Keep-alive enabled for: ${keepAliveUrl}`);
     
     setTimeout(() => {
       https.get(`${keepAliveUrl}/api/health`, (res) => {
-        console.log(`Keep-alive ping status: ${res.statusCode}`);
-      }).on('error', (err) => console.log('Keep-alive ping failed:', err.message));
+        logger.info(`Keep-alive ping status: ${res.statusCode}`);
+      }).on('error', (err) => logger.error('Keep-alive ping failed:', err.message));
     }, 30000);
 
     setInterval(() => {
       https.get(`${keepAliveUrl}/api/health`, (res) => {
-        console.log(`Keep-alive interval ping status: ${res.statusCode}`);
-      }).on('error', (err) => console.log('Keep-alive interval ping failed:', err.message));
+        logger.info(`Keep-alive interval ping status: ${res.statusCode}`);
+      }).on('error', (err) => logger.error('Keep-alive interval ping failed:', err.message));
     }, KEEP_ALIVE_MS);
   }
 });
