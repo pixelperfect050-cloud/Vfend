@@ -51,6 +51,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // explicit preflight for all routes
 
+// Request Logger
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.get('origin') || 'no-origin'}`);
+  next();
+});
+
 // Helmet — after CORS so it doesn't override Access-Control headers
 app.use(helmet({
   crossOriginResourcePolicy: false,
@@ -76,7 +82,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/scratch', scratchRoutes);
 
 // Health check
-app.get('/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
+app.get('/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date().toISOString(), db: mongoose.connection.readyState }));
 
 // Root test route
 app.get('/api', (_req, res) => res.json({ message: 'ArtFlow Studio API is running 🚀', ts: new Date().toISOString() }));
@@ -93,6 +99,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Global error handler
 app.use((err, _req, res, _next) => {
+  console.error('Error:', err.stack);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
@@ -105,15 +112,23 @@ server.listen(PORT, '0.0.0.0', async () => {
   // Connect to DB in background so we don't block Render health check
   connectDB().catch(err => console.error('Background DB connection failed:', err.message));
 
-  if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
+  if (process.env.RENDER_EXTERNAL_URL) {
     const https = require('https');
     const keepAliveUrl = process.env.RENDER_EXTERNAL_URL;
     const KEEP_ALIVE_MS = 10 * 60 * 1000;
+    
+    console.log(`Keep-alive enabled for: ${keepAliveUrl}`);
+    
     setTimeout(() => {
-      https.get(`${keepAliveUrl}/api/health`).on('error', () => {});
+      https.get(`${keepAliveUrl}/api/health`, (res) => {
+        console.log(`Keep-alive ping status: ${res.statusCode}`);
+      }).on('error', (err) => console.log('Keep-alive ping failed:', err.message));
     }, 30000);
+
     setInterval(() => {
-      https.get(`${keepAliveUrl}/api/health`).on('error', () => {});
+      https.get(`${keepAliveUrl}/api/health`, (res) => {
+        console.log(`Keep-alive interval ping status: ${res.statusCode}`);
+      }).on('error', (err) => console.log('Keep-alive interval ping failed:', err.message));
     }, KEEP_ALIVE_MS);
   }
 });
