@@ -19,6 +19,6 @@ services:
       - key: CLIENT_URL
         value: https://artflow-live.vercel.app
       - key: RENDER_EXTERNAL_URL
-        value: https://antig-backend-y4uy.onrender.com
+        value: https://antig-backend-ingm.onrender.com
       - key: NODE_ENV
         value: production
