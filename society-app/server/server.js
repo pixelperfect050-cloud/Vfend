@@ -50,6 +50,7 @@ app.use('/api/society', require('./src/routes/society'));
 app.use('/api/blocks', require('./src/routes/block'));
 app.use('/api/flats', require('./src/routes/flat'));
 app.use('/api/payments', require('./src/routes/payment'));
+app.use('/api/ai', require('./src/routes/ai'));
 app.use('/api/expenses', require('./src/routes/expense'));
 app.use('/api/notifications', require('./src/routes/notification'));
 app.use('/api/dashboard', require('./src/routes/dashboard'));
