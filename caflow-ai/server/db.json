@@ -1,0 +1,108 @@
+{
+  "users": [
+    {
+      "email": "admin@caflow.ai",
+      "password": "$2a$10$c.RXno3IqGHrQZRdOdeEau5ifdacMdV6ZLRqgoKRjlKazTx9n6m2K",
+      "name": "CA Admin",
+      "role": "admin",
+      "id": "d4c2c466-bfb0-4cc0-9390-516f64289204",
+      "created_at": "2026-05-12T11:24:00.462Z"
+    }
+  ],
+  "clients": [
+    {
+      "name": "Ramesh Industries Pvt Ltd",
+      "email": "ramesh@industry.com",
+      "phone": "+91 98765 10001",
+      "gst_number": "27AAACH1234P1Z5",
+      "business_type": "private_ltd",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "health_score": 85,
+      "whatsapp": "+91 98765 10001",
+      "pan_number": "XXXXX1234X",
+      "risk_level": "low",
+      "status": "active",
+      "last_activity": "2026-05-12T11:24:00.464Z",
+      "id": "ed1c6a91-5d1b-41b9-9b18-67c1d3b1a18e",
+      "created_at": "2026-05-12T11:24:00.464Z"
+    },
+    {
+      "name": "Sharma Trading Company",
+      "email": "sharma.trading@email.com",
+      "phone": "+91 98765 10002",
+      "gst_number": "19AAACH5678Q2Z8",
+      "business_type": "proprietorship",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "health_score": 45,
+      "whatsapp": "+91 98765 10002",
+      "pan_number": "XXXXX1234X",
+      "risk_level": "high",
+      "status": "active",
+      "last_activity": "2026-05-12T11:24:00.465Z",
+      "id": "f9412af2-2b5e-4cf0-9029-0f48863dfb40",
+      "created_at": "2026-05-12T11:24:00.465Z"
+    },
+    {
+      "name": "Tech Solutions LLP",
+      "email": "contact@techsol.in",
+      "phone": "+91 98765 10003",
+      "gst_number": "29AABCT1234R1Z9",
+      "business_type": "llp",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "health_score": 92,
+      "whatsapp": "+91 98765 10003",
+      "pan_number": "XXXXX1234X",
+      "risk_level": "low",
+      "status": "active",
+      "last_activity": "2026-05-12T11:24:00.467Z",
+      "id": "09f38e43-ecce-4d81-88c6-178e0b4c828c",
+      "created_at": "2026-05-12T11:24:00.467Z"
+    }
+  ],
+  "documents": [],
+  "filings": [],
+  "tasks": [
+    {
+      "title": "File GST for Ramesh Industries Pvt Ltd",
+      "description": "Monthly filing for Ramesh Industries Pvt Ltd",
+      "client_id": "ed1c6a91-5d1b-41b9-9b18-67c1d3b1a18e",
+      "assigned_to": "85b884b8-a663-4f23-a6e9-3cea2810b7ca",
+      "status": "pending",
+      "priority": "medium",
+      "due_date": "2026-05-19T11:24:00.465Z",
+      "id": "460b8129-663f-432c-9257-3e30a89973b2",
+      "created_at": "2026-05-12T11:24:00.465Z"
+    },
+    {
+      "title": "File GST for Sharma Trading Company",
+      "description": "Monthly filing for Sharma Trading Company",
+      "client_id": "f9412af2-2b5e-4cf0-9029-0f48863dfb40",
+      "assigned_to": "85b884b8-a663-4f23-a6e9-3cea2810b7ca",
+      "status": "pending",
+      "priority": "medium",
+      "due_date": "2026-05-19T11:24:00.466Z",
+      "id": "380ca641-52ce-4806-9da9-d307bd5f5ae6",
+      "created_at": "2026-05-12T11:24:00.466Z"
+    },
+    {
+      "title": "File GST for Tech Solutions LLP",
+      "description": "Monthly filing for Tech Solutions LLP",
+      "client_id": "09f38e43-ecce-4d81-88c6-178e0b4c828c",
+      "assigned_to": "85b884b8-a663-4f23-a6e9-3cea2810b7ca",
+      "status": "pending",
+      "priority": "medium",
+      "due_date": "2026-05-19T11:24:00.467Z",
+      "id": "4d94bf2d-f047-47b6-a150-1433b832cb11",
+      "created_at": "2026-05-12T11:24:00.467Z"
+    }
+  ],
+  "payments": [],
+  "reminders": [],
+  "activities": [],
+  "ai_suggestions": [],
+  "notifications": [],
+  "messages": []
+}

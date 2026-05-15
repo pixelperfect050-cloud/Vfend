@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Custom Location Share</string>
+    <string name="title_activity_main">Custom Location Share</string>
+    <string name="package_name">com.customlocationshare</string>
+    <string name="custom_url_scheme">com.customlocationshare</string>
+</resources>

@@ -82,46 +82,48 @@ function App() {
   }
 
   return (
-    <Routes>
-      {/* Landing page — show only when NOT logged in */}
-      <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LandingPage />} />
-      
-      {/* Auth pages */}
-      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
-      <Route path="/forgot-password" element={user ? <Navigate to="/dashboard" /> : <ForgotPassword />} />
-      <Route path="/join" element={<JoinSociety />} />
-      <Route path="/join/:code" element={<JoinSociety />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      
-      <Route path="/pending-approval" element={
-        <ProtectedRoute>
-          <PendingApproval />
-        </ProtectedRoute>
-      } />
+    <>
+      <Routes>
+        {/* Landing page — show only when NOT logged in */}
+        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LandingPage />} />
+        
+        {/* Auth pages */}
+        <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+        <Route path="/forgot-password" element={user ? <Navigate to="/dashboard" /> : <ForgotPassword />} />
+        <Route path="/join" element={<JoinSociety />} />
+        <Route path="/join/:code" element={<JoinSociety />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        
+        <Route path="/pending-approval" element={
+          <ProtectedRoute>
+            <PendingApproval />
+          </ProtectedRoute>
+        } />
 
-      <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route index element={<Navigate to="/dashboard" />} />
-      </Route>
+        <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route index element={<Navigate to="/dashboard" />} />
+        </Route>
 
-      <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="blocks" element={<Blocks />} />
-        <Route path="blocks/:blockId/flats" element={<FlatGrid />} />
-        <Route path="flats/:flatId" element={<FlatDetail />} />
-        <Route path="payments" element={<Payments />} />
-        <Route path="expenses" element={<Expenses />} />
-        <Route path="reports" element={<Reports />} />
-        <Route path="notifications" element={<Notifications />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="setup" element={<SetupSociety />} />
-        <Route path="requests" element={<ProtectedRoute adminOnly><MemberRequests /></ProtectedRoute>} />
-        <Route path="payment-verification" element={<ProtectedRoute adminOnly><PaymentVerification /></ProtectedRoute>} />
-        <Route path="funds" element={<Funds />} />
-        <Route path="receipt/:paymentId" element={<ReceiptView />} />
-      </Route>
+        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="blocks" element={<Blocks />} />
+          <Route path="blocks/:blockId/flats" element={<FlatGrid />} />
+          <Route path="flats/:flatId" element={<FlatDetail />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="expenses" element={<Expenses />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="setup" element={<SetupSociety />} />
+          <Route path="requests" element={<ProtectedRoute adminOnly><MemberRequests /></ProtectedRoute>} />
+          <Route path="payment-verification" element={<ProtectedRoute adminOnly><PaymentVerification /></ProtectedRoute>} />
+          <Route path="funds" element={<Funds />} />
+          <Route path="receipt/:paymentId" element={<ReceiptView />} />
+        </Route>
+      </Routes>
       {user && <FunkiAI />}
-    </Routes>
+    </>
   );
 }
 

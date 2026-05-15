@@ -1,207 +1,645 @@
-/* ══════════════════════════════════════
-   FunkiAI — PREMUM FLOATING ASSISTANT
-   ══════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   FunkiAI — PREMIUM FLOATING AI ASSISTANT
+   Modern glassmorphism + smooth animations
+   ═══════════════════════════════════════════════ */
 
+/* ─── Container ─── */
 .funkiai-container {
   position: fixed;
-  bottom: 25px;
-  right: 25px;
-  z-index: 9999;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ─── FLOATING BUTTON ─── */
+/* ═══════════════════════════════════
+   FLOATING TRIGGER BUTTON
+   ═══════════════════════════════════ */
 .funkiai-trigger {
-  width: 65px;
-  height: 65px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   border: none;
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+  box-shadow:
+    0 4px 15px rgba(99, 102, 241, 0.4),
+    0 0 0 0 rgba(99, 102, 241, 0.3);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 100000;
 }
 
 .funkiai-trigger:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.6);
+  transform: scale(1.08);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
+}
+
+.funkiai-trigger:active {
+  transform: scale(0.95);
+}
+
+.funkiai-trigger--active {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.funkiai-trigger--active:hover {
+  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
 }
 
 .funkiai-trigger svg {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   color: white;
+  position: relative;
   z-index: 2;
+  transition: transform 0.3s ease;
 }
 
-.funkiai-trigger::after {
-  content: '';
+.funkiai-trigger--active svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Glow effect behind button */
+.funkiai-trigger__glow {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(transparent, rgba(255, 255, 255, 0.2));
+  inset: -3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7, #6366f1);
   opacity: 0;
+  z-index: 0;
+  filter: blur(8px);
   transition: opacity 0.3s;
 }
 
-.funkiai-trigger:hover::after {
-  opacity: 1;
+.funkiai-trigger:hover .funkiai-trigger__glow {
+  opacity: 0.5;
 }
 
-/* ─── CHAT WINDOW ─── */
+/* AI badge */
+.funkiai-trigger__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 5px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  border: 2px solid white;
+  z-index: 3;
+  line-height: 1.2;
+}
+
+[data-theme="dark"] .funkiai-trigger__badge {
+  border-color: #1e1b4b;
+}
+
+/* Pulse animation on first load */
+.funkiai-trigger--pulse {
+  animation: funkiPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes funkiPulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4), 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4), 0 0 0 14px rgba(99, 102, 241, 0);
+  }
+}
+
+/* ═══════════════════════════════════
+   CHAT WINDOW
+   ═══════════════════════════════════ */
 .funkiai-window {
   position: absolute;
-  bottom: 85px;
+  bottom: 78px;
   right: 0;
-  width: 380px;
-  height: 550px;
-  background: var(--bg-card, #ffffff);
-  border-radius: 24px;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  width: 400px;
+  height: 580px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   transform-origin: bottom right;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid var(--border, #e2e8f0);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0;
+  transform: scale(0.75) translateY(20px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.funkiai-window--open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: all;
 }
 
 [data-theme="dark"] .funkiai-window {
-  background: #1e1b4b;
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+  background: #13111c;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-.funkiai-window.hidden {
-  transform: scale(0.8) translateY(20px);
-  opacity: 0;
+/* ═══════════════════════════════════
+   HEADER
+   ═══════════════════════════════════ */
+.funkiai-header {
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #3730a3 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.funkiai-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.3), transparent 70%);
+  border-radius: 50%;
+  transform: translate(30px, -30px);
   pointer-events: none;
 }
 
-/* ─── HEADER ─── */
-.funkiai-header {
-  padding: 1.25rem;
-  background: linear-gradient(135deg, #1e1b4b, #312e81);
-  color: white;
+.funkiai-header__left {
   display: flex;
   align-items: center;
   gap: 12px;
+  z-index: 1;
 }
 
 .funkiai-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.funkiai-avatar__inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.funkiai-title h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.funkiai-title p {
-  font-size: 0.75rem;
-  opacity: 0.7;
-  margin: 0;
-}
-
-.funkiai-close {
-  margin-left: auto;
-  background: none;
-  border: none;
   color: white;
+}
+
+.funkiai-avatar__status {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #1e1b4b;
+}
+
+.funkiai-avatar__status--typing {
+  animation: statusBlink 1s ease infinite;
+}
+
+@keyframes statusBlink {
+  0%, 100% { background: #10b981; }
+  50% { background: #f59e0b; }
+}
+
+.funkiai-header__info {
+  z-index: 1;
+}
+
+.funkiai-header__info h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.funkiai-header__info p {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 2px 0 0;
+  font-weight: 400;
+}
+
+.funkiai-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 1;
+}
+
+.funkiai-header__btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
 }
 
-.funkiai-close:hover {
-  opacity: 1;
+.funkiai-header__btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
 }
 
-/* ─── MESSAGES ─── */
+.funkiai-header__btn--close:hover {
+  background: rgba(239, 68, 68, 0.5);
+  color: white;
+}
+
+/* ═══════════════════════════════════
+   MESSAGES
+   ═══════════════════════════════════ */
 .funkiai-messages {
   flex: 1;
-  padding: 1.25rem;
+  padding: 16px 16px 8px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
   scroll-behavior: smooth;
+  background: #f8fafc;
 }
 
+[data-theme="dark"] .funkiai-messages {
+  background: #0d0b14;
+}
+
+/* Custom scrollbar */
+.funkiai-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.funkiai-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.funkiai-messages::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 10px;
+}
+
+.funkiai-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.4);
+}
+
+/* ─── Message Bubble ─── */
 .funkiai-msg {
-  max-width: 80%;
-  padding: 0.85rem 1rem;
-  border-radius: 18px;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  animation: msgSlide 0.3s ease-out;
+  display: flex;
+  gap: 8px;
+  max-width: 92%;
+  animation: msgAppear 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes msgSlide {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes msgAppear {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .funkiai-msg--ai {
   align-self: flex-start;
-  background: #f1f5f9;
-  color: #1e293b;
-  border-bottom-left-radius: 4px;
-}
-
-[data-theme="dark"] .funkiai-msg--ai {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
 }
 
 .funkiai-msg--user {
   align-self: flex-end;
-  background: #6366f1;
-  color: white;
-  border-bottom-right-radius: 4px;
+  flex-direction: row-reverse;
 }
 
-/* ─── INPUT ─── */
+.funkiai-msg__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.funkiai-msg__bubble {
+  padding: 10px 14px;
+  border-radius: 16px;
+  position: relative;
+  line-height: 1.55;
+}
+
+.funkiai-msg--ai .funkiai-msg__bubble {
+  background: white;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  border-bottom-left-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .funkiai-msg--ai .funkiai-msg__bubble {
+  background: #1a1625;
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.funkiai-msg--user .funkiai-msg__bubble {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: white;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.funkiai-msg--error .funkiai-msg__bubble {
+  background: #fef2f2 !important;
+  border-color: #fecaca !important;
+  color: #991b1b !important;
+}
+
+[data-theme="dark"] .funkiai-msg--error .funkiai-msg__bubble {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+}
+
+.funkiai-msg__text {
+  font-size: 0.875rem;
+  word-wrap: break-word;
+}
+
+.funkiai-msg__text strong {
+  font-weight: 600;
+}
+
+.funkiai-msg__time {
+  display: block;
+  font-size: 0.65rem;
+  opacity: 0.45;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.funkiai-msg--user .funkiai-msg__time {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Listen button on AI messages */
+.funkiai-msg__speak {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin-bottom: 4px;
+}
+
+.funkiai-msg:hover .funkiai-msg__speak {
+  opacity: 0.6;
+}
+
+.funkiai-msg__speak:hover {
+  opacity: 1 !important;
+  background: rgba(99, 102, 241, 0.1);
+  transform: scale(1.15);
+}
+
+/* ─── Typing Indicator ─── */
+.funkiai-typing-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 2px;
+}
+
+.funkiai-typing-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #a5b4fc;
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+
+.funkiai-typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.funkiai-typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+[data-theme="dark"] .funkiai-typing-dots span {
+  background: #6366f1;
+}
+
+/* ═══════════════════════════════════
+   QUICK ACTIONS
+   ═══════════════════════════════════ */
+.funkiai-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 16px 12px;
+  background: #f8fafc;
+}
+
+[data-theme="dark"] .funkiai-quick-actions {
+  background: #0d0b14;
+}
+
+.funkiai-quick-btn {
+  padding: 7px 12px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  animation: quickFade 0.4s ease forwards;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@keyframes quickFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.funkiai-quick-btn:hover {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3);
+}
+
+.funkiai-quick-btn:active {
+  transform: scale(0.95);
+}
+
+[data-theme="dark"] .funkiai-quick-btn {
+  background: #1a1625;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .funkiai-quick-btn:hover {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+}
+
+/* ═══════════════════════════════════
+   INPUT AREA
+   ═══════════════════════════════════ */
 .funkiai-input-area {
-  padding: 1.25rem;
-  border-top: 1px solid var(--border, #e2e8f0);
-  background: var(--bg-card, #ffffff);
+  padding: 12px 16px;
+  border-top: 1px solid #e2e8f0;
+  background: #ffffff;
+  flex-shrink: 0;
 }
 
 [data-theme="dark"] .funkiai-input-area {
-  background: #1e1b4b;
-  border-color: rgba(255, 255, 255, 0.1);
+  background: #13111c;
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
+/* Voice Listening State */
+.funkiai-listening {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.03));
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.funkiai-listening__waves {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+}
+
+.funkiai-listening__waves span {
+  width: 3px;
+  height: 6px;
+  background: #ef4444;
+  border-radius: 3px;
+  animation: voiceWave 0.8s ease-in-out infinite;
+}
+
+@keyframes voiceWave {
+  0%, 100% { height: 6px; opacity: 0.4; }
+  50% { height: 20px; opacity: 1; }
+}
+
+.funkiai-listening__waves span:nth-child(1) { animation-delay: 0s; }
+.funkiai-listening__waves span:nth-child(2) { animation-delay: 0.1s; }
+.funkiai-listening__waves span:nth-child(3) { animation-delay: 0.2s; }
+.funkiai-listening__waves span:nth-child(4) { animation-delay: 0.3s; }
+.funkiai-listening__waves span:nth-child(5) { animation-delay: 0.4s; }
+
+.funkiai-listening__text {
+  font-size: 0.78rem;
+  color: #ef4444;
+  font-weight: 600;
+  animation: listeningPulse 1.5s ease infinite;
+}
+
+@keyframes listeningPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Input Wrapper */
 .funkiai-input-wrap {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--bg-input, #f8fafc);
-  padding: 8px 12px;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 6px 8px;
   border-radius: 14px;
-  border: 1px solid var(--border, #e2e8f0);
+  border: 1.5px solid transparent;
+  transition: all 0.25s;
+}
+
+.funkiai-input-wrap:focus-within {
+  border-color: #6366f1;
+  background: #f8fafc;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 [data-theme="dark"] .funkiai-input-wrap {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .funkiai-input-wrap:focus-within {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 .funkiai-input-wrap input {
@@ -209,65 +647,169 @@
   background: none;
   border: none;
   outline: none;
-  color: var(--text, #1e293b);
-  font-size: 0.9rem;
-  padding: 4px;
+  color: #1e293b;
+  font-size: 0.875rem;
+  padding: 6px 4px;
+  font-family: inherit;
 }
 
+.funkiai-input-wrap input::placeholder {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .funkiai-input-wrap input {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .funkiai-input-wrap input::placeholder {
+  color: #475569;
+}
+
+/* Buttons */
 .funkiai-btn {
-  background: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   border: none;
-  color: #6366f1;
   cursor: pointer;
-  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
-.funkiai-btn:hover {
-  transform: scale(1.1);
+.funkiai-btn--mic {
+  background: transparent;
+  color: #6366f1;
 }
 
-.funkiai-btn--mic.active {
-  color: #ef4444;
-  animation: pulse 1.5s infinite;
+.funkiai-btn--mic:hover {
+  background: rgba(99, 102, 241, 0.1);
+  transform: scale(1.05);
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+.funkiai-btn--mic-active {
+  background: #ef4444 !important;
+  color: white !important;
+  animation: micPulse 1.2s ease-in-out infinite;
+  border-radius: 10px;
 }
 
-/* ─── WAVE ANIMATION ─── */
-.voice-wave {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  height: 20px;
+@keyframes micPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
 }
 
-.voice-wave span {
-  width: 2px;
-  height: 4px;
-  background: #6366f1;
-  border-radius: 1px;
-  animation: wave 1s infinite ease-in-out;
+.funkiai-btn--send {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: white;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
-@keyframes wave {
-  0%, 100% { height: 4px; }
-  50% { height: 16px; }
+.funkiai-btn--send:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
-/* Mobile Adjustments */
+.funkiai-btn--send:active {
+  transform: scale(0.95);
+}
+
+.funkiai-btn--send:disabled {
+  background: #cbd5e1;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+[data-theme="dark"] .funkiai-btn--send:disabled {
+  background: #334155;
+}
+
+/* Footer */
+.funkiai-footer {
+  text-align: center;
+  font-size: 0.65rem;
+  color: #94a3b8;
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+.funkiai-footer strong {
+  color: #6366f1;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .funkiai-footer {
+  color: #475569;
+}
+
+/* ═══════════════════════════════════
+   MOBILE RESPONSIVE
+   ═══════════════════════════════════ */
 @media (max-width: 480px) {
+  .funkiai-container {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .funkiai-trigger {
+    width: 56px;
+    height: 56px;
+  }
+
+  .funkiai-trigger svg {
+    width: 24px;
+    height: 24px;
+  }
+
   .funkiai-window {
-    width: calc(100vw - 40px);
-    height: 70vh;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    transform-origin: bottom center;
+  }
+
+  .funkiai-window--open {
+    border-radius: 0;
+  }
+
+  .funkiai-header {
+    padding: 14px 16px;
+    padding-top: max(14px, env(safe-area-inset-top));
+  }
+
+  .funkiai-input-area {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .funkiai-window {
+    width: calc(100vw - 48px);
+    max-width: 400px;
+    height: 65vh;
+    bottom: 76px;
+  }
+}
+
+/* ═══════════════════════════════════
+   BOTTOM NAV SPACER
+   Ensure the trigger doesn't overlap
+   the bottom navigation bar
+   ═══════════════════════════════════ */
+@media (max-width: 768px) {
+  .funkiai-container {
     bottom: 80px;
-    right: -5px;
   }
 }
