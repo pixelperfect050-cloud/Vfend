@@ -47,9 +47,12 @@ RULES:
 - Always be helpful and suggest next steps when appropriate
 - Format important terms in **bold** for clarity`;
 
-router.post('/chat', auth, async (req, res) => {
+// Handle both /api/ai and /api/ai/chat
+router.post(['/', '/chat'], auth, async (req, res) => {
   const { message } = req.body;
   const user = req.user;
+
+  console.log(`FunkiAI Request from ${user.name} (${user.email}): ${message?.substring(0, 50)}...`);
 
   if (!message || !message.trim()) {
     return res.status(400).json({ response: "Please send a message to get started! 💬" });
@@ -63,7 +66,7 @@ router.post('/chat', auth, async (req, res) => {
 
   try {
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
+      model: "gemini-2.0-flash",
       generationConfig: {
         temperature: 0.7,
         topP: 0.9,
@@ -93,11 +96,13 @@ Respond helpfully and concisely:`;
     
     if (error.response?.status === 429 || error.message?.includes('quota')) {
       return res.status(429).json({ 
+        message: "I'm getting a lot of questions right now! 😅 Please try again in a minute.",
         response: "I'm getting a lot of questions right now! 😅 Please try again in a minute. The free API has usage limits." 
       });
     }
 
     res.status(500).json({ 
+      message: `AI Error: ${error.message || 'Something went wrong'}`,
       response: `AI Connection Error: ${error.message || 'Something went wrong'}. 🔧 Please try again.` 
     });
   }
