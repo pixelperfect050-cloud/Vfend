@@ -125,23 +125,23 @@ const ReceiptView = () => {
         </div>
 
         {/* ─── RECEIPT META ─── */}
-        <div className="receipt-meta">
-          <div className="receipt-meta__item">
-            <span className="receipt-meta__label">Receipt No.</span>
-            <span className="receipt-meta__value receipt-meta__mono">{receiptNo}</span>
-          </div>
-          <div className="receipt-meta__item">
-            <span className="receipt-meta__label">Payment Date</span>
-            <span className="receipt-meta__value">{paidDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-          </div>
-          <div className="receipt-meta__item">
-            <span className="receipt-meta__label">Time</span>
-            <span className="receipt-meta__value">{paidDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
+        <div className="receipt-meta" style={{ display: 'table', width: '100%', borderCollapse: 'collapse' }}>
+          <div style={{ display: 'table-row' }}>
+            <div style={{ display: 'table-cell', width: '50%', padding: '10px 20px' }}>
+              <span className="receipt-meta__label">Receipt No.</span>
+              <span className="receipt-meta__value receipt-meta__mono" style={{ display: 'block' }}>{receiptNo}</span>
+            </div>
+            <div style={{ display: 'table-cell', width: '50%', padding: '10px 20px', textAlign: 'right' }}>
+              <span className="receipt-meta__label">Date</span>
+              <span className="receipt-meta__value" style={{ display: 'block' }}>{paidDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+            </div>
           </div>
           {p.transactionId && (
-            <div className="receipt-meta__item">
-              <span className="receipt-meta__label">Transaction ID</span>
-              <span className="receipt-meta__value receipt-meta__mono">{p.transactionId}</span>
+            <div style={{ display: 'table-row' }}>
+              <div style={{ display: 'table-cell', padding: '10px 20px' }} colSpan={2}>
+                <span className="receipt-meta__label">Transaction ID</span>
+                <span className="receipt-meta__value receipt-meta__mono" style={{ display: 'block' }}>{p.transactionId}</span>
+              </div>
             </div>
           )}
         </div>
@@ -174,30 +174,25 @@ const ReceiptView = () => {
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
-                <td>Maintenance Charges — {MONTHS[p.month-1]} {p.year}</td>
-                <td className="receipt-table__amt">{formatINR(p.amount)}</td>
+                <td style={{ textAlign: 'center' }}>1</td>
+                <td>Maintenance Charges ({MONTHS[p.month-1]} {p.year})</td>
+                <td className="receipt-table__amt" style={{ textAlign: 'right' }}>{formatINR(p.amount)}</td>
               </tr>
-              <tr className={p.lateFee > 0 ? 'receipt-row--highlight' : ''}>
-                <td>2</td>
+              <tr>
+                <td style={{ textAlign: 'center' }}>2</td>
                 <td>Late Fee / Penalty</td>
-                <td className="receipt-table__amt">{p.lateFee > 0 ? formatINR(p.lateFee) : '—'}</td>
+                <td className="receipt-table__amt" style={{ textAlign: 'right' }}>{p.lateFee > 0 ? formatINR(p.lateFee) : 'Rs. 0.00'}</td>
               </tr>
               <tr>
-                <td>3</td>
-                <td>Transfer Fee</td>
-                <td className="receipt-table__amt">—</td>
-              </tr>
-              <tr>
-                <td>4</td>
+                <td style={{ textAlign: 'center' }}>3</td>
                 <td>Other Charges</td>
-                <td className="receipt-table__amt">—</td>
+                <td className="receipt-table__amt" style={{ textAlign: 'right' }}>Rs. 0.00</td>
               </tr>
             </tbody>
             <tfoot>
               <tr className="receipt-table__total">
-                <td colSpan={2}>Total Amount</td>
-                <td>{formatINR(total)}</td>
+                <td colSpan={2} style={{ textAlign: 'right', paddingRight: '20px' }}>TOTAL AMOUNT</td>
+                <td style={{ textAlign: 'right' }}>{formatINR(total)}</td>
               </tr>
             </tfoot>
           </table>
