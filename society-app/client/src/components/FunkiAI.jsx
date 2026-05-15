@@ -142,17 +142,27 @@ const FunkiAI = () => {
     const voices = window.speechSynthesis.getVoices();
     let selectedVoice = null;
     
+    // Try to find female voice first
+    const femaleKeywords = ['female', 'woman', 'girl', 'Samantha', 'Microsoft Zira', 'Google UK English Female', 'en-IN-Standard-A'];
+    
     if (language === 'hindi') {
-      selectedVoice = voices.find(v => v.lang.includes('hi')) || 
-                     voices.find(v => v.name.includes('Google') && v.lang.includes('hi')) ||
-                     voices.find(v => v.lang.includes('en-IN'));
+      // For Hindi - try female voices first
+      selectedVoice = voices.find(v => v.lang.includes('hi') && femaleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+                      voices.find(v => v.lang.includes('hi') && v.name.toLowerCase().includes('a')) ||
+                      voices.find(v => v.lang.includes('hi')) ||
+                      voices.find(v => v.lang.includes('en-IN') && femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
     } else {
-      selectedVoice = voices.find(v => v.lang.includes('en-IN') && v.name.includes('Google')) ||
-                     voices.find(v => v.lang.includes('en-IN')) ||
-                     voices.find(v => v.lang.includes('en'));
+      // For English - try female voices first
+      selectedVoice = voices.find(v => v.lang.includes('en-IN') && femaleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+                      voices.find(v => v.lang.includes('en-IN') && v.name.toLowerCase().includes('samantha')) ||
+                      voices.find(v => v.lang.includes('en-IN') && !v.name.toLowerCase().includes('male')) ||
+                      voices.find(v => v.lang.includes('en-IN'));
     }
     
-    if (selectedVoice) utterance.voice = selectedVoice;
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+      console.log('Using voice:', selectedVoice.name);
+    }
 
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
@@ -297,8 +307,8 @@ const FunkiAI = () => {
               }}
               aria-label="Select language"
             >
-              <option value="hindi">🇮🇳 हिंदी</option>
-              <option value="english">🇬🇧 English</option>
+              <option value="hindi">हिंदी</option>
+              <option value="english">English</option>
             </select>
           </div>
           <div className="funkiai-header__actions">
