@@ -28,7 +28,7 @@ const FunkiAI = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(true);
   const [pulseAnimation, setPulseAnimation] = useState(true);
-  const [language, setLanguage] = useState('hinglish');
+  const [language, setLanguage] = useState('english');
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
   const inputRef = useRef(null);
@@ -119,6 +119,15 @@ const FunkiAI = () => {
       .replace(/\(Offline mode.*?\)/gi, '')
       .replace(/\(AI temporarily.*?\)/gi, '')
       .replace(/\(Demo mode.*?\)/gi, '')
+      .replace(/[\u{1F600}-\u{1F64F}]/gu, '')
+      .replace(/[\u{1F300}-\u{1F5FF}]/gu, '')
+      .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')
+      .replace(/[\u{1F1E0}-\u{1F1FF}]/gu, '')
+      .replace(/[\u{2700}-\u{27BF}]/gu, '')
+      .replace(/[\u{1F900}-\u{1F9FF}]/gu, '')
+      .replace(/[\u{1FA00}-\u{1FA6F}]/gu, '')
+      .replace(/[\u{1FA70}-\u{1FAFF}]/gu, '')
+      .replace(/📱|💰|🧾|📊|💸|🏦|👥|🔧|🙏|🎉|📡|🔐|💥|🇮🇳|🇬🇧/g, '')
       .trim();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -281,16 +290,14 @@ const FunkiAI = () => {
                 setLanguage(e.target.value);
                 setMessages([{
                   role: 'ai',
-                  content: e.target.value === 'hindi' ? 'बिल्कुल! अब में हिंदी में बात करूंगा! 🎉' : 
-                          e.target.value === 'english' ? 'Sure! I will respond in English from now! 🎉' : 
-                          'बिल्कुल! अब में हिंग्लिश में बात करूंगा! 🎉',
+                  content: e.target.value === 'hindi' ? 'बिल्कुल! अब में हिंदी में बात करूंगा!' : 
+                          'Sure! I will respond in English from now!',
                   timestamp: new Date()
                 }]);
               }}
               aria-label="Select language"
             >
-              <option value="hinglish">🇮🇳 Hinglish</option>
-              <option value="hindi">🇮🇳 Hindi</option>
+              <option value="hindi">🇮🇳 हिंदी</option>
               <option value="english">🇬🇧 English</option>
             </select>
           </div>
