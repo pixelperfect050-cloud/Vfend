@@ -18,6 +18,7 @@ initializeSocket(server);
 // CORS Configuration
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  'https://client-eight-roan-56.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
@@ -46,11 +47,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/auth', require('./src/routes/auth'));
+app.use('/api/ai', require('./src/routes/ai'));
 app.use('/api/society', require('./src/routes/society'));
 app.use('/api/blocks', require('./src/routes/block'));
 app.use('/api/flats', require('./src/routes/flat'));
 app.use('/api/payments', require('./src/routes/payment'));
-app.use('/api/ai', require('./src/routes/ai'));
 app.use('/api/expenses', require('./src/routes/expense'));
 app.use('/api/notifications', require('./src/routes/notification'));
 app.use('/api/dashboard', require('./src/routes/dashboard'));
