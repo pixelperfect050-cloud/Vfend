@@ -65,7 +65,7 @@ app.get('/api/health', (req, res) => {
 
 // Root endpoint
 app.get('/', (req, res) => {
-  res.json({ message: 'SocietySync API is running 🚀', version: '1.0.0' });
+  res.json({ message: 'SocietySync API is running 🚀', version: '1.1.0' });
 });
 
 // Error handler
