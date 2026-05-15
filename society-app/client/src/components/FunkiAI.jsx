@@ -28,7 +28,7 @@ const FunkiAI = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(true);
   const [pulseAnimation, setPulseAnimation] = useState(true);
-  const [language, setLanguage] = useState('english');
+  const [language, setLanguage] = useState('hindi');
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
   const inputRef = useRef(null);

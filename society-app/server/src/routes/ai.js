@@ -26,8 +26,8 @@ const FALLBACK_RESPONSES = {
   }
 };
 
-const getFallbackResponse = (message, language = 'english') => {
-  const responses = FALLBACK_RESPONSES[language] || FALLBACK_RESPONSES.english;
+const getFallbackResponse = (message, language = 'hindi') => {
+  const responses = FALLBACK_RESPONSES[language] || FALLBACK_RESPONSES.hindi;
   const msg = message.toLowerCase();
   if (msg.includes('payment') || msg.includes('maintenance')) return responses.payment;
   if (msg.includes('receipt') || msg.includes('bill')) return responses.receipt;
@@ -54,7 +54,7 @@ YOUR PERSONALITY:
 - Be conversational and approachable
 - Format important terms in **bold**
 
-${langConfig[language] || langConfig.english}
+${langConfig[language] || langConfig.hindi}
 
 APP FEATURES:
 1. Dashboard - Overview of society financial health
@@ -75,7 +75,7 @@ RULES:
 };
 
 router.post(['/', '/chat'], auth, async (req, res) => {
-  const { message, language = 'english' } = req.body;
+  const { message, language = 'hindi' } = req.body;
   const user = req.user;
 
   console.log(`FunkiAI Request from ${user.name} [${language}]: ${message?.substring(0, 50)}...`);
