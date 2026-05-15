@@ -6,15 +6,15 @@ const { auth } = require('../middleware/auth');
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'MOCK_KEY');
 
-// Fallback responses when API fails
+// Fallback responses when API fails (in Hinglish)
 const FALLBACK_RESPONSES = {
-  payment: "To check your payment status, go to the Payments section in the app. You can see if your maintenance is paid, pending, or overdue! 💰",
-  receipt: "You can download your receipt from the Payments page - click on any payment to see the receipt download option. 🧾",
-  dashboard: "The Dashboard shows your society's financial health - collection status, pending payments, and recent activity. Navigate using the sidebar menu! 📊",
-  expense: "Go to Expenses section to view and add expense records. Admin can add new expenses with categories like security, cleaning, electricity, etc. 💸",
-  fund: "Society Funds are community savings - like sinking fund, parking fund. Go to Funds to contribute and track contributions! 🏦",
-  member: "Member management lets you invite new members via code, approve join requests, and manage roles (admin/member). 👥",
-  default: "Namaste! For help with the SocietySync app, you can ask me about payments, receipts, expenses, funds, or any other feature. How can I help you today? 😊"
+  payment: "Apna payment status check karne ke liye Payments section mein jayein. Wahan aap dekh sakte hain ki aapka maintenance paid hai, pending hai, ya overdue! 💰",
+  receipt: "Receipt download karne ke liye Payments page par jayein - kisi bhi payment par click karke download option mil jayega! 🧾",
+  dashboard: "Dashboard mein aap apni society ka financial health dekh sakte hain - collection status, pending payments, aur recent activity. Sidebar menu se navigate karein! 📊",
+  expense: "Expenses section mein jakar expense records dekh sakte hain aur add kar sakte hain. Admin naye expenses add kar sakta hai - security, cleaning, electricity jaise categories ke saath! 💸",
+  fund: "Society Funds community savings hote hain - jaise sinking fund, parking fund. Funds mein jakar contribute karein aur track karein! 🏦",
+  member: "Member management mein aap naye members invite kar sakte hain code se, join requests approve kar sakte hain, aur roles manage kar sakte hain (admin/member). 👥",
+  default: "Namaste! SocietySync app mein help ke liye aap mujhe payments, receipts, expenses, funds ya kisi bhi feature ke baare mein puch sakte hain. Aaj aapki kaise help kar sakta hoon? 😊"
 };
 
 const getFallbackResponse = (message) => {
@@ -29,14 +29,21 @@ const getFallbackResponse = (message) => {
 };
 
 // System prompt for FunkiAI
-const SYSTEM_PROMPT = `You are FunkiAI, a smart, friendly, and professional AI assistant for the "SocietySync" app — a housing society maintenance management platform.
+const SYSTEM_PROMPT = `You are FunkiAI, a smart, friendly, and helpful AI assistant for the "SocietySync" app — a housing society maintenance management platform.
 
 YOUR PERSONALITY:
-- Warm, helpful, and slightly witty
-- Professional but approachable  
-- Use a mix of English (with occasional Hinglish if the user uses it)
+- Warm, helpful, and friendly
+- Always respond in Hinglish (mix of Hindi and English) - THIS IS MANDATORY
+- Use Hindi/Hinglish for most responses, with English technical terms when needed
 - Keep responses concise (2-4 sentences for simple questions, more for complex ones)
-- Use relevant emojis sparingly for friendliness (1-2 per response)
+- Use emojis sparingly (1-2 per response)
+- Be conversational and approachable like a helpful neighbor
+
+LANGUAGE RULES:
+- Respond primarily in Hindi/Hinglish
+- When user writes in English, respond in Hinglish
+- When user writes in Hindi, respond in Hindi/Hinglish
+- Mix Hindi and English naturally (Hinglish style)
 
 APP FEATURES YOU KNOW ABOUT:
 1. **Dashboard** - Overview of society's financial health, collection status, pending payments
