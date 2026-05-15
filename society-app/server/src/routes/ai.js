@@ -89,16 +89,16 @@ Respond helpfully and concisely:`;
 
     res.json({ response: text });
   } catch (error) {
-    console.error('Gemini Error:', error.message);
+    console.error('Gemini Error Detailed:', error);
     
-    if (error.message?.includes('quota') || error.status === 429) {
+    if (error.response?.status === 429 || error.message?.includes('quota')) {
       return res.status(429).json({ 
         response: "I'm getting a lot of questions right now! 😅 Please try again in a minute. The free API has usage limits." 
       });
     }
 
     res.status(500).json({ 
-      response: "Oops! Something went wrong on my end. 🔧 Please try again in a moment, or contact support at funkariya.shop@gmail.com" 
+      response: `AI Connection Error: ${error.message || 'Something went wrong'}. 🔧 Please try again.` 
     });
   }
 });

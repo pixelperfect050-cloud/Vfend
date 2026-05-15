@@ -171,11 +171,13 @@ const FunkiAI = () => {
       setMessages(prev => [...prev, aiMsg]);
       speak(res.data.response);
     } catch (error) {
-      const errorMsg = error.response?.status === 429 
+      console.error('FunkiAI Error:', error);
+      const serverMsg = error.response?.data?.response;
+      const errorMsg = serverMsg || (error.response?.status === 429 
         ? 'I\'m getting too many requests right now. Please wait a moment and try again! 🙏'
         : error.code === 'ECONNABORTED'
         ? 'The request took too long. The server might be waking up — try again in 30 seconds! ⏰'
-        : 'Sorry, I\'m having trouble connecting right now. Please try again in a moment! 🔄';
+        : 'Sorry, I\'m having trouble connecting right now. Please try again in a moment! 🔄');
       
       setMessages(prev => [...prev, { role: 'ai', content: errorMsg, timestamp: new Date(), isError: true }]);
     } finally {

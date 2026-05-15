@@ -11,6 +11,13 @@
   z-index: 99999;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+.funkiai-container *, 
+.funkiai-container *::before, 
+.funkiai-container *::after {
+  box-sizing: border-box;
 }
 
 /* ═══════════════════════════════════
@@ -32,7 +39,7 @@
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: visible;
-  z-index: 100000;
+  z-index: 100001;
 }
 
 .funkiai-trigger:hover {
@@ -122,11 +129,13 @@
    CHAT WINDOW
    ═══════════════════════════════════ */
 .funkiai-window {
-  position: absolute;
-  bottom: 78px;
-  right: 0;
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
   width: 400px;
-  height: 580px;
+  max-width: calc(100vw - 48px);
+  height: 600px;
+  max-height: calc(100vh - 120px);
   background: #ffffff;
   border-radius: 20px;
   box-shadow:
@@ -141,6 +150,7 @@
   transform: scale(0.75) translateY(20px);
   pointer-events: none;
   will-change: transform, opacity;
+  z-index: 100000;
 }
 
 .funkiai-window--open {
@@ -168,6 +178,7 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .funkiai-header::after {
@@ -268,6 +279,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+  padding: 0;
 }
 
 .funkiai-header__btn:hover {
@@ -285,13 +297,14 @@
    ═══════════════════════════════════ */
 .funkiai-messages {
   flex: 1;
-  padding: 16px 16px 8px;
+  padding: 16px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
   scroll-behavior: smooth;
   background: #f8fafc;
+  width: 100%;
 }
 
 [data-theme="dark"] .funkiai-messages {
@@ -300,7 +313,7 @@
 
 /* Custom scrollbar */
 .funkiai-messages::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 
 .funkiai-messages::-webkit-scrollbar-track {
@@ -319,9 +332,10 @@
 /* ─── Message Bubble ─── */
 .funkiai-msg {
   display: flex;
-  gap: 8px;
-  max-width: 92%;
+  gap: 10px;
+  max-width: 90%;
   animation: msgAppear 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: fit-content;
 }
 
 @keyframes msgAppear {
@@ -362,6 +376,9 @@
   border-radius: 16px;
   position: relative;
   line-height: 1.55;
+  word-wrap: break-word;
+  word-break: break-word;
+  min-width: 50px;
 }
 
 .funkiai-msg--ai .funkiai-msg__bubble {
@@ -400,7 +417,6 @@
 
 .funkiai-msg__text {
   font-size: 0.875rem;
-  word-wrap: break-word;
 }
 
 .funkiai-msg__text strong {
@@ -436,6 +452,7 @@
   flex-shrink: 0;
   align-self: flex-end;
   margin-bottom: 4px;
+  padding: 0;
 }
 
 .funkiai-msg:hover .funkiai-msg__speak {
@@ -496,6 +513,7 @@
   gap: 6px;
   padding: 0 16px 12px;
   background: #f8fafc;
+  width: 100%;
 }
 
 [data-theme="dark"] .funkiai-quick-actions {
@@ -557,6 +575,7 @@
   border-top: 1px solid #e2e8f0;
   background: #ffffff;
   flex-shrink: 0;
+  width: 100%;
 }
 
 [data-theme="dark"] .funkiai-input-area {
@@ -624,6 +643,7 @@
   border-radius: 14px;
   border: 1.5px solid transparent;
   transition: all 0.25s;
+  width: 100%;
 }
 
 .funkiai-input-wrap:focus-within {
@@ -651,6 +671,7 @@
   font-size: 0.875rem;
   padding: 6px 4px;
   font-family: inherit;
+  width: 100%;
 }
 
 .funkiai-input-wrap input::placeholder {
@@ -677,6 +698,7 @@
   justify-content: center;
   transition: all 0.2s;
   flex-shrink: 0;
+  padding: 0;
 }
 
 .funkiai-btn--mic {
@@ -763,19 +785,15 @@
     height: 56px;
   }
 
-  .funkiai-trigger svg {
-    width: 24px;
-    height: 24px;
-  }
-
   .funkiai-window {
-    position: fixed;
     bottom: 0;
     right: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
+    max-width: 100vw;
     height: 100vh;
     height: 100dvh;
+    max-height: 100vh;
     border-radius: 0;
     transform-origin: bottom center;
   }
@@ -796,20 +814,21 @@
 
 @media (min-width: 481px) and (max-width: 768px) {
   .funkiai-window {
-    width: calc(100vw - 48px);
-    max-width: 400px;
-    height: 65vh;
-    bottom: 76px;
+    width: 380px;
+    max-width: calc(100vw - 40px);
+    height: 70vh;
+    bottom: 90px;
+    right: 20px;
   }
 }
 
 /* ═══════════════════════════════════
    BOTTOM NAV SPACER
    Ensure the trigger doesn't overlap
-   the bottom navigation bar
+   the bottom navigation bar on mobile
    ═══════════════════════════════════ */
 @media (max-width: 768px) {
   .funkiai-container {
-    bottom: 80px;
+    bottom: 90px;
   }
 }
