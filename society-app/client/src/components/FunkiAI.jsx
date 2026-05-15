@@ -108,37 +108,49 @@ const FunkiAI = () => {
   const speak = useCallback((text) => {
     if (!('speechSynthesis' in window)) return;
     
-    // Cancel any ongoing speech
     window.speechSynthesis.cancel();
     
-    // Clean markdown from text
     const cleanText = text
       .replace(/\*\*(.*?)\*\*/g, '$1')
       .replace(/\*(.*?)\*/g, '$1')
       .replace(/#{1,6}\s/g, '')
       .replace(/[•\-]\s/g, '')
       .replace(/\n+/g, '. ')
+      .replace(/\(Offline mode.*?\)/gi, '')
+      .replace(/\(AI temporarily.*?\)/gi, '')
+      .replace(/\(Demo mode.*?\)/gi, '')
       .trim();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'en-IN';
-    utterance.rate = 0.95;
-    utterance.pitch = 1.05;
-    utterance.volume = 0.9;
+    
+    // Language-specific settings
+    const langMap = { hindi: 'hi-IN', english: 'en-IN', hinglish: 'en-IN' };
+    utterance.lang = langMap[language] || 'en-IN';
+    utterance.rate = 0.9;
+    utterance.pitch = language === 'hindi' ? 0.9 : 1.0;
+    utterance.volume = 1.0;
 
-    // Try to find a good Indian English voice
     const voices = window.speechSynthesis.getVoices();
-    const indianVoice = voices.find(v => v.lang.includes('en-IN')) || 
-                        voices.find(v => v.lang.includes('en') && v.name.includes('Google')) ||
-                        voices.find(v => v.lang.includes('en'));
-    if (indianVoice) utterance.voice = indianVoice;
+    let selectedVoice = null;
+    
+    if (language === 'hindi') {
+      selectedVoice = voices.find(v => v.lang.includes('hi')) || 
+                     voices.find(v => v.name.includes('Google') && v.lang.includes('hi')) ||
+                     voices.find(v => v.lang.includes('en-IN'));
+    } else {
+      selectedVoice = voices.find(v => v.lang.includes('en-IN') && v.name.includes('Google')) ||
+                     voices.find(v => v.lang.includes('en-IN')) ||
+                     voices.find(v => v.lang.includes('en'));
+    }
+    
+    if (selectedVoice) utterance.voice = selectedVoice;
 
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
 
     window.speechSynthesis.speak(utterance);
-  }, []);
+  }, [language]);
 
   const stopSpeaking = useCallback(() => {
     window.speechSynthesis?.cancel();

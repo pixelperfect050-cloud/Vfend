@@ -96,7 +96,7 @@ router.post(['/', '/chat'], auth, async (req, res) => {
 
   if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MOCK_KEY') {
     const fallback = getFallbackResponse(message, language);
-    return res.json({ response: fallback + "\n\n(Demo mode - full AI coming soon! 🚀)" });
+    return res.json({ response: fallback });
   }
 
   try {
@@ -123,16 +123,19 @@ Respond helpfully and concisely:`;
   } catch (error) {
     console.error('Gemini Error:', error.message);
     
-    const fallback = getFallbackResponse(message, language);
-    
+    // Only show special message for specific API errors
     if (error.message?.includes('quota') || error.message?.includes('rate') || error.message?.includes('429')) {
-      return res.json({ response: fallback + "\n\n(Offline mode due to high traffic. 🙏)" });
+      const fallback = getFallbackResponse(message, language);
+      return res.json({ response: fallback + " 🙏" });
     }
     
     if (error.message?.includes('not found') || error.message?.includes('unsupported')) {
-      return res.json({ response: fallback + "\n(AI temporarily unavailable. Try later! 🙏)" });
+      const fallback = getFallbackResponse(message, language);
+      return res.json({ response: fallback + " 🙏" });
     }
     
+    // For other errors, just return fallback without any note
+    const fallback = getFallbackResponse(message, language);
     res.json({ response: fallback });
   }
 });
