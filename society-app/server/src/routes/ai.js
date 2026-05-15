@@ -6,15 +6,35 @@ const { auth } = require('../middleware/auth');
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'MOCK_KEY');
 
-// Fallback responses when API fails (in Hinglish)
+// Fallback responses when API fails (all languages)
 const FALLBACK_RESPONSES = {
-  payment: "Apna payment status check karne ke liye Payments section mein jayein. Wahan aap dekh sakte hain ki aapka maintenance paid hai, pending hai, ya overdue! 💰",
-  receipt: "Receipt download karne ke liye Payments page par jayein - kisi bhi payment par click karke download option mil jayega! 🧾",
-  dashboard: "Dashboard mein aap apni society ka financial health dekh sakte hain - collection status, pending payments, aur recent activity. Sidebar menu se navigate karein! 📊",
-  expense: "Expenses section mein jakar expense records dekh sakte hain aur add kar sakte hain. Admin naye expenses add kar sakta hai - security, cleaning, electricity jaise categories ke saath! 💸",
-  fund: "Society Funds community savings hote hain - jaise sinking fund, parking fund. Funds mein jakar contribute karein aur track karein! 🏦",
-  member: "Member management mein aap naye members invite kar sakte hain code se, join requests approve kar sakte hain, aur roles manage kar sakte hain (admin/member). 👥",
-  default: "Namaste! SocietySync app mein help ke liye aap mujhe payments, receipts, expenses, funds ya kisi bhi feature ke baare mein puch sakte hain. Aaj aapki kaise help kar sakta hoon? 😊"
+  hindi: {
+    payment: "अपना payment status check करने के लिए Payments section में जाएं। वहां आप देख सकते हैं कि आपका maintenance paid है, pending है, या overdue! 💰",
+    receipt: "Receipt download करने के लिए Payments page पर जाएं - किसी भी payment पर click करके download option मिल जाएगा! 🧾",
+    dashboard: "Dashboard में आप अपनी society का financial health देख सकते हैं। Sidebar menu से navigate करें! 📊",
+    expense: "Expenses section में जाकर expense records देख और add कर सकते हैं! 💸",
+    fund: "Society Funds community savings होते हैं। Funds में जाकर contribute करें! 🏦",
+    member: "Member management में नए members invite कर सकते हैं code से! 👥",
+    default: "नमस्ते! SocietySync app में help के लिए आप मुझसे payments, receipts, expenses, funds के बारे में पूछ सकते हैं। आज आपकी कैसे help कर सकता हूं? 😊"
+  },
+  english: {
+    payment: "To check your payment status, go to the Payments section in the app. You can see if your maintenance is paid, pending, or overdue! 💰",
+    receipt: "You can download your receipt from the Payments page - click on any payment to see the download option! 🧾",
+    dashboard: "The Dashboard shows your society's financial health. Navigate using the sidebar! 📊",
+    expense: "Go to Expenses section to view and add expense records! 💸",
+    fund: "Society Funds are community savings. Go to Funds to contribute! 🏦",
+    member: "Member management lets you invite members via code! 👥",
+    default: "Namaste! For help with SocietySync app, you can ask me about payments, receipts, expenses, funds, or any feature. How can I help you today? 😊"
+  },
+  hinglish: {
+    payment: "Apna payment status check karne ke liye Payments section mein jayein. Wahan aap dekh sakte hain ki aapka maintenance paid hai, pending hai, ya overdue! 💰",
+    receipt: "Receipt download karne ke liye Payments page par jayein - kisi bhi payment par click karke download option mil jayega! 🧾",
+    dashboard: "Dashboard mein aap apni society ka financial health dekh sakte hain. Sidebar menu se navigate karein! 📊",
+    expense: "Expenses section mein jakar expense records dekh aur add kar sakte hain! 💸",
+    fund: "Society Funds community savings hote hain. Funds mein jakar contribute karein! 🏦",
+    member: "Member management mein naye members invite kar sakte hain code se! 👥",
+    default: "Namaste! SocietySync app mein help ke liye aap mujhe puch sakte hain. Aaj aapki kaise help kar sakta hoon? 😊"
+  }
 };
 
 const getFallbackResponse = (message, language = 'hinglish') => {
