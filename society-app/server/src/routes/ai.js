@@ -129,12 +129,6 @@ Respond helpfully and concisely:`;
     const fallback = getFallbackResponse(message);
     res.json({ response: fallback });
   }
-
-    res.status(500).json({ 
-      message: `AI Error: ${error.message || 'Something went wrong'}`,
-      response: `AI Connection Error: ${error.message || 'Something went wrong'}. 🔧 Please try again.` 
-    });
-  }
 });
 
 module.exports = router;
