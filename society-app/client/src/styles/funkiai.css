@@ -260,6 +260,28 @@
   font-weight: 400;
 }
 
+.funkiai-lang-select {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  cursor: pointer;
+  outline: none;
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.funkiai-lang-select:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.funkiai-lang-select option {
+  background: #1f2937;
+  color: white;
+}
+
 .funkiai-header__actions {
   display: flex;
   align-items: center;

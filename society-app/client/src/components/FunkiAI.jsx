@@ -28,6 +28,7 @@ const FunkiAI = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(true);
   const [pulseAnimation, setPulseAnimation] = useState(true);
+  const [language, setLanguage] = useState('hinglish');
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
   const inputRef = useRef(null);
@@ -155,7 +156,7 @@ const FunkiAI = () => {
     setShowQuickActions(false);
 
     try {
-      const res = await api.post('/api/ai/chat', { message: text });
+      const res = await api.post('/api/ai/chat', { message: text, language });
       
       const aiMsg = { role: 'ai', content: res.response, timestamp: new Date() };
       setMessages(prev => [...prev, aiMsg]);
@@ -261,6 +262,25 @@ const FunkiAI = () => {
               <h3>FunkiAI</h3>
               <p>{isTyping ? 'Thinking...' : isSpeaking ? '🔊 Speaking...' : 'Online • AI Assistant'}</p>
             </div>
+            <select 
+              className="funkiai-lang-select"
+              value={language}
+              onChange={(e) => {
+                setLanguage(e.target.value);
+                setMessages([{
+                  role: 'ai',
+                  content: e.target.value === 'hindi' ? 'बिल्कुल! अब में हिंदी में बात करूंगा! 🎉' : 
+                          e.target.value === 'english' ? 'Sure! I will respond in English from now! 🎉' : 
+                          'बिल्कुल! अब में हिंग्लिश में बात करूंगा! 🎉',
+                  timestamp: new Date()
+                }]);
+              }}
+              aria-label="Select language"
+            >
+              <option value="hinglish">🇮🇳 Hinglish</option>
+              <option value="hindi">🇮🇳 Hindi</option>
+              <option value="english">🇬🇧 English</option>
+            </select>
           </div>
           <div className="funkiai-header__actions">
             {isSpeaking && (
