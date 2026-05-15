@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import Modal from '../components/Modal';
@@ -9,6 +10,7 @@ const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const Payments = () => {
   const { user } = useAuth();
   const socket = useSocket();
+  const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
   const [myRequests, setMyRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -354,7 +356,7 @@ const Payments = () => {
                       )}
                       {/* Receipt */}
                       {p.status === 'paid' && (
-                        <button className="btn--icon" onClick={() => handleDownloadReceipt(p)} title="Download Receipt">📥</button>
+                        <button className="btn--icon" onClick={() => navigate(`/receipt/${p._id}`)} title="View Receipt">🧾</button>
                       )}
                     </div>
                   </td>

@@ -293,6 +293,29 @@ router.get('/pending/:societyId', auth, async (req, res) => {
   }
 });
 
+// Get Receipt Details (JSON for in-app receipt view)
+router.get('/:id/details', auth, async (req, res) => {
+  try {
+    const payment = await Payment.findById(req.params.id);
+    if (!payment) return res.status(404).json({ message: 'Payment not found' });
+
+    // Ensure user has access
+    if (req.user.role !== 'admin' && req.user.flatId?.toString() !== payment.flatId.toString()) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    const [society, flat] = await Promise.all([
+      Society.findById(payment.societyId),
+      Flat.findById(payment.flatId).populate('blockId', 'name')
+    ]);
+
+    res.json({ payment, society, flat });
+  } catch (error) {
+    console.error('Receipt details error:', error);
+    res.status(500).json({ message: 'Error fetching receipt details', error: error.message });
+  }
+});
+
 // Download Receipt PDF
 router.get('/:id/receipt', auth, async (req, res) => {
   try {

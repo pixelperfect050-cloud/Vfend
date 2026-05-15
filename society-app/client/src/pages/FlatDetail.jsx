@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Modal from '../components/Modal';
 import api from '../utils/api';
@@ -9,6 +9,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const FlatDetail = () => {
   const { flatId } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -230,8 +231,8 @@ const FlatDetail = () => {
                   <td>{p.paidDate ? new Date(p.paidDate).toLocaleDateString('en-IN') : '-'}</td>
                   <td>
                     <div className="btn-group">
-                        <button className="btn--icon" onClick={() => handleDownloadReceipt(p)} title="Download Receipt">
-                          📥
+                        <button className="btn--icon" onClick={() => navigate(`/receipt/${p._id}`)} title="View Receipt">
+                          🧾
                         </button>
                       {isAdmin && p.status !== 'paid' && (
                         <button className="btn btn--sm btn--primary" onClick={() => handleRecordPayment(p)}>

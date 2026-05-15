@@ -3,8 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { StatusBar } from '@capacitor/status-bar';
 import { useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
+import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Blocks from './pages/Blocks';
 import FlatGrid from './pages/FlatGrid';
@@ -22,6 +24,7 @@ import MemberRequests from './pages/MemberRequests';
 import PaymentVerification from './pages/PaymentVerification';
 import Funds from './pages/Funds';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import ReceiptView from './pages/ReceiptView';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
@@ -79,8 +82,13 @@ function App() {
 
   return (
     <Routes>
+      {/* Landing page — show only when NOT logged in */}
+      <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LandingPage />} />
+      
+      {/* Auth pages */}
       <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+      <Route path="/forgot-password" element={user ? <Navigate to="/dashboard" /> : <ForgotPassword />} />
       <Route path="/join" element={<JoinSociety />} />
       <Route path="/join/:code" element={<JoinSociety />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -91,8 +99,11 @@ function App() {
         </ProtectedRoute>
       } />
 
-      <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+      <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Navigate to="/dashboard" />} />
+      </Route>
+
+      <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="blocks" element={<Blocks />} />
         <Route path="blocks/:blockId/flats" element={<FlatGrid />} />
@@ -106,6 +117,7 @@ function App() {
         <Route path="requests" element={<ProtectedRoute adminOnly><MemberRequests /></ProtectedRoute>} />
         <Route path="payment-verification" element={<ProtectedRoute adminOnly><PaymentVerification /></ProtectedRoute>} />
         <Route path="funds" element={<Funds />} />
+        <Route path="receipt/:paymentId" element={<ReceiptView />} />
       </Route>
     </Routes>
   );

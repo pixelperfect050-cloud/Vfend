@@ -350,7 +350,7 @@ const Dashboard = () => {
                       {p.status !== 'paid' && (
                         <button className="btn btn--sm btn--primary" onClick={() => openPayModal(p)}>💰 Pay</button>
                       )}
-                      <button className="btn--icon" onClick={() => handleDownloadReceipt(p)} title="Download Receipt">📥</button>
+                      <button className="btn--icon" onClick={() => navigate(`/receipt/${p._id}`)} title="View Receipt">🧾</button>
                     </div>
                   </td>
                 </tr>

@@ -1,0 +1,160 @@
+/* ══════════════════════════════════════
+   PREMIUM RECEIPT UI — FINTECH STYLE
+   ══════════════════════════════════════ */
+
+.receipt-page{max-width:520px;margin:0 auto;padding:1rem;min-height:100vh}
+.receipt-actions-top{margin-bottom:.75rem}
+
+/* ─── CARD ─── */
+.receipt-card{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+[data-theme="dark"] .receipt-card{box-shadow:0 8px 40px rgba(0,0,0,.25)}
+
+/* ─── WATERMARK ─── */
+.receipt-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:6rem;font-weight:900;color:rgba(5,150,105,.04);pointer-events:none;z-index:1;letter-spacing:.15em;user-select:none}
+[data-theme="dark"] .receipt-watermark{color:rgba(16,185,129,.06)}
+
+/* ─── HEADER ─── */
+.receipt-header{background:linear-gradient(135deg,#1e1b4b,#312e81,#4338ca);padding:1.5rem;color:#fff;position:relative;overflow:hidden}
+.receipt-header::after{content:'';position:absolute;top:-50%;right:-30%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04)}
+.receipt-header__brand{display:flex;align-items:center;gap:1rem;position:relative;z-index:2}
+.receipt-header__logo{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.receipt-header__logo img{width:100%;height:100%;object-fit:cover;border-radius:14px}
+.receipt-header__name{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.15rem}
+.receipt-header__address{font-size:.72rem;opacity:.65;line-height:1.4}
+.receipt-header__contact{font-size:.72rem;opacity:.75;margin-top:.15rem;font-weight:500}
+.receipt-header__badge{position:absolute;top:1rem;right:1rem;z-index:2}
+
+/* ─── STATUS BADGE ─── */
+.receipt-status{padding:.35rem .85rem;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.04em}
+.receipt-status--paid{background:rgba(5,150,105,.15);color:#10b981;border:1px solid rgba(16,185,129,.2)}
+.receipt-status--partial{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.2)}
+.receipt-status--pending{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.2)}
+
+/* ─── TITLE BAR ─── */
+.receipt-title-bar{display:flex;align-items:center;justify-content:center;gap:.75rem;padding:.6rem;background:var(--bg-input);border-bottom:1px solid var(--border);font-size:.8rem;font-weight:700;color:var(--text);letter-spacing:.08em}
+.receipt-title-bar__diamond{color:var(--primary);font-size:.6rem}
+
+/* ─── RECEIPT META ─── */
+.receipt-meta{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.receipt-meta__item{display:flex;flex-direction:column;gap:.1rem}
+.receipt-meta__label{font-size:.65rem;color:var(--text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.receipt-meta__value{font-size:.85rem;font-weight:600;color:var(--text)}
+.receipt-meta__mono{font-family:'Courier New',monospace;font-size:.78rem;letter-spacing:.04em}
+
+/* ─── MEMBER INFO ─── */
+.receipt-member{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.receipt-section-label{font-size:.7rem;color:var(--text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.receipt-member__info{display:flex;align-items:center;gap:1rem}
+.receipt-member__avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;flex-shrink:0}
+.receipt-member__name{font-size:1.1rem;font-weight:700;margin-bottom:.35rem}
+.receipt-member__badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.2rem}
+.receipt-member__phone{font-size:.75rem;color:var(--text-muted);margin-top:.15rem}
+
+/* ─── BADGES ─── */
+.receipt-badge{padding:.25rem .7rem;border-radius:16px;font-size:.68rem;font-weight:600;letter-spacing:.02em}
+.receipt-badge--primary{background:rgba(99,102,241,.1);color:var(--primary);border:1px solid rgba(99,102,241,.15)}
+.receipt-badge--secondary{background:rgba(168,85,247,.08);color:#a855f7;border:1px solid rgba(168,85,247,.12)}
+[data-theme="dark"] .receipt-badge--primary{background:rgba(99,102,241,.15);color:#818cf8}
+[data-theme="dark"] .receipt-badge--secondary{background:rgba(168,85,247,.12);color:#c084fc}
+
+/* ─── TABLE ─── */
+.receipt-table-wrap{padding:0 1.5rem;margin-top:1rem}
+.receipt-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:.85rem}
+.receipt-table thead{background:linear-gradient(135deg,#1e1b4b,#312e81)}
+.receipt-table thead th{color:#fff;font-weight:600;font-size:.72rem;padding:.7rem .75rem;text-transform:uppercase;letter-spacing:.06em;text-align:left}
+.receipt-table thead th.receipt-table__sn{width:36px;text-align:center}
+.receipt-table thead th.receipt-table__amt{text-align:right}
+.receipt-table tbody td{padding:.7rem .75rem;border-bottom:1px solid var(--border);color:var(--text)}
+.receipt-table tbody tr:nth-child(even){background:rgba(99,102,241,.02)}
+[data-theme="dark"] .receipt-table tbody tr:nth-child(even){background:rgba(255,255,255,.02)}
+.receipt-table tbody td:first-child{text-align:center;color:var(--text-muted);font-weight:500;font-size:.8rem}
+.receipt-table .receipt-table__amt{text-align:right;font-weight:600;font-family:'Inter',sans-serif}
+.receipt-row--highlight td{color:#dc2626!important;font-weight:600}
+.receipt-table tfoot tr.receipt-table__total{background:linear-gradient(135deg,#1e1b4b,#312e81)}
+.receipt-table tfoot .receipt-table__total td{color:#fff;font-weight:700;font-size:1rem;padding:.75rem;border:none}
+.receipt-table tfoot .receipt-table__total td:last-child{text-align:right;font-size:1.1rem}
+
+/* ─── AMOUNT IN WORDS ─── */
+.receipt-words{padding:.75rem 1.5rem;display:flex;flex-direction:column;gap:.15rem;border-bottom:1px solid var(--border)}
+.receipt-words__label{font-size:.65rem;color:var(--text-muted);font-weight:500;text-transform:uppercase}
+.receipt-words__text{font-size:.82rem;font-weight:600;font-style:italic;color:var(--text)}
+
+/* ─── INFO CARDS ─── */
+.receipt-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.receipt-info-card{display:flex;align-items:center;gap:.5rem;padding:.6rem;border-radius:10px;background:var(--bg-input);border:1px solid var(--border)}
+.receipt-info-card__icon{font-size:1.2rem;flex-shrink:0}
+.receipt-info-card__label{font-size:.58rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;display:block}
+.receipt-info-card__value{font-size:.75rem;font-weight:700;display:block}
+.receipt-info-card__value--success{color:#059669}
+.receipt-info-card__value--warning{color:#d97706}
+.receipt-info-card__value--danger{color:#dc2626}
+
+/* ─── NOTES ─── */
+.receipt-notes{padding:.75rem 1.5rem;border-bottom:1px solid var(--border)}
+.receipt-notes__label{font-size:.7rem;font-weight:600;color:var(--text-muted);margin-bottom:.25rem;display:block}
+.receipt-notes p{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+
+/* ─── QR + SIGNATURE ─── */
+.receipt-bottom{display:flex;justify-content:space-between;align-items:flex-end;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.receipt-qr{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.receipt-qr__box{width:110px;height:110px;padding:5px;background:#fff;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.receipt-qr__box img{width:100%;height:100%;border-radius:6px}
+.receipt-qr__label{font-size:.6rem;color:var(--text-muted);font-weight:500}
+.receipt-signature{display:flex;flex-direction:column;align-items:center;gap:.2rem;min-width:140px}
+.receipt-signature__line{width:130px;height:1px;background:var(--border);margin-bottom:.3rem}
+.receipt-signature span{font-size:.72rem;font-weight:600;color:var(--text-muted)}
+
+/* ─── FOOTER ─── */
+.receipt-footer{padding:1rem 1.5rem;background:var(--bg-input)}
+.receipt-footer__notes{margin-bottom:.75rem}
+.receipt-footer__notes p{font-size:.62rem;color:var(--text-muted);line-height:1.5;margin-bottom:.1rem}
+.receipt-footer__brand{display:flex;justify-content:space-between;align-items:center;font-size:.6rem;color:var(--text-muted);padding-top:.5rem;border-top:1px solid var(--border)}
+.receipt-footer__brand strong{color:var(--text)}
+
+/* ─── ACTION BUTTONS ─── */
+.receipt-actions{display:flex;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap}
+.receipt-action-btn{flex:1;min-width:140px;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1rem;border-radius:14px;font-size:.85rem;font-weight:700;border:none;cursor:pointer;transition:all .2s}
+.receipt-action-btn:hover{transform:translateY(-2px)}
+.receipt-action-btn--download{background:linear-gradient(135deg,#1e1b4b,#312e81);color:#fff;box-shadow:0 4px 15px rgba(30,27,75,.3)}
+.receipt-action-btn--download:hover{box-shadow:0 6px 20px rgba(30,27,75,.4)}
+.receipt-action-btn--whatsapp{background:linear-gradient(135deg,#128c7e,#25d366);color:#fff;box-shadow:0 4px 15px rgba(37,211,102,.3)}
+.receipt-action-btn--whatsapp:hover{box-shadow:0 6px 20px rgba(37,211,102,.4)}
+.receipt-action-btn--print{background:var(--bg-card);color:var(--text);border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.receipt-action-btn--print:hover{border-color:var(--primary);color:var(--primary)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:600px){
+  .receipt-page{padding:.5rem}
+  .receipt-header{padding:1.25rem}
+  .receipt-header__name{font-size:1rem}
+  .receipt-header__logo{width:42px;height:42px;font-size:1.4rem}
+  .receipt-meta{padding:.75rem 1rem}
+  .receipt-member{padding:1rem}
+  .receipt-table-wrap{padding:0 1rem}
+  .receipt-table{font-size:.78rem}
+  .receipt-table thead th{padding:.5rem .5rem;font-size:.65rem}
+  .receipt-table tbody td{padding:.55rem .5rem}
+  .receipt-info-grid{grid-template-columns:1fr;padding:.75rem 1rem}
+  .receipt-bottom{padding:1rem;flex-direction:column;align-items:center;gap:1.25rem}
+  .receipt-words{padding:.6rem 1rem}
+  .receipt-footer{padding:.75rem 1rem}
+  .receipt-actions{flex-direction:column}
+  .receipt-action-btn{min-width:100%}
+  .receipt-notes{padding:.6rem 1rem}
+}
+
+/* ─── PRINT STYLES ─── */
+@media print{
+  .no-print{display:none!important}
+  body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .receipt-page{max-width:100%;padding:0;margin:0}
+  .receipt-card{box-shadow:none;border:1px solid #ddd;border-radius:0}
+  .receipt-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .receipt-table thead{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .receipt-table tfoot .receipt-table__total{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .receipt-actions{display:none!important}
+  .receipt-watermark{color:rgba(5,150,105,.08)!important}
+
+  /* A4 page sizing */
+  @page{size:A4 portrait;margin:15mm}
+}

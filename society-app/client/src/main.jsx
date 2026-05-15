@@ -6,6 +6,8 @@ import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import { ThemeProvider } from './context/ThemeContext';
 import './index.css';
+import './styles/landing.css';
+import './styles/receipt.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
