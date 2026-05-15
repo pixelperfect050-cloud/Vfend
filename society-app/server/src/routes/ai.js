@@ -6,6 +6,28 @@ const { auth } = require('../middleware/auth');
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'MOCK_KEY');
 
+// Fallback responses when API fails
+const FALLBACK_RESPONSES = {
+  payment: "To check your payment status, go to the Payments section in the app. You can see if your maintenance is paid, pending, or overdue! 💰",
+  receipt: "You can download your receipt from the Payments page - click on any payment to see the receipt download option. 🧾",
+  dashboard: "The Dashboard shows your society's financial health - collection status, pending payments, and recent activity. Navigate using the sidebar menu! 📊",
+  expense: "Go to Expenses section to view and add expense records. Admin can add new expenses with categories like security, cleaning, electricity, etc. 💸",
+  fund: "Society Funds are community savings - like sinking fund, parking fund. Go to Funds to contribute and track contributions! 🏦",
+  member: "Member management lets you invite new members via code, approve join requests, and manage roles (admin/member). 👥",
+  default: "Namaste! For help with the SocietySync app, you can ask me about payments, receipts, expenses, funds, or any other feature. How can I help you today? 😊"
+};
+
+const getFallbackResponse = (message) => {
+  const msg = message.toLowerCase();
+  if (msg.includes('payment') || msg.includes('maintenance')) return FALLBACK_RESPONSES.payment;
+  if (msg.includes('receipt') || msg.includes('bill')) return FALLBACK_RESPONSES.receipt;
+  if (msg.includes('dashboard') || msg.includes('navigate')) return FALLBACK_RESPONSES.dashboard;
+  if (msg.includes('expense') || msg.includes('spend')) return FALLBACK_RESPONSES.expense;
+  if (msg.includes('fund') || msg.includes('saving')) return FALLBACK_RESPONSES.fund;
+  if (msg.includes('member') || msg.includes('user')) return FALLBACK_RESPONSES.member;
+  return FALLBACK_RESPONSES.default;
+};
+
 // System prompt for FunkiAI
 const SYSTEM_PROMPT = `You are FunkiAI, a smart, friendly, and professional AI assistant for the "SocietySync" app — a housing society maintenance management platform.
 
@@ -91,15 +113,22 @@ Respond helpfully and concisely:`;
     const text = response.text();
 
     res.json({ response: text });
-  } catch (error) {
+} catch (error) {
     console.error('Gemini Error Detailed:', error);
     
-    if (error.response?.status === 429 || error.message?.includes('quota')) {
-      return res.status(429).json({ 
-        message: "I'm getting a lot of questions right now! 😅 Please try again in a minute.",
-        response: "I'm getting a lot of questions right now! 😅 Please try again in a minute. The free API has usage limits." 
-      });
+    if (error.response?.status === 429 || error.message?.includes('quota') || error.message?.includes('rate')) {
+      const fallback = getFallbackResponse(message);
+      return res.json({ response: fallback + "\n\n(Note: Using offline mode due to high traffic. 🙏)" });
     }
+
+    if (error.message?.includes('not found') || error.message?.includes('unsupported')) {
+      const fallback = getFallbackResponse(message);
+      return res.json({ response: fallback + "\n\n(Sorry, AI is temporarily unavailable. Try again later! 🙏)" });
+    }
+
+    const fallback = getFallbackResponse(message);
+    res.json({ response: fallback });
+  }
 
     res.status(500).json({ 
       message: `AI Error: ${error.message || 'Something went wrong'}`,
