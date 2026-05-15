@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '';
+const API_BASE = (import.meta.env.VITE_API_URL || 'https://society-backend-b004.onrender.com').replace(/\/$/, '');
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');

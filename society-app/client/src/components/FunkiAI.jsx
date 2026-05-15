@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import '../styles/funkiai.css';
 
@@ -32,8 +32,6 @@ const FunkiAI = () => {
   const recognitionRef = useRef(null);
   const inputRef = useRef(null);
   const chatWindowRef = useRef(null);
-
-  const API_URL = import.meta.env.VITE_API_URL || 'https://society-backend-b004.onrender.com';
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -157,33 +155,36 @@ const FunkiAI = () => {
     setShowQuickActions(false);
 
     try {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(
-        `${API_URL}/api/ai/chat`, 
-        { message: text }, 
-        { 
-          headers: { Authorization: `Bearer ${token}` },
-          timeout: 30000
-        }
-      );
+      const res = await api.post('/api/ai/chat', { message: text });
       
-      const aiMsg = { role: 'ai', content: res.data.response, timestamp: new Date() };
+      const aiMsg = { role: 'ai', content: res.response, timestamp: new Date() };
       setMessages(prev => [...prev, aiMsg]);
-      speak(res.data.response);
+      speak(res.response);
     } catch (error) {
-      console.error('FunkiAI Error:', error);
-      const serverMsg = error.response?.data?.response;
-      const errorMsg = serverMsg || (error.response?.status === 429 
-        ? 'I\'m getting too many requests right now. Please wait a moment and try again! 🙏'
-        : error.code === 'ECONNABORTED'
-        ? 'The request took too long. The server might be waking up — try again in 30 seconds! ⏰'
-        : 'Sorry, I\'m having trouble connecting right now. Please try again in a moment! 🔄');
+      console.error('FunkiAI Error Detail:', error);
       
-      setMessages(prev => [...prev, { role: 'ai', content: errorMsg, timestamp: new Date(), isError: true }]);
+      let errorMsg = error.message || 'Unknown connection error';
+      
+      if (error.message?.includes('Network') || error.message?.includes('fetch')) {
+        errorMsg = 'Network Error: Unable to reach the AI server. 📡';
+      } else if (error.message?.includes('404')) {
+        errorMsg = 'Server Error (404): The AI service was not found on this server. 🔧';
+      } else if (error.message?.includes('401') || error.message?.includes('403')) {
+        errorMsg = 'Auth Error: Your session is invalid. Please relogin. 🔐';
+      } else if (error.message?.includes('500')) {
+        errorMsg = 'Server Error (500): The AI service encountered an internal error. 💥';
+      }
+      
+      setMessages(prev => [...prev, { 
+        role: 'ai', 
+        content: `Debug Info: ${errorMsg} \n\n(If you still see the old "trouble connecting" message, please clear your browser cache!)`, 
+        timestamp: new Date(), 
+        isError: true 
+      }]);
     } finally {
       setIsTyping(false);
     }
-  }, [input, API_URL, speak]);
+  }, [input, speak]);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {

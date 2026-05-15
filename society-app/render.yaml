@@ -15,3 +15,6 @@ services:
         sync: false
       - key: CLIENT_URL
         sync: false
+      - key: GEMINI_API_KEY
+        value: AIzaSyCCJlpbxnbyHqv1LSV7YnwibWR3_Fq9QVc
+        sync: false
