@@ -17,10 +17,16 @@ const GoogleSheetsBackup = () => {
 
   const fetchStatus = async () => {
     try {
+      console.log('Fetching sheet status...');
       const data = await api.get('/api/sheets/status');
+      console.log('Status response:', data);
       setStatus(data);
+      if (!data.sheetEnabled) {
+        setMessage('Google Sheets backup is not enabled for this society');
+      }
     } catch (err) {
-      setMessage(err.message || 'Error connecting to server');
+      console.error('Error fetching status:', err);
+      setMessage('Unable to connect to server. Please make sure you are logged in as admin.');
     } finally {
       setLoading(false);
     }
@@ -112,14 +118,27 @@ const GoogleSheetsBackup = () => {
 
   if (loading) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+      <div style={{ padding: '20px', textAlign: 'center', color: '#000', background: '#fff', minHeight: '100vh' }}>
         Loading...
       </div>
     );
   }
 
+  // If no status, show error state
+  if (!status && !message) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center', color: '#000', background: '#fff', minHeight: '100vh' }}>
+        <h2>Unable to load backup status</h2>
+        <p>Please make sure you are logged in as admin and try again.</p>
+        <button onClick={() => { setLoading(true); fetchStatus(); }} style={{ padding: '10px 20px', marginTop: '10px' }}>
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', color: '#000', background: '#fff', minHeight: '100vh' }}>
       <div style={{ marginBottom: '20px' }}>
         <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold', marginBottom: '8px' }}>
           Google Sheets Backup
