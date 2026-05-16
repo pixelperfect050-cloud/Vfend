@@ -9,6 +9,7 @@ const { notifyFlatOwner, notifyAllUsers } = require('../utils/notificationHelper
 const { logActivity } = require('../services/activityLogger');
 const { generatePaymentReceipt } = require('../utils/pdfGenerator');
 const { emitToSociety } = require('../services/socketService');
+const googleSheetsService = require('../services/googleSheetsService');
 
 
 // Record payment (Manual Entry by Admin)
@@ -116,7 +117,7 @@ router.post('/', auth, adminOnly, async (req, res) => {
       metadata: { flatId, amount: mPaidAmount, month: mMonth, year: mYear }
     }).catch(() => {});
 
-    // ALL background tasks - socket, notifications - run AFTER response
+    // ALL background tasks - socket, notifications, Google Sheets sync - run AFTER response
     // These CANNOT cause any error for the user
     setImmediate(async () => {
       try {
@@ -144,6 +145,13 @@ router.post('/', auth, adminOnly, async (req, res) => {
           });
         } catch (notifErr) {
           console.error('[Payment] Notification error:', notifErr.message);
+        }
+
+        // Sync to Google Sheets (non-blocking)
+        try {
+          await googleSheetsService.syncOnEvent(societyId.toString(), isNew ? 'payment_recorded' : 'payment_updated', responsePayment);
+        } catch (sheetErr) {
+          console.error('[Payment] Google Sheets sync error:', sheetErr.message);
         }
       } catch (secondaryError) {
         console.error('[Payment] Background task error:', secondaryError.message);
@@ -253,7 +261,7 @@ router.put('/:id', auth, adminOnly, async (req, res) => {
     // Send response FIRST
     res.json(payment);
 
-    // Background: Notify flat owner (don't block response)
+    // Background: Notify flat owner and sync to Google Sheets (don't block response)
     setImmediate(async () => {
       try {
         const monthName = new Date(payment.year, payment.month - 1).toLocaleString('default', { month: 'long' });
@@ -264,8 +272,11 @@ router.put('/:id', auth, adminOnly, async (req, res) => {
           message: `Your payment for ${monthName} ${payment.year} has been updated. Paid: ₹${paidAmount}.`,
           type: 'success'
         });
+
+        // Sync to Google Sheets
+        await googleSheetsService.syncOnEvent(payment.societyId.toString(), 'payment_updated', payment);
       } catch (e) {
-        console.error('[Payment PUT] notification error:', e.message);
+        console.error('[Payment PUT] notification/sync error:', e.message);
       }
     });
   } catch (error) {

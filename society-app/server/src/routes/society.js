@@ -4,6 +4,7 @@ const Society = require('../models/Society');
 const User = require('../models/User');
 const { auth, adminOnly } = require('../middleware/auth');
 const { emitToSociety } = require('../services/socketService');
+const googleSheetsService = require('../services/googleSheetsService');
 
 // Get society by invite code (Public)
 router.get('/invite/:code', async (req, res) => {
@@ -44,6 +45,20 @@ router.post('/', auth, async (req, res) => {
       societyId: society._id,
       role: 'admin'
     });
+
+    // Auto-create Google Sheet backup (non-blocking)
+    if (process.env.GOOGLE_SHEET_WEBHOOK) {
+      setImmediate(async () => {
+        try {
+          const result = await googleSheetsService.createSheetForSociety(society._id);
+          if (result.success) {
+            console.log(`[GoogleSheets] Auto-created backup sheet for: ${society.name}`);
+          }
+        } catch (err) {
+          console.error('[GoogleSheets] Auto-create failed:', err.message);
+        }
+      });
+    }
 
     res.status(201).json(society);
   } catch (error) {
@@ -121,6 +136,16 @@ router.put('/member/:userId/status', auth, adminOnly, async (req, res) => {
         isOccupied: true,
         [user.residentType === 'owner' ? 'ownerName' : 'tenantName']: user.name,
         [user.residentType === 'owner' ? 'ownerPhone' : 'tenantPhone']: user.phone
+      });
+
+      // Sync approved member to Google Sheets
+      setImmediate(async () => {
+        try {
+          await googleSheetsService.syncOnEvent(user.societyId.toString(), 'member_added', user);
+          await googleSheetsService.syncOnEvent(user.societyId.toString(), 'flat_updated', user.flatId);
+        } catch (e) {
+          console.error('[Society] Member approval sync error:', e.message);
+        }
       });
     }
 

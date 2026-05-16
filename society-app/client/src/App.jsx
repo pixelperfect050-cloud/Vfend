@@ -28,6 +28,7 @@ import ReceiptView from './pages/ReceiptView';
 import AdminManagement from './pages/AdminManagement';
 import ActivityLog from './pages/ActivityLog';
 import DemoLeads from './pages/DemoLeads';
+import GoogleSheetsBackup from './pages/GoogleSheetsBackup';
 import FunkiAI from './components/FunkiAI';
 import PublicFunkiAI from './components/PublicFunkiAI';
 
@@ -126,6 +127,7 @@ function App() {
           <Route path="receipt/:paymentId" element={<ReceiptView />} />
           <Route path="admin-management" element={<ProtectedRoute adminOnly><AdminManagement /></ProtectedRoute>} />
           <Route path="activity-log" element={<ProtectedRoute adminOnly><ActivityLog /></ProtectedRoute>} />
+          <Route path="google-sheets-backup" element={<ProtectedRoute adminOnly><GoogleSheetsBackup /></ProtectedRoute>} />
           <Route path="demo-leads" element={<ProtectedRoute adminOnly><DemoLeads /></ProtectedRoute>} />
         </Route>
       </Routes>

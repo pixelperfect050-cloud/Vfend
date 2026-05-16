@@ -28,6 +28,7 @@ const Layout = () => {
     { path: '/reports', icon: '📈', label: 'Reports' },
     { path: '/admin-management', icon: '👑', label: 'Admin Management', adminOnly: true },
     { path: '/activity-log', icon: '📋', label: 'Activity Log', adminOnly: true },
+    { path: '/google-sheets-backup', icon: '📑', label: 'Sheet Backup', adminOnly: true },
     { path: '/demo-leads', icon: '📊', label: 'Demo Leads', adminOnly: true },
     { path: '/notifications', icon: '🔔', label: 'Notifications' },
     { path: '/settings', icon: '⚙️', label: 'Settings' },
