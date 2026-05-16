@@ -105,6 +105,8 @@ const PublicFunkiAI = () => {
       .replace(/#{1,6}\s/g, '')
       .replace(/[•\-]\s/g, '')
       .replace(/\n+/g, '. ')
+      // Convert phone numbers (7+ digits) to spaced digits for TTS
+      .replace(/\b(\d{7,})\b/g, (match) => match.split('').join(' '))
       .replace(/[\u{1F600}-\u{1F64F}]/gu, '')
       .replace(/[\u{1F300}-\u{1F5FF}]/gu, '')
       .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')

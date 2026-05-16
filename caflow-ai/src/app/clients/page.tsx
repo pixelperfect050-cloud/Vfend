@@ -40,6 +40,8 @@ const businessTypeLabels: Record<string, string> = {
   public_ltd: "Public Ltd",
   trust: "Trust",
   society: "Society",
+};
+
 export default function ClientsPage() {
   const { user } = useAuth();
   const { clients: activeClients } = useData();

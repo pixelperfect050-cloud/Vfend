@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, User, Mail, Phone, Building2, Briefcase, MapPin, Plus } from "lucide-react";
 import { useData } from "@/contexts/DataContext";
 import { useToast } from "@/components/ui/toast";
+import type { BusinessType } from "@/types";
 
 interface AddClientModalProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ export function AddClientModal({ isOpen, onClose }: AddClientModalProps) {
     name: "",
     email: "",
     phone: "",
-    businessType: "proprietorship",
+    businessType: "proprietorship" as BusinessType,
     gstNumber: "",
     panNumber: "",
     address: "",
@@ -29,7 +30,10 @@ export function AddClientModal({ isOpen, onClose }: AddClientModalProps) {
     e.preventDefault();
     if (!formData.name) return;
 
-    addClient(formData);
+    addClient({
+      ...formData,
+      businessType: formData.businessType as BusinessType
+    });
     addToast({
       title: "Client Added",
       message: `${formData.name} has been added successfully.`,

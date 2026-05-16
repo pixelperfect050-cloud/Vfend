@@ -116,6 +116,8 @@ const FunkiAI = () => {
       .replace(/#{1,6}\s/g, '')
       .replace(/[•\-]\s/g, '')
       .replace(/\n+/g, '. ')
+      // Convert phone numbers (7+ digits) to spaced digits for TTS
+      .replace(/\b(\d{7,})\b/g, (match) => match.split('').join(' '))
       .replace(/\(Offline mode.*?\)/gi, '')
       .replace(/\(AI temporarily.*?\)/gi, '')
       .replace(/\(Demo mode.*?\)/gi, '')

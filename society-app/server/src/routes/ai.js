@@ -10,37 +10,127 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'MOCK_KEY');
 // ═══════════════════════════════════════════════════
 // FALLBACK RESPONSES (when Gemini API is unavailable)
 // ═══════════════════════════════════════════════════
-const FALLBACK_RESPONSES = {
-  hindi: {
-    payment: "अपना payment status check करने के लिए Payments section में जाएं। वहां आप देख सकते हैं कि आपका maintenance paid है, pending है, या overdue!",
-    receipt: "Receipt download करने के लिए Payments page पर जाएं - किसी भी payment पर click करके download option मिल जाएगा!",
-    dashboard: "Dashboard में आप अपनी society का financial health देख सकते हैं। Sidebar menu से navigate करें!",
-    expense: "Expenses section में जाकर expense records देख और add कर सकते हैं!",
-    fund: "Society Funds community savings होते हैं। Funds में जाकर contribute करें!",
-    member: "Member management में नए members invite कर सकते हैं code से!",
-    default: "नमस्ते! SocietySync app में help के लिए आप मुझसे payments, receipts, expenses, funds के बारे में पूछ सकते हैं। आज आपकी कैसे help कर सकता हूं?"
-  },
-  english: {
-    payment: "To check your payment status, go to the Payments section in the app. You can see if your maintenance is paid, pending, or overdue!",
-    receipt: "You can download your receipt from the Payments page - click on any payment to see the download option!",
-    dashboard: "The Dashboard shows your society's financial health. Navigate using the sidebar!",
-    expense: "Go to Expenses section to view and add expense records!",
-    fund: "Society Funds are community savings. Go to Funds to contribute!",
-    member: "Member management lets you invite members via code!",
-    default: "Namaste! For help with SocietySync app, you can ask me about payments, receipts, expenses, funds, or any feature. How can I help you today?"
-  }
-};
-
-const getFallbackResponse = (message, language = 'hindi') => {
-  const responses = FALLBACK_RESPONSES[language] || FALLBACK_RESPONSES.hindi;
+/**
+ * Smart fallback: uses actual DB data from userContext even when Gemini is unavailable
+ */
+const getSmartFallback = (message, language = 'hindi', userContext = {}) => {
   const msg = message.toLowerCase();
-  if (msg.includes('payment') || msg.includes('maintenance')) return responses.payment;
-  if (msg.includes('receipt') || msg.includes('bill')) return responses.receipt;
-  if (msg.includes('dashboard') || msg.includes('navigate')) return responses.dashboard;
-  if (msg.includes('expense') || msg.includes('spend')) return responses.expense;
-  if (msg.includes('fund') || msg.includes('saving')) return responses.fund;
-  if (msg.includes('member') || msg.includes('user')) return responses.member;
-  return responses.default;
+  const isHindi = language === 'hindi';
+  const ctx = userContext || {};
+  const payments = ctx.payments || {};
+  const flat = ctx.flat || {};
+  const society = ctx.society || {};
+  const funds = ctx.funds || {};
+  const financials = ctx.financials || {};
+
+  // ── MEMBER: Payment / Due queries ──
+  if (/due|kitna|pending|maintenance|payment status|amount/.test(msg)) {
+    if (ctx.role === 'admin') {
+      return isHindi
+        ? `📊 ${society.name || 'Society'} ka overview:\n• Total Collection: ${financials.totalCollection || '₹0'}\n• Total Expenses: ${financials.totalExpenses || '₹0'}\n• Current Balance: ${financials.currentBalance || '₹0'}\n• ${financials.currentMonth || 'Is mahine'}: ${financials.monthPaidCount || 0} paid, ${financials.monthPendingCount || 0} pending\n• Month Collection: ${financials.monthCollection || '₹0'}\n• Month Due: ${financials.monthDue || '₹0'}`
+        : `📊 ${society.name || 'Society'} overview:\n• Total Collection: ${financials.totalCollection || '₹0'}\n• Total Expenses: ${financials.totalExpenses || '₹0'}\n• Balance: ${financials.currentBalance || '₹0'}\n• ${financials.currentMonth || 'This month'}: ${financials.monthPaidCount || 0} paid, ${financials.monthPendingCount || 0} pending`;
+    }
+    if (payments.totalDue && payments.pendingCount > 0) {
+      const pendingList = (payments.pendingMonths || []).join('\n• ');
+      return isHindi
+        ? `💰 ${ctx.name || 'Aapka'} maintenance status:\n\n• Total Due: **${payments.totalDue}**\n• Pending Months: **${payments.pendingCount}**\n• ${pendingList ? '📅 Pending:\n• ' + pendingList : ''}\n\nPayments section se pay kar sakte ho!`
+        : `💰 ${ctx.name || 'Your'} maintenance status:\n\n• Total Due: **${payments.totalDue}**\n• Pending Months: **${payments.pendingCount}**\n• ${pendingList ? 'Pending:\n• ' + pendingList : ''}\n\nYou can pay from the Payments section!`;
+    }
+    return isHindi
+      ? `✅ ${ctx.name || 'Aapka'}, koi pending dues nahi hai! Sab clear hai. 🎉`
+      : `✅ ${ctx.name || 'You have'} no pending dues! All clear. 🎉`;
+  }
+
+  // ── Last Payment ──
+  if (/last payment|pichla|kab kiya|recent payment/.test(msg)) {
+    const lp = payments.lastPayment;
+    if (lp) {
+      return isHindi
+        ? `📅 Aapka last payment:\n• Month: **${lp.month}**\n• Amount: **${lp.amount}**\n• Date: **${lp.date}**\n• Method: **${lp.method || 'N/A'}**\n• Receipt: **${lp.receiptNumber || 'N/A'}**`
+        : `📅 Your last payment:\n• Month: **${lp.month}**\n• Amount: **${lp.amount}**\n• Date: **${lp.date}**\n• Method: **${lp.method || 'N/A'}**\n• Receipt: **${lp.receiptNumber || 'N/A'}**`;
+    }
+    return isHindi ? '❌ Koi payment record nahi mila.' : '❌ No payment record found.';
+  }
+
+  // ── Pending Months ──
+  if (/pending month|konse month|kitne month/.test(msg)) {
+    if (payments.pendingCount > 0) {
+      const list = (payments.pendingMonths || []).join('\n• ');
+      return isHindi
+        ? `📋 Aapke **${payments.pendingCount}** months pending hain:\n• ${list}`
+        : `📋 You have **${payments.pendingCount}** months pending:\n• ${list}`;
+    }
+    return isHindi ? '✅ Koi pending month nahi hai! All clear!' : '✅ No pending months! All clear!';
+  }
+
+  // ── Flat Status ──
+  if (/flat|status|mera flat|room/.test(msg)) {
+    if (flat.number) {
+      return isHindi
+        ? `🏠 Aapka Flat:\n• Flat: **${flat.number}**\n• Block: **${flat.block}**\n• Type: **${flat.type || 'N/A'}**\n• Floor: **${flat.floor || 'N/A'}**\n• Owner: **${flat.ownerName || ctx.name}**\n• Month Status: **${flat.currentStatus || 'N/A'}**`
+        : `🏠 Your Flat:\n• Flat: **${flat.number}**\n• Block: **${flat.block}**\n• Type: **${flat.type || 'N/A'}**\n• Floor: **${flat.floor || 'N/A'}**\n• Owner: **${flat.ownerName || ctx.name}**\n• Month Status: **${flat.currentStatus || 'N/A'}**`;
+    }
+    return isHindi ? 'Flat info available nahi hai abhi.' : 'Flat info not available right now.';
+  }
+
+  // ── Society Balance / Fund ──
+  if (/balance|fund|collection|saving|society ka/.test(msg)) {
+    if (ctx.role === 'admin' && financials.currentBalance) {
+      return isHindi
+        ? `🏦 Society Balance:\n• Total Collection: **${financials.totalCollection}**\n• Total Expenses: **${financials.totalExpenses}**\n• Current Balance: **${financials.currentBalance}**\n• Today Approved: **${financials.todayApproved || 0}** payments (${financials.todayAmount || '₹0'})`
+        : `🏦 Society Balance:\n• Total Collection: **${financials.totalCollection}**\n• Total Expenses: **${financials.totalExpenses}**\n• Balance: **${financials.currentBalance}**\n• Today: **${financials.todayApproved || 0}** payments (${financials.todayAmount || '₹0'})`;
+    }
+    if (society.maintenanceAmount) {
+      return isHindi
+        ? `🏠 Society: **${society.name}**\n• Monthly Maintenance: **${society.maintenanceAmount}**\n• Late Fee: **${society.lateFeePerDay}/day** (after ${society.lateFeeAfterDays || 'N/A'} days)\n• Total Paid: **${payments.totalPaid || '₹0'}**`
+        : `🏠 Society: **${society.name}**\n• Monthly Maintenance: **${society.maintenanceAmount}**\n• Late Fee: **${society.lateFeePerDay}/day** (after ${society.lateFeeAfterDays || 'N/A'} days)\n• Total Paid: **${payments.totalPaid || '₹0'}**`;
+    }
+  }
+
+  // ── Expense ──
+  if (/expense|kharcha|spent|kharche/.test(msg)) {
+    if (ctx.role === 'admin' && ctx.recentExpenses?.length > 0) {
+      const list = ctx.recentExpenses.map(e => `${e.category}: ${e.amount} (${e.date})`).join('\n• ');
+      return isHindi
+        ? `📝 Recent Expenses:\n• ${list}\n\nTotal Expenses: **${financials.totalExpenses || '₹0'}**`
+        : `📝 Recent Expenses:\n• ${list}\n\nTotal Expenses: **${financials.totalExpenses || '₹0'}**`;
+    }
+    return isHindi ? 'Expenses section mein jaake records dekh sakte ho!' : 'Check the Expenses section for detailed records!';
+  }
+
+  // ── Collection Report (Admin) ──
+  if (/report|collection report|monthly|block.*due|block.*pending/.test(msg)) {
+    if (ctx.role === 'admin' && ctx.blockDues?.length > 0) {
+      const blockInfo = ctx.blockDues.map(b => `${b.block}: ${b.pendingCount} pending (${b.dueAmount})`).join('\n• ');
+      return isHindi
+        ? `📊 ${financials.currentMonth || 'Is mahine'} ka Collection Report:\n\n• Paid: **${financials.monthPaidCount || 0}** flats\n• Pending: **${financials.monthPendingCount || 0}** flats\n• Collection: **${financials.monthCollection || '₹0'}**\n• Due: **${financials.monthDue || '₹0'}**\n\n🏢 Block-wise Dues:\n• ${blockInfo}`
+        : `📊 ${financials.currentMonth || 'This month'} Collection Report:\n\n• Paid: **${financials.monthPaidCount || 0}** flats\n• Pending: **${financials.monthPendingCount || 0}** flats\n• Collected: **${financials.monthCollection || '₹0'}**\n• Due: **${financials.monthDue || '₹0'}**\n\n🏢 Block-wise:\n• ${blockInfo}`;
+    }
+  }
+
+  // ── Receipt ──
+  if (/receipt|download|bill/.test(msg)) {
+    return isHindi
+      ? 'Receipt download karne ke liye Payments page pe jao, payment pe click karo aur Download button use karo! 📄'
+      : 'To download receipt, go to Payments, click on a payment and use the Download button! 📄';
+  }
+
+  // ── Default: Show overview ──
+  if (ctx.role === 'admin' && financials.totalCollection) {
+    return isHindi
+      ? `Namaste ${ctx.name}! 🙏 Main FunkiAI hoon.\n\n📊 Quick Overview:\n• Collection: ${financials.totalCollection}\n• Expenses: ${financials.totalExpenses}\n• Balance: ${financials.currentBalance}\n• Members: ${ctx.members?.total || 'N/A'}\n\nKya jaanna hai? Payments, expenses, reports — kuch bhi poochho!`
+      : `Hello ${ctx.name}! I'm FunkiAI.\n\n📊 Quick Overview:\n• Collection: ${financials.totalCollection}\n• Expenses: ${financials.totalExpenses}\n• Balance: ${financials.currentBalance}\n• Members: ${ctx.members?.total || 'N/A'}\n\nAsk me about payments, expenses, or reports!`;
+  }
+
+  if (payments.totalDue || payments.totalPaid) {
+    return isHindi
+      ? `Namaste ${ctx.name}! 🙏\n\n💰 Status:\n• Total Paid: ${payments.totalPaid || '₹0'}\n• Total Due: ${payments.totalDue || '₹0'}\n• Pending: ${payments.pendingCount || 0} months\n\nKya help chahiye?`
+      : `Hello ${ctx.name}!\n\n💰 Status:\n• Total Paid: ${payments.totalPaid || '₹0'}\n• Total Due: ${payments.totalDue || '₹0'}\n• Pending: ${payments.pendingCount || 0} months\n\nHow can I help?`;
+  }
+
+  return isHindi
+    ? `Namaste ${ctx.name || ''}! 🙏 Main FunkiAI hoon. Payments, expenses, funds — kuch bhi poochho!`
+    : `Hello ${ctx.name || ''}! I'm FunkiAI. Ask me about payments, expenses, funds, or anything!`;
 };
 
 // ═══════════════════════════════════════════════════
@@ -246,7 +336,7 @@ router.post(['/', '/chat'], auth, async (req, res) => {
   }
 
   if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MOCK_KEY') {
-    const fallback = getFallbackResponse(message, language);
+    const fallback = getSmartFallback(message, language, userContext);
     return res.json({ response: fallback });
   }
 
@@ -269,13 +359,8 @@ Respond using the real data above. Be helpful and conversational:`;
   } catch (error) {
     console.error('Gemini Error:', error.message);
 
-    // Fallback gracefully
-    if (error.message?.includes('quota') || error.message?.includes('rate') || error.message?.includes('429')) {
-      const fallback = getFallbackResponse(message, language);
-      return res.json({ response: fallback + " 🙏" });
-    }
-
-    const fallback = getFallbackResponse(message, language);
+    // Fallback gracefully with real data
+    const fallback = getSmartFallback(message, language, userContext);
     res.json({ response: fallback });
   }
 });

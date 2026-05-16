@@ -36,7 +36,8 @@ const navItems = [
 ];
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const router = useRouter();
   const { clients, activities, tasks } = useData();
   const searchParams = useSearchParams();
   const { addToast } = useToast();
