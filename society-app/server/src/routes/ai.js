@@ -298,6 +298,25 @@ router.post('/demo-lead', async (req, res) => {
       source: 'ai_chat'
     });
 
+    // Push to Google Sheets (non-blocking)
+    const sheetWebhook = process.env.GOOGLE_SHEET_WEBHOOK;
+    if (sheetWebhook) {
+      fetch(sheetWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          mobile,
+          societyName: societyName || '',
+          numberOfFlats: numberOfFlats || 0,
+          city: city || '',
+          preferredDemoTime: preferredDemoTime || '',
+          source: 'ai_chat',
+          bookedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+        })
+      }).catch(err => console.error('Google Sheet push error:', err.message));
+    }
+
     res.json({ 
       success: true, 
       message: 'Demo booked successfully!',

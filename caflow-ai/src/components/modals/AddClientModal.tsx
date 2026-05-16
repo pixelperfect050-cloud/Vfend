@@ -135,7 +135,7 @@ export function AddClientModal({ isOpen, onClose }: AddClientModalProps) {
                       <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                       <select
                         value={formData.businessType}
-                        onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
+                        onChange={(e) => setFormData({ ...formData, businessType: e.target.value as BusinessType })}
                         className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-amber-500 outline-none transition-all appearance-none"
                       >
                         <option value="proprietorship">Proprietorship</option>
