@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=360,initial-scale=1">
+<title>SocietySync Demo</title>
+<link rel="stylesheet" href="demo-styles.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- SCENE 1: INTRO -->
+<div class="scene active" id="s1">
+  <div class="s1-bg"></div>
+  <div class="glow" style="width:350px;height:350px"></div>
+  <div class="particles" id="pt1"></div>
+  <div class="s1-buildings" id="buildings"></div>
+  <div class="s1-phone">
+    <div class="s1-phone-screen">
+      <div class="s1-phone-logo">🏘️</div>
+      <div class="s1-phone-name">SocietySync</div>
+    </div>
+  </div>
+  <div class="s1-text">
+    <h2>Smart Society Management</h2>
+    <p>Everything in one app</p>
+  </div>
+</div>
+
+<!-- SCENE 2: DASHBOARD -->
+<div class="scene" id="s2">
+  <div class="s2-bg"></div>
+  <div class="s2-phone">
+    <div class="phone-hdr">
+      <div class="dot"></div>
+      <span>🏘️ Dashboard</span>
+      <span style="font-size:10px;opacity:.7">⚙️</span>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-lbl">Collection</div><div class="stat-val" data-count="30998">₹0</div></div>
+      <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-lbl">Expenses</div><div class="stat-val" data-count="36000">₹0</div></div>
+      <div class="stat-card"><div class="stat-icon">💎</div><div class="stat-lbl">Balance</div><div class="stat-val" data-count="5002" data-prefix="-₹">-₹0</div></div>
+      <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-lbl">Pending</div><div class="stat-val" data-count="1998">₹0</div></div>
+    </div>
+    <div class="mini-chart">
+      <div class="mini-bar" style="height:40%;animation-delay:.4s;opacity:.5"></div>
+      <div class="mini-bar" style="height:65%;animation-delay:.5s;opacity:.6"></div>
+      <div class="mini-bar" style="height:85%;animation-delay:.6s;opacity:.7"></div>
+      <div class="mini-bar" style="height:55%;animation-delay:.7s;opacity:.55"></div>
+      <div class="mini-bar" style="height:90%;animation-delay:.8s;opacity:.8"></div>
+      <div class="mini-bar" style="height:70%;animation-delay:.9s;opacity:.65"></div>
+      <div class="mini-bar" style="height:95%;animation-delay:1s"></div>
+      <div class="mini-bar" style="height:60%;animation-delay:1.1s;opacity:.6"></div>
+    </div>
+  </div>
+  <div class="scene-label"><h3>Track society finances in real time</h3><p>Complete financial overview at a glance</p></div>
+</div>
+
+<!-- SCENE 3: BLOCKS & FLATS -->
+<div class="scene" id="s3">
+  <div class="s3-bg"></div>
+  <div class="block-title">Block <span>E</span> — Flat Status</div>
+  <div class="flat-grid" id="flatGrid"></div>
+  <div class="legend">
+    <span><span class="dot" style="background:#10b981"></span>Paid</span>
+    <span><span class="dot" style="background:#ef4444"></span>Pending</span>
+    <span><span class="dot" style="background:#f59e0b"></span>Partial</span>
+  </div>
+  <div class="flat-popup" id="flatPopup">
+    <div style="font-size:12px;font-weight:800;color:#1f2937;margin-bottom:6px">Flat E-203</div>
+    <div style="font-size:10px;color:#6b7280;margin-bottom:8px">Payment History</div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;padding:4px 0;border-bottom:1px solid #f3f4f6"><span style="color:#6b7280">May 2026</span><span style="color:#f59e0b;font-weight:700">₹500 / ₹1000</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;padding:4px 0;border-bottom:1px solid #f3f4f6"><span style="color:#6b7280">Apr 2026</span><span style="color:#10b981;font-weight:700">₹1,000 ✓</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;padding:4px 0"><span style="color:#6b7280">Mar 2026</span><span style="color:#10b981;font-weight:700">₹1,000 ✓</span></div>
+  </div>
+  <div class="scene-label"><h3 style="color:#1f2937">Visual flat-wise maintenance tracking</h3><p style="color:#6b7280">Color-coded payment status for every flat</p></div>
+</div>
+
+<!-- SCENE 4: MAINTENANCE SYSTEM -->
+<div class="scene" id="s4">
+  <div class="s4-bg"></div>
+  <div class="bill-card">
+    <div class="bill-top">
+      <div><div style="font-size:9px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:1px">May 2026</div><div class="bill-amt">₹1,000</div></div>
+      <div class="badge green">✅ Paid</div>
+    </div>
+    <div class="bill-row"><span>Flat Number</span><span>E-203</span></div>
+    <div class="bill-row"><span>Owner</span><span>Rahul Sharma</span></div>
+    <div class="bill-row"><span>Method</span><span>Cash</span></div>
+    <div class="bill-row"><span>Date</span><span>10/05/2026</span></div>
+    <div class="bill-row"><span>Status</span><span style="color:#10b981">Approved ✓</span></div>
+    <div class="pay-btns">
+      <div class="pay-btn active">💵 Cash</div>
+      <div class="pay-btn">📱 UPI</div>
+      <div class="pay-btn">🏦 Bank</div>
+    </div>
+  </div>
+  <div class="scene-label"><h3 style="color:#1f2937">Easy maintenance collection & verification</h3><p style="color:#6b7280">Multiple payment methods supported</p></div>
+</div>
+
+<!-- SCENE 5: SOCIETY FUNDS -->
+<div class="scene" id="s5">
+  <div class="s5-bg"></div>
+  <div class="fund-card">
+    <div class="fund-name">🎊 Festival Fund</div>
+    <div class="fund-desc">Diwali celebration collection</div>
+    <div class="prog-track"><div class="prog-fill" id="fp1" style="width:0%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div>
+    <div class="prog-labels"><span>₹10,000 collected</span><span>₹60,000 target</span></div>
+    <div class="fund-divider"></div>
+    <div class="fund-name">🔧 Lift Repair Fund</div>
+    <div class="fund-desc">Emergency maintenance reserve</div>
+    <div class="prog-track"><div class="prog-fill" id="fp2" style="width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6)"></div></div>
+    <div class="prog-labels"><span>₹25,000</span><span>₹50,000</span></div>
+    <div class="fund-divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><div style="font-size:10px;color:#9ca3af">Total Contributors</div><div style="font-size:18px;font-weight:800;color:#1f2937">14 / 20</div></div>
+      <div style="font-size:24px">👥</div>
+    </div>
+  </div>
+  <div class="scene-label"><h3 style="color:#1f2937">Manage society funds transparently</h3><p style="color:#6b7280">Track every contribution in real time</p></div>
+</div>
+
+<!-- SCENE 6: EXPENSE MANAGEMENT -->
+<div class="scene" id="s6">
+  <div class="s6-bg"></div>
+  <div class="exp-list">
+    <div class="exp-item" style="animation-delay:.2s"><div class="exp-ico" style="background:#fef3c7">⚡</div><div class="exp-info"><div class="exp-name">Electricity Bill</div><div class="exp-cat">Utilities • May 2026</div></div><div class="exp-val">₹12,500</div></div>
+    <div class="exp-item" style="animation-delay:.4s"><div class="exp-ico" style="background:#dcfce7">🧹</div><div class="exp-info"><div class="exp-name">Cleaning Service</div><div class="exp-cat">Maintenance • Monthly</div></div><div class="exp-val">₹8,000</div></div>
+    <div class="exp-item" style="animation-delay:.6s"><div class="exp-ico" style="background:#e0e7ff">🛗</div><div class="exp-info"><div class="exp-name">Lift Maintenance</div><div class="exp-cat">Repairs • Quarterly</div></div><div class="exp-val">₹5,500</div></div>
+    <div class="exp-item" style="animation-delay:.8s"><div class="exp-ico" style="background:#fce7f3">👮</div><div class="exp-info"><div class="exp-name">Security Guards</div><div class="exp-cat">Security • Monthly</div></div><div class="exp-val">₹10,000</div></div>
+  </div>
+  <div class="chart-area">
+    <div style="font-size:10px;font-weight:700;color:#1f2937;margin-bottom:6px;text-align:center">Monthly Expenses</div>
+    <div class="chart-bar-group">
+      <div class="chart-col"><div class="chart-fill" data-h="45%" style="height:0;background:linear-gradient(180deg,#6366f1,#818cf8);animation-delay:1.6s"></div><div class="chart-lbl">Jan</div></div>
+      <div class="chart-col"><div class="chart-fill" data-h="60%" style="height:0;background:linear-gradient(180deg,#6366f1,#818cf8);animation-delay:1.75s"></div><div class="chart-lbl">Feb</div></div>
+      <div class="chart-col"><div class="chart-fill" data-h="75%" style="height:0;background:linear-gradient(180deg,#6366f1,#818cf8);animation-delay:1.9s"></div><div class="chart-lbl">Mar</div></div>
+      <div class="chart-col"><div class="chart-fill" data-h="55%" style="height:0;background:linear-gradient(180deg,#6366f1,#818cf8);animation-delay:2.05s"></div><div class="chart-lbl">Apr</div></div>
+      <div class="chart-col"><div class="chart-fill" data-h="90%" style="height:0;background:linear-gradient(180deg,#8b5cf6,#a78bfa);animation-delay:2.2s"></div><div class="chart-lbl">May</div></div>
+    </div>
+  </div>
+  <div class="scene-label"><h3 style="color:#1f2937">Track every expense professionally</h3><p style="color:#6b7280">Categorized reports & analytics</p></div>
+</div>
+
+<!-- SCENE 7: APP TOUR -->
+<div class="scene" id="s7">
+  <div class="s7-bg"></div>
+  <div class="tour-phone">
+    <div class="tour-screen">
+      <div class="tour-hdr"><h4>🏘️ SocietySync</h4></div>
+      <div class="tour-content">
+        <div class="tour-btn">📊 Dashboard Overview</div>
+        <div class="tour-btn">🏠 Manage Flats & Blocks</div>
+        <div class="tour-btn">💰 Track Payments</div>
+        <div class="tour-btn">📋 Expense Reports</div>
+        <div class="tour-btn">🎯 Society Funds</div>
+      </div>
+      <div class="tour-highlight" id="tourHL" style="display:none"></div>
+      <div class="tour-tooltip" id="tourTT" style="display:none"></div>
+    </div>
+  </div>
+  <div class="scene-label light"><h3>Simple for every resident</h3><p>Guided onboarding walkthrough</p></div>
+</div>
+
+<!-- SCENE 8: ADMIN APPROVAL -->
+<div class="scene" id="s8">
+  <div class="s8-bg"></div>
+  <div class="approval-flow">
+    <div class="approval-card" style="animation-delay:0s">
+      <div class="approval-step">
+        <div class="step-num" style="background:linear-gradient(135deg,#6366f1,#818cf8)">1</div>
+        <div class="step-info"><h4>👤 Member Submits Payment</h4><p>Flat E-203 • ₹1,000 via UPI</p></div>
+      </div>
+    </div>
+    <div class="arrow-down" style="animation-delay:.5s">⬇️</div>
+    <div class="approval-card" style="animation-delay:.6s">
+      <div class="approval-step">
+        <div class="step-num" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">2</div>
+        <div class="step-info"><h4>🔔 Admin Gets Notification</h4><p>Payment verification request</p></div>
+      </div>
+    </div>
+    <div class="arrow-down" style="animation-delay:1.1s">⬇️</div>
+    <div class="approval-card" style="animation-delay:1.2s">
+      <div class="approval-step">
+        <div class="step-num" style="background:linear-gradient(135deg,#10b981,#34d399)">3</div>
+        <div class="step-info"><h4>✅ Admin Approves</h4><p>Payment verified & recorded</p></div>
+      </div>
+    </div>
+    <div class="status-change" id="statusChange" style="opacity:0;transition:opacity .6s">
+      <div class="status-pill pending-s">⏳ Pending</div>
+      <div class="status-arrow">→</div>
+      <div class="status-pill paid-s">✅ Paid</div>
+    </div>
+  </div>
+  <div class="scene-label"><h3 style="color:#1f2937">Secure approval workflow</h3><p style="color:#6b7280">Every payment verified by admin</p></div>
+</div>
+
+<!-- SCENE 9: MULTI DEVICE -->
+<div class="scene" id="s9">
+  <div class="s9-bg"></div>
+  <div class="devices">
+    <div class="device phone-d"><div class="dev-screen"><div class="mini-logo">📱</div><div class="mini-text">PHONE</div></div><div class="dev-bar"><div class="dev-dot"></div></div></div>
+    <div class="device tablet-d"><div class="dev-screen"><div class="mini-logo">📊</div><div class="mini-text">TABLET</div></div><div class="dev-bar"><div class="dev-dot"></div></div></div>
+    <div class="device desktop-d"><div class="dev-screen"><div class="mini-logo">🖥️</div><div class="mini-text">DESKTOP</div></div><div class="dev-bar"><div class="dev-dot"></div></div></div>
+  </div>
+  <div class="device-label">Android • Tablet • Desktop</div>
+  <div class="scene-label light"><h3>Works beautifully on every device</h3><p>Responsive design for all screens</p></div>
+</div>
+
+<!-- SCENE 10: OUTRO -->
+<div class="scene" id="s10">
+  <div class="s10-bg"></div>
+  <div class="particles" id="pt2"></div>
+  <div class="glow" style="width:400px;height:400px"></div>
+  <div class="outro-ring"></div>
+  <div class="outro-ring"></div>
+  <div class="outro-ring"></div>
+  <div class="outro-logo">🏘️</div>
+  <div class="outro-title">SocietySync</div>
+  <div class="outro-sub">Smart Society • Smart Management</div>
+  <div class="outro-cta">Download Now</div>
+  <div class="powered-by">Powered by Funkariya</div>
+</div>
+
+<script src="demo-script.js"></script>
+</body>
+</html>

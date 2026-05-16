@@ -301,20 +301,18 @@ router.post('/demo-lead', async (req, res) => {
     // Push to Google Sheets (non-blocking)
     const sheetWebhook = process.env.GOOGLE_SHEET_WEBHOOK;
     if (sheetWebhook) {
-      fetch(sheetWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          mobile,
-          societyName: societyName || '',
-          numberOfFlats: numberOfFlats || 0,
-          city: city || '',
-          preferredDemoTime: preferredDemoTime || '',
-          source: 'ai_chat',
-          bookedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-        })
-      }).catch(err => console.error('Google Sheet push error:', err.message));
+      const axios = require('axios');
+      axios.post(sheetWebhook, {
+        name,
+        mobile,
+        societyName: societyName || '',
+        numberOfFlats: numberOfFlats || 0,
+        city: city || '',
+        preferredDemoTime: preferredDemoTime || '',
+        source: 'ai_chat',
+        bookedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+      }).then(() => console.log('Successfully pushed to Google Sheets'))
+        .catch(err => console.error('Google Sheet push error:', err.message));
     }
 
     res.json({ 

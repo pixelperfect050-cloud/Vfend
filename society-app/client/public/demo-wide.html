@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocietySync Cinematic Demo (16:9)</title>
+    <link rel="stylesheet" href="demo-wide-styles.css">
+    <link rel="stylesheet" href="demo-styles.css">
+    <style>
+        /* Feature Specific Styles */
+        .fund-bar-wrap { background: #f1f5f9; height: 12px; border-radius: 6px; overflow: hidden; margin: 10px 0; }
+        .fund-progress { background: var(--primary); height: 100%; border-radius: 6px; transition: width 1s ease-out; }
+        .expense-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        .tooltip-v { position: absolute; background: var(--primary); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 12px; font-weight: 700; box-shadow: 0 10px 20px rgba(0,0,0,0.2); animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .tooltip-v::after { content: ''; position: absolute; top: -5px; left: 20px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 5px solid var(--primary); }
+        .step-node { display: flex; align-items: center; gap: 15px; margin: 15px 0; opacity: 0; transform: translateX(-20px); transition: all 0.5s; }
+        .step-node.done { opacity: 1; transform: translateX(0); }
+        .step-icon { width: 30px; height: 30px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .step-node.active .step-icon { background: #10b981; color: #fff; }
+        @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div id="video-canvas">
+        <div class="progress-bar" id="progressBar"></div>
+
+        <!-- SCENE 1: INTRO (5.5s) -->
+        <div class="scene active" id="s1">
+            <div class="scene-bg bg-deep"></div>
+            <div class="full-center">
+                <div style="font-size: 120px; margin-bottom: 20px; filter: drop-shadow(0 0 30px var(--primary));">🏘️</div>
+                <h1 style="font-size: 90px; font-weight: 900; letter-spacing: -4px;">SocietySync</h1>
+                <p style="font-size: 28px; color: rgba(255,255,255,0.5); letter-spacing: 6px; font-weight: 300;">SMART LIVING. SIMPLIFIED.</p>
+            </div>
+        </div>
+
+        <!-- SCENE 2: DASHBOARD (5.5s) -->
+        <div class="scene" id="s2">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Track society finances in real time</h2>
+                    <p>Automated collection tracking, real-time expense monitoring, and instant balance updates in one powerful dashboard.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="phone-hdr"><span>🏘️ Society Dashboard</span></div>
+                            <div class="stat-grid">
+                                <div class="stat-card"><div class="stat-lbl">Collection</div><div class="stat-val" data-count="30998">₹0</div></div>
+                                <div class="stat-card"><div class="stat-lbl">Expenses</div><div class="stat-val" data-count="36000">₹0</div></div>
+                                <div class="stat-card"><div class="stat-lbl">Balance</div><div class="stat-val" data-count="5002" data-prefix="-₹">-₹0</div></div>
+                                <div class="stat-card"><div class="stat-lbl">Pending</div><div class="stat-val" data-count="1998">₹0</div></div>
+                            </div>
+                            <div class="mini-chart" style="padding: 15px; height: 120px;">
+                                <div class="mini-bar" style="height:60%"></div>
+                                <div class="mini-bar" style="height:85%"></div>
+                                <div class="mini-bar" style="height:45%"></div>
+                                <div class="mini-bar" style="height:95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 3: FLAT GRID (6s) -->
+        <div class="scene" id="s3">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Visual Unit Tracking</h2>
+                    <p>Manage blocks and flats with a color-coded grid. Easily identify which units are paid or pending at a glance.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="phone-hdr" style="background:#10b981; color:#fff;"><span>🏠 Block E Status</span></div>
+                            <div class="flat-grid" id="wideGridInner"></div>
+                            <div style="display:flex; justify-content:center; gap:15px; padding:15px; background:#f8fafc;">
+                                <span style="font-size:12px; color:#10b981; font-weight:800;">● PAID</span>
+                                <span style="font-size:12px; color:#ef4444; font-weight:800;">● PENDING</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 4: MAINTENANCE (5.5s) -->
+        <div class="scene" id="s4">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Seamless Collection</h2>
+                    <p>Record maintenance via Cash, UPI, or Bank. Generate instant digital receipts for every member.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="phone-hdr" style="background:#6366f1; color:#fff;"><span>💰 Record Payment</span></div>
+                            <div class="bill-card" style="box-shadow:none; border:1px solid #eee; margin-top:40px;">
+                                <div class="bill-amt" style="font-size:48px;">₹1,000</div>
+                                <div class="bill-row" style="font-size:18px;"><span>Flat</span><span>E-203</span></div>
+                                <div class="bill-row" style="font-size:18px;"><span>Status</span><span style="color:#10b981">Approved ✓</span></div>
+                                <div class="pay-btns" style="margin-top:30px;">
+                                    <div class="pay-btn active" style="font-size:14px; padding:12px;">💵 Cash</div>
+                                    <div class="pay-btn" style="font-size:14px; padding:12px;">📱 UPI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 5: SOCIETY FUNDS (5s) -->
+        <div class="scene" id="s5">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Smart Fund Tracking</h2>
+                    <p>Monitor sinking funds, festival funds, and emergency reserves with visual progress bars.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="phone-hdr" style="background:#f59e0b; color:#fff;"><span>📈 Society Funds</span></div>
+                            <div style="padding: 20px;">
+                                <div style="font-size:14px; font-weight:700;">General Fund</div>
+                                <div class="fund-bar-wrap"><div class="fund-progress" style="width:75%"></div></div>
+                                <div style="font-size:12px; color:#64748b; margin-bottom:20px;">₹4,50,000 / ₹6,00,000</div>
+                                
+                                <div style="font-size:14px; font-weight:700;">Festival Fund</div>
+                                <div class="fund-bar-wrap"><div class="fund-progress" style="width:40%; background:#ef4444;"></div></div>
+                                <div style="font-size:12px; color:#64748b;">₹80,000 / ₹2,00,000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 6: EXPENSES (5.5s) -->
+        <div class="scene" id="s6">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Transparent Expenses</h2>
+                    <p>Track every rupee spent. Visual bar charts help you analyze spending patterns month by month.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="phone-hdr" style="background:#3b82f6; color:#fff;"><span>📊 Expenses</span></div>
+                            <div style="padding: 10px;">
+                                <div class="expense-item"><span>Security Guards</span><strong>₹12,000</strong></div>
+                                <div class="expense-item"><span>Lift Maintenance</span><strong>₹5,500</strong></div>
+                                <div class="expense-item"><span>Water Bill</span><strong>₹8,900</strong></div>
+                                <div style="height:150px; display:flex; align-items:flex-end; gap:10px; padding:20px 10px;">
+                                    <div style="flex:1; background:#94a3b8; height:40%;"></div>
+                                    <div style="flex:1; background:#94a3b8; height:70%;"></div>
+                                    <div style="flex:1; background:#3b82f6; height:90%;"></div>
+                                    <div style="flex:1; background:#94a3b8; height:60%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 7: APP TOUR (5.5s) -->
+        <div class="scene" id="s7">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Guided App Tour</h2>
+                    <p>Get started in minutes with our interactive onboarding. Easy for everyone to use, from admins to residents.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="phone-hdr"><span>🏘️ SocietySync</span></div>
+                            <div style="padding:20px; opacity:0.3;">
+                                <div style="height:40px; background:#f1f5f9; border-radius:8px; margin-bottom:10px;"></div>
+                                <div style="height:80px; background:#f1f5f9; border-radius:8px; margin-bottom:10px;"></div>
+                                <div style="height:40px; background:#f1f5f9; border-radius:8px;"></div>
+                            </div>
+                            <div class="tooltip-v" style="top:120px; left:40px;">Click here to add new payments</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 8: ADMIN APPROVAL (5.5s) -->
+        <div class="scene" id="s8">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Admin Approval Workflow</h2>
+                    <p>A simple 3-step process to verify and approve maintenance requests securely.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="phone-hdr" style="background:#10b981; color:#fff;"><span>✓ Approval Center</span></div>
+                            <div style="padding:20px;" id="approvalSteps">
+                                <div class="step-node" id="step1"><div class="step-icon">1</div><span>Request Received</span></div>
+                                <div class="step-node" id="step2"><div class="step-icon">2</div><span>Verify Receipt</span></div>
+                                <div class="step-node" id="step3"><div class="step-icon">3</div><span>Payment Approved</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 9: MULTI-DEVICE (5s) -->
+        <div class="scene" id="s9">
+            <div class="scene-bg bg-deep"></div>
+            <div class="split-layout">
+                <div class="text-side">
+                    <h2>Access Anywhere</h2>
+                    <p>Works seamlessly on Phones, Tablets, and Desktops. Manage your society from any device, anytime.</p>
+                </div>
+                <div class="phone-side">
+                    <div class="phone-mock" style="transform: scale(0.8) rotate(-10deg);">
+                        <div class="phone-screen" style="background:var(--primary); display:flex; align-items:center; justify-content:center; color:#fff; font-size:40px;">📱</div>
+                    </div>
+                    <div class="phone-mock" style="transform: scale(0.7) translate(-80px, 40px) rotate(5deg); position:absolute; z-index:-1;">
+                        <div class="phone-screen" style="background:#1e293b; display:flex; align-items:center; justify-content:center; color:#fff; font-size:40px;">💻</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENE 10: OUTRO (7s) -->
+        <div class="scene" id="s10">
+            <div class="scene-bg bg-deep"></div>
+            <div class="full-center">
+                <div style="font-size: 100px; margin-bottom:20px;">🏘️</div>
+                <h1 style="font-size: 90px; font-weight: 900; background: linear-gradient(to right, #fff, var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SocietySync</h1>
+                <p style="font-size: 24px; color: rgba(255,255,255,0.4); margin-bottom: 40px;">SMART SOCIETY. SMART MANAGEMENT.</p>
+                <div style="padding: 20px 60px; background: var(--primary); border-radius: 50px; font-size: 24px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);">DOWNLOAD NOW</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="demo-script.js"></script>
+    <script>
+        // Scaling
+        function scaleCanvas() {
+            const canvas = document.getElementById('video-canvas');
+            const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+            canvas.style.transform = `scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleCanvas);
+        scaleCanvas();
+
+        // Custom Grid
+        function initGrid() {
+            const g = document.getElementById('wideGridInner');
+            if(!g) return;
+            g.innerHTML = '';
+            for(let i=0; i<20; i++) {
+                const d = document.createElement('div');
+                d.className = 'fc ' + (Math.random() > 0.4 ? 'paid' : 'pend');
+                d.textContent = 101 + i;
+                g.appendChild(d);
+            }
+        }
+
+        // Approval Animation
+        function animateApproval() {
+            const steps = ['step1', 'step2', 'step3'];
+            steps.forEach((s, i) => {
+                const el = document.getElementById(s);
+                if(el) {
+                    el.classList.remove('done', 'active');
+                    setTimeout(() => {
+                        el.classList.add('done', 'active');
+                    }, i * 1000);
+                }
+            });
+        }
+
+        const oldShow = showScene;
+        showScene = function(idx) {
+            oldShow(idx);
+            if(idx === 2) initGrid();
+            if(idx === 7) animateApproval();
+        }
+        initGrid();
+    </script>
+</body>
+</html>
