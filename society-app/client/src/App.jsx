@@ -25,7 +25,10 @@ import PaymentVerification from './pages/PaymentVerification';
 import Funds from './pages/Funds';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ReceiptView from './pages/ReceiptView';
+import AdminManagement from './pages/AdminManagement';
+import ActivityLog from './pages/ActivityLog';
 import FunkiAI from './components/FunkiAI';
+import PublicFunkiAI from './components/PublicFunkiAI';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
@@ -120,9 +123,13 @@ function App() {
           <Route path="payment-verification" element={<ProtectedRoute adminOnly><PaymentVerification /></ProtectedRoute>} />
           <Route path="funds" element={<Funds />} />
           <Route path="receipt/:paymentId" element={<ReceiptView />} />
+          <Route path="admin-management" element={<ProtectedRoute adminOnly><AdminManagement /></ProtectedRoute>} />
+          <Route path="activity-log" element={<ProtectedRoute adminOnly><ActivityLog /></ProtectedRoute>} />
         </Route>
       </Routes>
-      {user && <FunkiAI />}
+
+      {/* FunkiAI: Public on landing, Smart AI inside app */}
+      {user ? <FunkiAI /> : <PublicFunkiAI />}
     </>
   );
 }

@@ -26,6 +26,8 @@ const Layout = () => {
     { path: '/requests', icon: '👥', label: 'Member Requests', adminOnly: true },
     { path: '/expenses', icon: '📋', label: 'Expenses', adminOnly: true },
     { path: '/reports', icon: '📈', label: 'Reports' },
+    { path: '/admin-management', icon: '👑', label: 'Admin Management', adminOnly: true },
+    { path: '/activity-log', icon: '📋', label: 'Activity Log', adminOnly: true },
     { path: '/notifications', icon: '🔔', label: 'Notifications' },
     { path: '/settings', icon: '⚙️', label: 'Settings' },
   ].filter(item => !item.adminOnly || isAdmin);

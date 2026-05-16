@@ -6,6 +6,7 @@ const Flat = require('../models/Flat');
 const Society = require('../models/Society');
 const { auth, adminOnly } = require('../middleware/auth');
 const { notifyFlatOwner, notifyAllUsers } = require('../utils/notificationHelper');
+const { logActivity } = require('../services/activityLogger');
 const { generatePaymentReceipt } = require('../utils/pdfGenerator');
 const { emitToSociety } = require('../services/socketService');
 
@@ -102,6 +103,18 @@ router.post('/', auth, adminOnly, async (req, res) => {
     const responsePayment = payment.toObject();
     res.status(isNew ? 201 : 200).json(responsePayment);
     console.log(`[Payment] Response sent successfully (${isNew ? 'created' : 'updated'})`);
+
+    // Log activity
+    const monthLabel = new Date(mYear, mMonth - 1).toLocaleString('default', { month: 'long' });
+    logActivity({
+      societyId,
+      admin: req.user,
+      actionType: 'payment_approved',
+      description: `Payment of ₹${mPaidAmount} recorded for ${monthLabel} ${mYear} by ${req.user.name}`,
+      targetType: 'payment',
+      targetId: payment._id,
+      metadata: { flatId, amount: mPaidAmount, month: mMonth, year: mYear }
+    }).catch(() => {});
 
     // ALL background tasks - socket, notifications - run AFTER response
     // These CANNOT cause any error for the user
@@ -225,6 +238,17 @@ router.put('/:id', auth, adminOnly, async (req, res) => {
     } catch (flatErr) {
       console.error('[Payment PUT] flat status update error:', flatErr.message);
     }
+
+    // Log activity
+    logActivity({
+      societyId: payment.societyId,
+      admin: req.user,
+      actionType: 'payment_edited',
+      description: `Payment updated to ₹${paidAmount} by ${req.user.name}`,
+      targetType: 'payment',
+      targetId: payment._id,
+      metadata: { paidAmount, status: payment.status }
+    }).catch(() => {});
 
     // Send response FIRST
     res.json(payment);

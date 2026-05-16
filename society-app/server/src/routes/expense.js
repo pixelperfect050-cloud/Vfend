@@ -3,6 +3,7 @@ const router = express.Router();
 const Expense = require('../models/Expense');
 const { auth, adminOnly } = require('../middleware/auth');
 const { notifyAllUsers } = require('../utils/notificationHelper');
+const { logActivity } = require('../services/activityLogger');
 const { emitToSociety } = require('../services/socketService');
 
 // Add expense
@@ -29,6 +30,17 @@ router.post('/', auth, adminOnly, async (req, res) => {
     });
 
     res.status(201).json(expense);
+
+    // Log activity
+    logActivity({
+      societyId: expense.societyId,
+      admin: req.user,
+      actionType: 'expense_created',
+      description: `Expense of ₹${expense.amount} created for ${expense.category} by ${req.user.name}`,
+      targetType: 'expense',
+      targetId: expense._id,
+      metadata: { category: expense.category, amount: expense.amount }
+    }).catch(() => {});
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -92,6 +104,16 @@ router.put('/:id', auth, adminOnly, async (req, res) => {
   try {
     const expense = await Expense.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!expense) return res.status(404).json({ message: 'Expense not found' });
+
+    logActivity({
+      societyId: expense.societyId,
+      admin: req.user,
+      actionType: 'expense_updated',
+      description: `Expense updated by ${req.user.name}: ${expense.category} ₹${expense.amount}`,
+      targetType: 'expense',
+      targetId: expense._id
+    }).catch(() => {});
+
     res.json(expense);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -103,6 +125,16 @@ router.delete('/:id', auth, adminOnly, async (req, res) => {
   try {
     const expense = await Expense.findByIdAndDelete(req.params.id);
     if (!expense) return res.status(404).json({ message: 'Expense not found' });
+
+    logActivity({
+      societyId: expense.societyId,
+      admin: req.user,
+      actionType: 'expense_deleted',
+      description: `Expense deleted by ${req.user.name}: ${expense.category} ₹${expense.amount}`,
+      targetType: 'expense',
+      targetId: expense._id
+    }).catch(() => {});
+
     res.json({ message: 'Expense deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });

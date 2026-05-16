@@ -1,24 +1,23 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import api from '../utils/api';
-import { useAuth } from '../context/AuthContext';
 import '../styles/funkiai.css';
 
-const QUICK_ACTIONS = [
-  { label: '💰 My Dues', msg: 'Mera maintenance due kitna hai?' },
-  { label: '📅 Last Payment', msg: 'Maine last payment kab kiya?' },
-  { label: '🧾 Pending Months', msg: 'Mere pending months batao' },
-  { label: '💸 Society Balance', msg: 'Society fund balance kya hai?' },
-  { label: '📊 Collection Report', msg: 'Monthly collection report batao' },
-  { label: '🏠 Flat Status', msg: 'Mera flat status kya hai?' },
+const PUBLIC_QUICK_ACTIONS = [
+  { label: '✨ Features', msg: 'What features does SocietySync offer?' },
+  { label: '💰 Pricing', msg: 'What are the pricing plans?' },
+  { label: '📅 Book Demo', msg: 'I want to book a demo' },
+  { label: '📱 APK Download', msg: 'Is there an Android app available?' },
+  { label: '🏠 Setup Process', msg: 'How do I set up my society on SocietySync?' },
+  { label: '📧 Contact', msg: 'How can I contact support?' },
 ];
 
-const FunkiAI = () => {
-  const { user } = useAuth();
+const API_BASE = (import.meta.env.VITE_API_URL || 'https://society-backend-b004.onrender.com').replace(/\/$/, '');
+
+const PublicFunkiAI = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { 
-      role: 'ai', 
-      content: `Namaste${user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 👋\n\nI'm **FunkiAI**, your smart society assistant. I can help you with:\n\n• 💰 Maintenance payments\n• 🧾 Receipts & billing\n• 📊 Dashboard navigation\n• 💸 Society funds\n• 👥 Member management\n\nAsk me anything or tap a quick action below!`,
+    {
+      role: 'ai',
+      content: `Namaste! 👋\n\nMain **FunkiAI** hoon — SocietySync ka smart assistant!\n\nMujhse poochho:\n• 📋 App features\n• 💰 Pricing plans\n• 📅 Demo booking\n• 🏠 Society setup\n• 📱 APK download\n\nKaise help karun?`,
       timestamp: new Date()
     }
   ]);
@@ -29,30 +28,28 @@ const FunkiAI = () => {
   const [showQuickActions, setShowQuickActions] = useState(true);
   const [pulseAnimation, setPulseAnimation] = useState(true);
   const [language, setLanguage] = useState('hindi');
+  const [demoState, setDemoState] = useState(null); // Tracks demo booking flow
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
   const inputRef = useRef(null);
-  const chatWindowRef = useRef(null);
 
-  // Auto-scroll to bottom
+  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  // Stop pulse after 5 seconds
+  // Stop pulse
   useEffect(() => {
     const timer = setTimeout(() => setPulseAnimation(false), 8000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Focus input when chat opens
+  // Focus input when open
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 300);
-    }
+    if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
   }, [isOpen]);
 
-  // Speech Recognition Setup
+  // Speech Recognition
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -71,11 +68,7 @@ const FunkiAI = () => {
         }
       };
 
-      recognition.onerror = (e) => {
-        console.warn('Speech error:', e.error);
-        setIsListening(false);
-      };
-
+      recognition.onerror = () => setIsListening(false);
       recognition.onend = () => setIsListening(false);
       recognitionRef.current = recognition;
     }
@@ -97,28 +90,21 @@ const FunkiAI = () => {
     } else {
       setIsListening(true);
       setInput('');
-      try {
-        recognitionRef.current.start();
-      } catch (e) {
-        setIsListening(false);
-      }
+      recognitionRef.current.lang = language === 'hindi' ? 'hi-IN' : 'en-IN';
+      try { recognitionRef.current.start(); } catch (e) { setIsListening(false); }
     }
-  }, [isListening]);
+  }, [isListening, language]);
 
   const speak = useCallback((text) => {
     if (!('speechSynthesis' in window)) return;
-    
     window.speechSynthesis.cancel();
-    
+
     const cleanText = text
       .replace(/\*\*(.*?)\*\*/g, '$1')
       .replace(/\*(.*?)\*/g, '$1')
       .replace(/#{1,6}\s/g, '')
       .replace(/[•\-]\s/g, '')
       .replace(/\n+/g, '. ')
-      .replace(/\(Offline mode.*?\)/gi, '')
-      .replace(/\(AI temporarily.*?\)/gi, '')
-      .replace(/\(Demo mode.*?\)/gi, '')
       .replace(/[\u{1F600}-\u{1F64F}]/gu, '')
       .replace(/[\u{1F300}-\u{1F5FF}]/gu, '')
       .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')
@@ -127,42 +113,18 @@ const FunkiAI = () => {
       .replace(/[\u{1F900}-\u{1F9FF}]/gu, '')
       .replace(/[\u{1FA00}-\u{1FA6F}]/gu, '')
       .replace(/[\u{1FA70}-\u{1FAFF}]/gu, '')
-      .replace(/📱|💰|🧾|📊|💸|🏦|👥|🔧|🙏|🎉|📡|🔐|💥|🇮🇳|🇬🇧/g, '')
       .trim();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    
-    // Language-specific settings
-    const langMap = { hindi: 'hi-IN', english: 'en-IN', hinglish: 'en-IN' };
-    utterance.lang = langMap[language] || 'en-IN';
+    utterance.lang = language === 'hindi' ? 'hi-IN' : 'en-IN';
     utterance.rate = 0.9;
-    utterance.pitch = language === 'hindi' ? 0.9 : 1.0;
+    utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
     const voices = window.speechSynthesis.getVoices();
-    let selectedVoice = null;
-    
-    // Try to find female voice first
-    const femaleKeywords = ['female', 'woman', 'girl', 'Samantha', 'Microsoft Zira', 'Google UK English Female', 'en-IN-Standard-A'];
-    
-    if (language === 'hindi') {
-      // For Hindi - try female voices first
-      selectedVoice = voices.find(v => v.lang.includes('hi') && femaleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
-                      voices.find(v => v.lang.includes('hi') && v.name.toLowerCase().includes('a')) ||
-                      voices.find(v => v.lang.includes('hi')) ||
-                      voices.find(v => v.lang.includes('en-IN') && femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
-    } else {
-      // For English - try female voices first
-      selectedVoice = voices.find(v => v.lang.includes('en-IN') && femaleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
-                      voices.find(v => v.lang.includes('en-IN') && v.name.toLowerCase().includes('samantha')) ||
-                      voices.find(v => v.lang.includes('en-IN') && !v.name.toLowerCase().includes('male')) ||
-                      voices.find(v => v.lang.includes('en-IN'));
-    }
-    
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-      console.log('Using voice:', selectedVoice.name);
-    }
+    const targetLang = language === 'hindi' ? 'hi' : 'en-IN';
+    const voice = voices.find(v => v.lang.includes(targetLang)) || voices.find(v => v.lang.includes('en-IN'));
+    if (voice) utterance.voice = voice;
 
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
@@ -176,6 +138,57 @@ const FunkiAI = () => {
     setIsSpeaking(false);
   }, []);
 
+  // Demo booking flow handler
+  const handleDemoFlow = useCallback(async (text) => {
+    if (!demoState) return false;
+
+    const state = { ...demoState };
+    const step = state.step;
+
+    if (step === 'name') {
+      state.name = text;
+      state.step = 'mobile';
+      setDemoState(state);
+      return "Shukriya! 📝 Ab apna **mobile number** batao:";
+    } else if (step === 'mobile') {
+      state.mobile = text;
+      state.step = 'society';
+      setDemoState(state);
+      return "👍 Ab apni **society ka naam** batao:";
+    } else if (step === 'society') {
+      state.societyName = text;
+      state.step = 'flats';
+      setDemoState(state);
+      return "🏢 Society mein **kitne flats** hain?";
+    } else if (step === 'flats') {
+      state.numberOfFlats = parseInt(text) || 0;
+      state.step = 'city';
+      setDemoState(state);
+      return "📍 Aapki **city** kya hai?";
+    } else if (step === 'city') {
+      state.city = text;
+      state.step = 'time';
+      setDemoState(state);
+      return "⏰ **Preferred demo time** batao (e.g., 'Kal shaam 5 baje'):";
+    } else if (step === 'time') {
+      state.preferredDemoTime = text;
+      setDemoState(null);
+
+      // Save lead
+      try {
+        await fetch(`${API_BASE}/api/ai/demo-lead`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(state)
+        });
+        return `🎉 **Demo booked successfully!**\n\n📋 Details:\n• Name: **${state.name}**\n• Mobile: **${state.mobile}**\n• Society: **${state.societyName}**\n• Flats: **${state.numberOfFlats}**\n• City: **${state.city}**\n• Time: **${state.preferredDemoTime}**\n\nHumari team aapko jaldi contact karegi! 🤝`;
+      } catch (err) {
+        return `Demo details mil gayi! 🎉 Humari team aapko **${state.mobile}** par contact karegi. Thank you! 🤝`;
+      }
+    }
+    return false;
+  }, [demoState]);
+
   const handleSend = useCallback(async (textOverride) => {
     const text = (textOverride || input).trim();
     if (!text) return;
@@ -186,37 +199,58 @@ const FunkiAI = () => {
     setIsTyping(true);
     setShowQuickActions(false);
 
-    try {
-      const res = await api.post('/api/ai/chat', { message: text, language });
-      
-      const aiMsg = { role: 'ai', content: res.response, timestamp: new Date() };
+    // Check demo booking trigger
+    const lowerText = text.toLowerCase();
+    if (!demoState && (lowerText.includes('demo') || lowerText.includes('book'))) {
+      setDemoState({ step: 'name' });
+      const aiMsg = {
+        role: 'ai',
+        content: "Bahut badhiya! 🎯 Demo book karte hain!\n\nSabse pehle, apna **naam** batao:",
+        timestamp: new Date()
+      };
       setMessages(prev => [...prev, aiMsg]);
-      speak(res.response);
-    } catch (error) {
-      console.error('FunkiAI Error Detail:', error);
-      
-      let errorMsg = error.message || 'Unknown connection error';
-      
-      if (error.message?.includes('Network') || error.message?.includes('fetch')) {
-        errorMsg = 'Network Error: Unable to reach the AI server. 📡';
-      } else if (error.message?.includes('404')) {
-        errorMsg = 'Server Error (404): The AI service was not found on this server. 🔧';
-      } else if (error.message?.includes('401') || error.message?.includes('403')) {
-        errorMsg = 'Auth Error: Your session is invalid. Please relogin. 🔐';
-      } else if (error.message?.includes('500')) {
-        errorMsg = 'Server Error (500): The AI service encountered an internal error. 💥';
+      speak(aiMsg.content);
+      setIsTyping(false);
+      return;
+    }
+
+    // Handle demo flow steps
+    if (demoState) {
+      const demoResponse = await handleDemoFlow(text);
+      if (demoResponse) {
+        const aiMsg = { role: 'ai', content: demoResponse, timestamp: new Date() };
+        setMessages(prev => [...prev, aiMsg]);
+        speak(demoResponse);
+        setIsTyping(false);
+        return;
       }
-      
-      setMessages(prev => [...prev, { 
-        role: 'ai', 
-        content: `Debug Info: ${errorMsg} \n\n(If you still see the old "trouble connecting" message, please clear your browser cache!)`, 
-        timestamp: new Date(), 
-        isError: true 
-      }]);
+    }
+
+    // Regular public chat
+    try {
+      const res = await fetch(`${API_BASE}/api/ai/public-chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          language,
+          conversationHistory: messages.slice(-6)
+        })
+      });
+
+      const data = await res.json();
+      const aiMsg = { role: 'ai', content: data.response, timestamp: new Date() };
+      setMessages(prev => [...prev, aiMsg]);
+      speak(data.response);
+    } catch (error) {
+      const fallback = language === 'hindi'
+        ? "Abhi connection mein thoda issue hai. Kripya thodi der mein try karo ya funkariya.shop@gmail.com par email karo! 📧"
+        : "Having some connection issues. Please try again or email us at funkariya.shop@gmail.com! 📧";
+      setMessages(prev => [...prev, { role: 'ai', content: fallback, timestamp: new Date(), isError: true }]);
     } finally {
       setIsTyping(false);
     }
-  }, [input, speak]);
+  }, [input, language, messages, demoState, handleDemoFlow, speak]);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -226,7 +260,6 @@ const FunkiAI = () => {
   };
 
   const formatMessage = (content) => {
-    // Simple markdown-like formatting
     return content
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -235,27 +268,27 @@ const FunkiAI = () => {
 
   const formatTime = (date) => {
     if (!date) return '';
-    const d = new Date(date);
-    return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+    return new Date(date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
   const clearChat = () => {
     setMessages([{
       role: 'ai',
-      content: `Chat cleared! 🧹 How can I help you, ${user?.name?.split(' ')[0] || 'there'}?`,
+      content: `Chat cleared! 🧹 Kuch aur help chahiye?`,
       timestamp: new Date()
     }]);
     setShowQuickActions(true);
+    setDemoState(null);
   };
 
   return (
-    <div className="funkiai-container">
-      {/* ═══ FLOATING TRIGGER BUTTON ═══ */}
-      <button 
+    <div className="funkiai-container funkiai-container--public">
+      {/* ═══ FLOATING TRIGGER ═══ */}
+      <button
         className={`funkiai-trigger ${isOpen ? 'funkiai-trigger--active' : ''} ${pulseAnimation ? 'funkiai-trigger--pulse' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? 'Close FunkiAI' : 'Open FunkiAI'}
-        id="funkiai-trigger-btn"
+        id="public-funkiai-trigger"
       >
         <div className="funkiai-trigger__glow" />
         {isOpen ? (
@@ -273,10 +306,9 @@ const FunkiAI = () => {
       </button>
 
       {/* ═══ CHAT WINDOW ═══ */}
-      <div className={`funkiai-window ${isOpen ? 'funkiai-window--open' : ''}`} ref={chatWindowRef}>
-        
-        {/* ─── Header ─── */}
-        <div className="funkiai-header">
+      <div className={`funkiai-window ${isOpen ? 'funkiai-window--open' : ''}`}>
+        {/* Header */}
+        <div className="funkiai-header funkiai-header--public">
           <div className="funkiai-header__left">
             <div className="funkiai-avatar">
               <div className="funkiai-avatar__inner">
@@ -290,21 +322,13 @@ const FunkiAI = () => {
               <span className={`funkiai-avatar__status ${isTyping ? 'funkiai-avatar__status--typing' : ''}`} />
             </div>
             <div className="funkiai-header__info">
-              <h3>FunkiAI</h3>
-              <p>{isTyping ? 'Thinking...' : isSpeaking ? '🔊 Speaking...' : 'Online • AI Assistant'}</p>
+              <h3>FunkiAI <span className="funkiai-header__public-badge">Sales</span></h3>
+              <p>{isTyping ? 'Thinking...' : isSpeaking ? '🔊 Speaking...' : 'Online • Ask me anything!'}</p>
             </div>
-            <select 
+            <select
               className="funkiai-lang-select"
               value={language}
-              onChange={(e) => {
-                setLanguage(e.target.value);
-                setMessages([{
-                  role: 'ai',
-                  content: e.target.value === 'hindi' ? 'बिल्कुल! अब में हिंदी में बात करूंगा!' : 
-                          'Sure! I will respond in English from now!',
-                  timestamp: new Date()
-                }]);
-              }}
+              onChange={(e) => setLanguage(e.target.value)}
               aria-label="Select language"
             >
               <option value="hindi">हिंदी</option>
@@ -313,19 +337,19 @@ const FunkiAI = () => {
           </div>
           <div className="funkiai-header__actions">
             {isSpeaking && (
-              <button className="funkiai-header__btn" onClick={stopSpeaking} title="Stop speaking" aria-label="Stop speaking">
+              <button className="funkiai-header__btn" onClick={stopSpeaking} title="Stop speaking">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
                   <rect x="4" y="4" width="16" height="16" rx="2"/>
                 </svg>
               </button>
             )}
-            <button className="funkiai-header__btn" onClick={clearChat} title="Clear chat" aria-label="Clear chat">
+            <button className="funkiai-header__btn" onClick={clearChat} title="Clear chat">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
                 <polyline points="1 4 1 10 7 10"/>
                 <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
               </svg>
             </button>
-            <button className="funkiai-header__btn funkiai-header__btn--close" onClick={() => setIsOpen(false)} aria-label="Close chat">
+            <button className="funkiai-header__btn funkiai-header__btn--close" onClick={() => setIsOpen(false)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
                 <path d="M18 6L6 18M6 6l12 12"/>
               </svg>
@@ -333,7 +357,7 @@ const FunkiAI = () => {
           </div>
         </div>
 
-        {/* ─── Messages Area ─── */}
+        {/* Messages */}
         <div className="funkiai-messages">
           {messages.map((msg, i) => (
             <div key={i} className={`funkiai-msg funkiai-msg--${msg.role} ${msg.isError ? 'funkiai-msg--error' : ''}`}>
@@ -345,26 +369,15 @@ const FunkiAI = () => {
                 </div>
               )}
               <div className="funkiai-msg__bubble">
-                <div 
-                  className="funkiai-msg__text"
-                  dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
-                />
+                <div className="funkiai-msg__text" dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
                 <span className="funkiai-msg__time">{formatTime(msg.timestamp)}</span>
               </div>
               {msg.role === 'ai' && !msg.isError && (
-                <button 
-                  className="funkiai-msg__speak" 
-                  onClick={() => speak(msg.content)}
-                  title="Listen to this message"
-                  aria-label="Listen to message"
-                >
-                  🔊
-                </button>
+                <button className="funkiai-msg__speak" onClick={() => speak(msg.content)} title="Listen">🔊</button>
               )}
             </div>
           ))}
 
-          {/* Typing Indicator */}
           {isTyping && (
             <div className="funkiai-msg funkiai-msg--ai funkiai-msg--typing">
               <div className="funkiai-msg__avatar">
@@ -373,11 +386,7 @@ const FunkiAI = () => {
                 </svg>
               </div>
               <div className="funkiai-msg__bubble">
-                <div className="funkiai-typing-dots">
-                  <span />
-                  <span />
-                  <span />
-                </div>
+                <div className="funkiai-typing-dots"><span /><span /><span /></div>
               </div>
             </div>
           )}
@@ -385,12 +394,12 @@ const FunkiAI = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* ─── Quick Actions ─── */}
+        {/* Quick Actions */}
         {showQuickActions && messages.length <= 1 && (
           <div className="funkiai-quick-actions">
-            {QUICK_ACTIONS.map((action, i) => (
-              <button 
-                key={i} 
+            {PUBLIC_QUICK_ACTIONS.map((action, i) => (
+              <button
+                key={i}
                 className="funkiai-quick-btn"
                 onClick={() => handleSend(action.msg)}
                 style={{ animationDelay: `${i * 0.06}s` }}
@@ -401,38 +410,34 @@ const FunkiAI = () => {
           </div>
         )}
 
-        {/* ─── Input Area ─── */}
+        {/* Input */}
         <div className="funkiai-input-area">
-          {/* Voice Listening Indicator */}
           {isListening && (
             <div className="funkiai-listening">
               <div className="funkiai-listening__waves">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} style={{ animationDelay: `${i * 0.1}s` }} />
-                ))}
+                {[...Array(5)].map((_, i) => <span key={i} style={{ animationDelay: `${i * 0.1}s` }} />)}
               </div>
               <span className="funkiai-listening__text">Listening...</span>
             </div>
           )}
-          
+
           <div className="funkiai-input-wrap">
             <input
               ref={inputRef}
               type="text"
-              placeholder={isListening ? 'Listening...' : 'Type your message...'}
+              placeholder={isListening ? 'Listening...' : demoState ? `Enter your ${demoState.step}...` : 'Ask about SocietySync...'}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={isListening}
-              id="funkiai-input"
+              id="public-funkiai-input"
               autoComplete="off"
             />
-            <button 
+            <button
               className={`funkiai-btn funkiai-btn--mic ${isListening ? 'funkiai-btn--mic-active' : ''}`}
               onClick={toggleVoice}
               title={isListening ? 'Stop listening' : 'Voice input'}
-              aria-label={isListening ? 'Stop listening' : 'Start voice input'}
-              id="funkiai-mic-btn"
+              id="public-funkiai-mic"
             >
               {isListening ? (
                 <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -447,13 +452,12 @@ const FunkiAI = () => {
                 </svg>
               )}
             </button>
-            <button 
+            <button
               className="funkiai-btn funkiai-btn--send"
               onClick={() => handleSend()}
               disabled={!input.trim() && !isListening}
-              title="Send message"
-              aria-label="Send message"
-              id="funkiai-send-btn"
+              title="Send"
+              id="public-funkiai-send"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
                 <path d="M22 2L11 13"/>
@@ -471,4 +475,4 @@ const FunkiAI = () => {
   );
 };
 
-export default FunkiAI;
+export default PublicFunkiAI;
