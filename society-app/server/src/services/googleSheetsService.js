@@ -8,7 +8,11 @@ const Fund = require('../models/Fund');
 const FundPayment = require('../models/FundPayment');
 const Block = require('../models/Block');
 
-const WEBHOOK_URL = process.env.GOOGLE_SHEET_WEBHOOK;
+const OLD_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzgl7Nu5jwHKpkkJ-uX2I3Rv8IYTcSPz4exMUy0pQlbm9qmL8Cq4cceMXkx1m6kkhBO/exec';
+const NEW_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxycpBqrh3loOZiw3nc9G204WTdlIe2pPfQlXrRHeJPgvvyvhvw42LO5Sw7PijZHvVB_A/exec';
+const WEBHOOK_URL = (!process.env.GOOGLE_SHEET_WEBHOOK || process.env.GOOGLE_SHEET_WEBHOOK.trim() === '' || process.env.GOOGLE_SHEET_WEBHOOK === OLD_WEBHOOK_URL)
+  ? NEW_WEBHOOK_URL
+  : process.env.GOOGLE_SHEET_WEBHOOK;
 
 class GoogleSheetsService {
   constructor() {
