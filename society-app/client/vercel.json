@@ -13,7 +13,7 @@
           "value": "client-eight-roan-56.vercel.app"
         }
       ],
-      "destination": "https://societysync-app.vercel.app/:path*",
+      "destination": "https://societysync.vercel.app/:path*",
       "permanent": true
     }
   ],

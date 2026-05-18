@@ -399,7 +399,7 @@ const LandingPage = () => {
                       </div>
                       <div className="mock-ledger-metric">
                         <h4>Dues Recovery</h4>
-                        <p style={{ fontSize: '1.15rem', fontWeight: 800, color: '#4f46e5' }}>88.4%</p>
+                        <p style={{ fontSize: '1.15rem', fontWeight: 800, color: '#059669' }}>88.4%</p>
                       </div>
                     </div>
                     {/* Simulated bar chart visual */}
@@ -540,7 +540,7 @@ const LandingPage = () => {
       <section className="landing-section landing-pricing" id="pricing" data-animate style={{ display: 'none', background: 'var(--card-bg, rgba(255,255,255,0.01))', padding: '5rem 0', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className={`landing-section__inner ${visibleSections.pricing ? 'animate-in' : ''}`} style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }}>
           <div className="landing-section__header" style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span className="landing-section__tag" style={{ background: 'rgba(79, 70, 229, 0.1)', color: '#6366f1', padding: '6px 16px', borderRadius: '30px', fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05rem' }}>Simple & Transparent Pricing</span>
+            <span className="landing-section__tag" style={{ background: 'rgba(5, 150, 105, 0.1)', color: '#059669', padding: '6px 16px', borderRadius: '30px', fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05rem' }}>Simple & Transparent Pricing</span>
             <h2 className="landing-section__title" style={{ fontSize: '2.5rem', marginTop: '1rem', fontWeight: 'bold' }}>Choose the Plan That Fits Your Society Size</h2>
             <p className="landing-section__desc" style={{ maxWidth: '600px', margin: '1rem auto 0 auto', opacity: 0.8, lineHeight: '1.6' }}>
               अपनी सोसाइटी के कुल फ्लैट्स डालकर देखें कि आपके लिए कौन सा प्लान सबसे अच्छा रहेगा। मुफ़्त 30-दिन के ट्रायल के साथ तुरंत शुरुआत करें!
@@ -566,13 +566,13 @@ const LandingPage = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '1.1rem', fontWeight: 'bold', opacity: 0.9 }}>🏢 Society Size</span>
                 <span style={{ 
-                  background: 'linear-gradient(90deg, #4f46e5, #6366f1)', 
+                  background: 'linear-gradient(90deg, #059669, #0d9488)', 
                   color: '#fff', 
                   padding: '6px 16px', 
                   borderRadius: '30px', 
                   fontSize: '1.25rem', 
                   fontWeight: 'bold',
-                  boxShadow: '0 4px 15px rgba(79, 70, 229, 0.4)'
+                  boxShadow: '0 4px 15px rgba(5, 150, 105, 0.4)'
                 }}>
                   {flatCount} Flats
                 </span>
@@ -592,7 +592,7 @@ const LandingPage = () => {
                     borderRadius: '5px',
                     background: 'rgba(255,255,255,0.1)',
                     outline: 'none',
-                    accentColor: '#4f46e5',
+                    accentColor: '#059669',
                     cursor: 'pointer'
                   }}
                 />
@@ -606,8 +606,8 @@ const LandingPage = () => {
 
               {/* Dynamic Size Tier Badge */}
               <div style={{ 
-                background: 'rgba(79, 70, 229, 0.08)', 
-                border: '1px solid rgba(79, 70, 229, 0.2)',
+                background: 'rgba(5, 150, 105, 0.08)', 
+                border: '1px solid rgba(5, 150, 105, 0.2)',
                 padding: '0.75rem 1rem',
                 borderRadius: '12px',
                 fontSize: '0.85rem',
@@ -616,7 +616,7 @@ const LandingPage = () => {
                 alignItems: 'center'
               }}>
                 <span style={{ opacity: 0.8 }}>🏷️ Pricing Tier:</span>
-                <strong style={{ color: '#818cf8', fontWeight: 'bold' }}>{getPricingInfo(flatCount).tier}</strong>
+                <strong style={{ color: '#0d9488', fontWeight: 'bold' }}>{getPricingInfo(flatCount).tier}</strong>
               </div>
 
               {/* 🎁 Free Trial Badge */}
@@ -643,19 +643,19 @@ const LandingPage = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%' }}>
               {/* Option A: Fixed Plan */}
               <div style={{
-                background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.04), rgba(99, 102, 241, 0.04))',
-                border: '1px solid rgba(79, 70, 229, 0.2)',
+                background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.04), rgba(13, 148, 136, 0.04))',
+                border: '1px solid rgba(5, 150, 105, 0.2)',
                 padding: '1.25rem',
                 borderRadius: '16px',
                 position: 'relative',
                 overflow: 'hidden'
               }}>
                 <div style={{ position: 'absolute', right: '-10px', top: '-10px', fontSize: '4rem', opacity: 0.05, userSelect: 'none' }}>🏢</div>
-                <span style={{ background: '#4f46e5', color: '#fff', fontSize: '0.65rem', fontWeight: 'bold', padding: '3px 8px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.05rem' }}>Option A</span>
+                <span style={{ background: '#059669', color: '#fff', fontSize: '0.65rem', fontWeight: 'bold', padding: '3px 8px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.05rem' }}>Option A</span>
                 <h3 style={{ margin: '8px 0 4px 0', fontSize: '1.15rem', fontWeight: 'bold' }}>🏢 Fixed Annual Plan</h3>
                 <p style={{ margin: '0 0 10px 0', fontSize: '0.78rem', opacity: 0.75 }}>पूरी सोसाइटी का एक दाम, चाहे जितने भी फ्लैट्स हों।</p>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                  <span style={{ fontSize: '1.85rem', fontWeight: '900', color: '#818cf8' }}>₹{getPricingInfo(flatCount).fixedAnnual.toLocaleString('en-IN')}</span>
+                  <span style={{ fontSize: '1.85rem', fontWeight: '900', color: '#0d9488' }}>₹{getPricingInfo(flatCount).fixedAnnual.toLocaleString('en-IN')}</span>
                   <span style={{ fontSize: '0.8rem', opacity: 0.8 }}>/ Year</span>
                 </div>
                 <span style={{ fontSize: '0.75rem', opacity: 0.55, display: 'block', marginTop: '4px' }}>(Approx. ₹{getPricingInfo(flatCount).fixedMonthly}/month for whole society)</span>
@@ -688,9 +688,9 @@ const LandingPage = () => {
               to="/register" 
               className="landing-btn landing-btn--primary landing-btn--lg" 
               style={{ 
-                background: 'linear-gradient(90deg, #4f46e5, #6366f1)',
+                background: 'linear-gradient(90deg, #059669, #0d9488)',
                 border: 'none',
-                boxShadow: '0 10px 25px rgba(79, 70, 229, 0.45)',
+                boxShadow: '0 10px 25px rgba(5, 150, 105, 0.45)',
                 padding: '14px 32px',
                 borderRadius: '30px'
               }}

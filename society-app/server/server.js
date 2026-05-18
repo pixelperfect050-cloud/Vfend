@@ -60,6 +60,10 @@ app.use('/api/payment-requests', require('./src/routes/paymentRequest'));
 app.use('/api/funds', require('./src/routes/fund'));
 app.use('/api/admin', require('./src/routes/admin'));
 app.use('/api/sheets', require('./src/routes/googleSheets'));
+app.use('/api/reminders', require('./src/routes/reminder'));
+
+// Start Reminder Scheduler
+const { startScheduler } = require('./src/services/schedulerService');
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -81,13 +85,8 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
   
-  // Self-ping to keep Render instance awake
-  const https = require('https');
-  setInterval(() => {
-    https.get('https://society-backend-b004.onrender.com/api/health', (res) => {
-      console.log('Self-ping successful: Server is keeping itself awake ⚡');
-    }).on('error', (err) => {
-      console.error('Self-ping failed:', err.message);
-    });
-  }, 10 * 60 * 1000); // Ping every 10 minutes
+  // Start Reminder Scheduler
+  if (process.env.NODE_ENV !== 'test') {
+    startScheduler();
+  }
 });

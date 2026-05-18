@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { auth } = require('../middleware/auth');
 const { getMemberContext, getAdminContext, detectIntent } = require('../services/aiDataService');
 const DemoLead = require('../models/DemoLead');
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'MOCK_KEY');
+// Gemini disabled due to quota - using smart fallback with real DB data only
+const GEMINI_ENABLED = false;
 
 // ═══════════════════════════════════════════════════
 // FALLBACK RESPONSES (when Gemini API is unavailable)
@@ -237,44 +237,9 @@ router.post('/public-chat', async (req, res) => {
     return res.status(400).json({ response: "Please send a message to get started! 💬" });
   }
 
-  // Check if this is a demo booking submission
-  const demoData = extractDemoData(message, conversationHistory);
-
-  if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MOCK_KEY') {
-    return res.json({ 
-      response: getPublicFallback(message, language),
-      isDemoBooking: false 
-    });
-  }
-
-  try {
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
-      generationConfig: { temperature: 0.8, topP: 0.9, topK: 40, maxOutputTokens: 500 }
-    });
-
-    // Build conversation context
-    const chatHistory = conversationHistory.slice(-6).map(msg => ({
-      role: msg.role === 'ai' ? 'model' : 'user',
-      parts: [{ text: msg.content }]
-    }));
-
-    const prompt = `${getPublicSystemPrompt(language)}
-
-CONVERSATION CONTEXT: This visitor is browsing the SocietySync landing page and wants to learn more.
-
-USER MESSAGE: ${message}
-
-Respond helpfully and conversationally:`;
-
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-
-    res.json({ response: text, isDemoBooking: false });
-  } catch (error) {
-    console.error('Public AI Error:', error.message);
-    res.json({ response: getPublicFallback(message, language), isDemoBooking: false });
-  }
+  // Using smart fallback with real database data - Gemini disabled due to quota
+  const response = getPublicFallback(message, language);
+  res.json({ response, isDemoBooking: false, usingFallback: true });
 });
 
 // ═══════════════════════════════════════════════════
@@ -356,34 +321,9 @@ router.post(['/', '/chat'], auth, async (req, res) => {
     userContext = { role: user.role, name: user.name, error: 'Could not fetch live data' };
   }
 
-  if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MOCK_KEY') {
-    const fallback = getSmartFallback(message, language, userContext);
-    return res.json({ response: fallback });
-  }
-
-  try {
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
-      generationConfig: { temperature: 0.7, topP: 0.9, topK: 40, maxOutputTokens: 600 }
-    });
-
-    const prompt = `${getSmartSystemPrompt(language, userContext)}
-
-USER MESSAGE: ${message}
-
-Respond using the real data above. Be helpful and conversational:`;
-
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-
-    res.json({ response: text });
-  } catch (error) {
-    console.error('Gemini Error:', error.message);
-
-    // Fallback gracefully with real data
-    const fallback = getSmartFallback(message, language, userContext);
-    res.json({ response: fallback });
-  }
+  // Using smart fallback with real DB data - Gemini disabled due to quota
+  const fallback = getSmartFallback(message, language, userContext);
+  res.json({ response: fallback, usingFallback: true });
 });
 
 // ═══════════════════════════════════════════════════

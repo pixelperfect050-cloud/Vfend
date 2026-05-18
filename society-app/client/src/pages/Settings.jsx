@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
+import ReminderSettings from '../components/ReminderSettings';
 
 const Settings = () => {
   const { user, loadUser } = useAuth();
@@ -505,6 +506,13 @@ const Settings = () => {
               >
                 ✨ Show App Tour Again
               </button>
+            </div>
+          </div>
+
+          <div className="card">
+            <h3 className="card-title" style={{ padding: '1.5rem 1.5rem 0' }}>Auto Reminders</h3>
+            <div style={{ padding: '1.5rem' }}>
+              <ReminderSettings />
             </div>
           </div>
 
