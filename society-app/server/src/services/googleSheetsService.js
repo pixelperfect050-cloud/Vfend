@@ -427,6 +427,55 @@ class GoogleSheetsService {
       throw error;
     }
   }
+
+  async syncMasterSheet() {
+    try {
+      console.log('\n[GoogleSheets] Generating Master Sheet Directory for all societies...');
+      const societies = await Society.find({});
+      if (societies.length === 0) return { success: false, error: 'No societies found' };
+
+      const societiesData = [];
+      for (const society of societies) {
+        if (!society.googleSheetUrl) continue;
+        
+        // Count metrics for this society
+        const memberCount = await User.countDocuments({ societyId: society._id });
+        const flatCount = await Flat.countDocuments({ societyId: society._id });
+        const paymentCount = await Payment.countDocuments({ societyId: society._id });
+        
+        societiesData.push({
+          id: society._id.toString(),
+          name: society.name,
+          sheetUrl: society.googleSheetUrl,
+          folderUrl: society.googleFolderUrl || '',
+          memberCount,
+          flatCount,
+          paymentCount,
+          lastSync: society.sheetCreatedAt ? new Date(society.sheetCreatedAt).toLocaleString() : new Date().toLocaleString()
+        });
+      }
+
+      if (societiesData.length === 0) {
+        console.log('[GoogleSheets] No societies have Google Sheets initialized yet.');
+        return { success: false, error: 'No initialized sheets found' };
+      }
+
+      console.log(`[GoogleSheets] Sending data for ${societiesData.length} societies to Master Sheet...`);
+      const result = await this.callGoogleScript('createMasterSheet', {
+        societies: societiesData
+      });
+
+      if (result.success) {
+        console.log(`[GoogleSheets] Master Sheet updated successfully! URL: ${result.spreadsheetUrl}`);
+        return result;
+      }
+      
+      throw new Error(result.error || 'Failed to update Master Sheet');
+    } catch (error) {
+      console.error('[GoogleSheets] syncMasterSheet error:', error.message);
+      throw error;
+    }
+  }
 }
 
 const googleSheetsService = new GoogleSheetsService();

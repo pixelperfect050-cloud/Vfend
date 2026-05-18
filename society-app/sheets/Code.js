@@ -13,9 +13,18 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
     const action = data.action;
 
+    // Automatic fallback routing for lead form submissions without an explicit action
+    if (!action && (data.mobile || data.phone)) {
+      return addDemoLead(data);
+    }
+
     switch(action) {
+      case 'addDemoLead':
+        return addDemoLead(data);
       case 'createSheet':
         return createSheetForSociety(data);
+      case 'createMasterSheet':
+        return createMasterSheet(data);
       case 'syncMembers':
         return syncMembers(data);
       case 'syncFlats':
@@ -53,8 +62,11 @@ function createSheetForSociety(data) {
     const { societyId, societyName } = data;
     const sheetName = `${societyName} - SocietySync`;
     
-    let folder = DriveApp.getFoldersByName(FOLDER_NAME).next();
-    if (!folder) {
+    let folder;
+    const folders = DriveApp.getFoldersByName(FOLDER_NAME);
+    if (folders.hasNext()) {
+      folder = folders.next();
+    } else {
       folder = DriveApp.createFolder(FOLDER_NAME);
     }
 
@@ -82,6 +94,96 @@ function createSheetForSociety(data) {
       spreadsheetId: spreadsheet.getId(),
       spreadsheetUrl: spreadsheet.getUrl(),
       folderUrl: folder.getUrl()
+    })).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ success: false, error: error.message })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function createMasterSheet(data) {
+  try {
+    const { societies } = data;
+    const masterSheetName = 'SocietySync - Master Directory';
+    
+    let folder;
+    const folders = DriveApp.getFoldersByName(FOLDER_NAME);
+    if (folders.hasNext()) {
+      folder = folders.next();
+    } else {
+      folder = DriveApp.createFolder(FOLDER_NAME);
+    }
+    
+    let masterSpreadsheet;
+    const files = folder.getFilesByName(masterSheetName);
+    if (files.hasNext()) {
+      masterSpreadsheet = SpreadsheetApp.openById(files.next().getId());
+    } else {
+      masterSpreadsheet = SpreadsheetApp.create(masterSheetName);
+      let file = DriveApp.getFileById(masterSpreadsheet.getId());
+      folder.addFile(file);
+    }
+    
+    const sheet = masterSpreadsheet.getActiveSheet();
+    sheet.setName('All Societies');
+    sheet.clear();
+    
+    // Auto-create Demo Leads tab alongside Master Directory
+    let demoLeadsSheet = masterSpreadsheet.getSheetByName('Demo Leads');
+    if (!demoLeadsSheet) {
+      demoLeadsSheet = masterSpreadsheet.insertSheet('Demo Leads');
+      const headersList = ['Name', 'Mobile', 'Society Name', 'Number of Flats', 'City', 'Preferred Demo Time', 'Source', 'Booked At'];
+      demoLeadsSheet.appendRow(headersList);
+      demoLeadsSheet.getRange(1, 1, 1, headersList.length).setFontWeight('bold');
+      demoLeadsSheet.getRange(1, 1, 1, headersList.length).setBackground('#f3f4f6');
+      demoLeadsSheet.setFrozenRows(1);
+      demoLeadsSheet.autoResizeColumns(1, 8);
+    }
+    
+    sheet.getRange('A1:F1').merge();
+    sheet.getRange('A1').setValue('SocietySync - Master Directory');
+    sheet.getRange('A1').setFontSize(16);
+    sheet.getRange('A1').setFontWeight('bold');
+    sheet.getRange('A1').setHorizontalAlignment('center');
+    sheet.getRange('A1').setBackground('#4f46e5');
+    sheet.getRange('A1').setFontColor('#ffffff');
+    
+    sheet.getRange('A2:F2').merge();
+    sheet.getRange('A2').setValue('Generated on: ' + new Date().toLocaleString());
+    sheet.getRange('A2').setFontSize(10);
+    sheet.getRange('A2').setFontColor('#6b7280');
+    sheet.getRange('A2').setHorizontalAlignment('center');
+    
+    const headers = ['Society Name', 'Sheet Backup Link', 'Total Members', 'Total Flats', 'Total Payments', 'Last Backup'];
+    sheet.getRange('A4:F4').setValues([headers]);
+    sheet.getRange('A4:F4').setFontWeight('bold');
+    sheet.getRange('A4:F4').setBackground('#f3f4f6');
+    sheet.getRange('A4:F4').setFontColor('#1f2937');
+    sheet.getRange('A4:F4').setBorder(true, true, true, true, true, true);
+    
+    const rows = societies.map(function(s) {
+      return [
+        s.name,
+        '=HYPERLINK("' + s.sheetUrl + '", "Open Sheet ↗")',
+        s.memberCount,
+        s.flatCount,
+        s.paymentCount,
+        s.lastSync
+      ];
+    });
+    
+    if (rows.length > 0) {
+      sheet.getRange(5, 1, rows.length, 6).setValues(rows);
+      sheet.getRange(5, 1, rows.length, 6).setBorder(true, true, true, true, true, true);
+      sheet.getRange(5, 2, rows.length, 1).setFontColor('#2563eb').setFontLine('underline');
+    }
+    
+    sheet.setFrozenRows(4);
+    sheet.autoResizeColumns(1, 6);
+    
+    return ContentService.createTextOutput(JSON.stringify({ 
+      success: true, 
+      spreadsheetId: masterSpreadsheet.getId(),
+      spreadsheetUrl: masterSpreadsheet.getUrl()
     })).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     return ContentService.createTextOutput(JSON.stringify({ success: false, error: error.message })).setMimeType(ContentService.MimeType.JSON);
@@ -117,7 +219,9 @@ function setupDashboard(ss, societyName) {
     dashboard.getRange(`A${i+4}:C${i+4}`).setValues([row]);
   });
   
-  dashboard.setColumnWidths(1, 3, [25, 20, 25]);
+  dashboard.setColumnWidth(1, 150);
+  dashboard.setColumnWidth(2, 120);
+  dashboard.setColumnWidth(3, 150);
 }
 
 function syncMembers(data) {
@@ -441,4 +545,54 @@ function formatSheet(sheet, numColumns) {
 
 function doGet() {
   return ContentService.createTextOutput('SocietySync Google Sheets Backup System is running').setMimeType(ContentService.MimeType.TEXT);
+}
+
+function addDemoLead(data) {
+  try {
+    let folder;
+    const folders = DriveApp.getFoldersByName(FOLDER_NAME);
+    if (folders.hasNext()) {
+      folder = folders.next();
+    } else {
+      folder = DriveApp.createFolder(FOLDER_NAME);
+    }
+      
+    let masterSpreadsheet;
+    const files = folder.getFilesByName('SocietySync - Master Directory');
+    if (files.hasNext()) {
+      masterSpreadsheet = SpreadsheetApp.openById(files.next().getId());
+    } else {
+      masterSpreadsheet = SpreadsheetApp.create('SocietySync - Master Directory');
+      let file = DriveApp.getFileById(masterSpreadsheet.getId());
+      folder.addFile(file);
+    }
+    
+    let sheet = masterSpreadsheet.getSheetByName('Demo Leads');
+    if (!sheet) {
+      sheet = masterSpreadsheet.insertSheet('Demo Leads');
+      const headers = ['Name', 'Mobile', 'Society Name', 'Number of Flats', 'City', 'Preferred Demo Time', 'Source', 'Booked At'];
+      sheet.appendRow(headers);
+      sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+      sheet.getRange(1, 1, 1, headers.length).setBackground('#f3f4f6');
+      sheet.setFrozenRows(1);
+    }
+    
+    sheet.appendRow([
+      data.name || '',
+      data.mobile || '',
+      data.societyName || '',
+      data.numberOfFlats || 0,
+      data.city || '',
+      data.preferredDemoTime || '',
+      data.source || '',
+      data.bookedAt || new Date().toLocaleString()
+    ]);
+    
+    // Auto-resize columns
+    sheet.autoResizeColumns(1, 8);
+    
+    return ContentService.createTextOutput(JSON.stringify({ success: true, message: 'Lead added successfully to Google Sheet!' })).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ success: false, error: error.message })).setMimeType(ContentService.MimeType.JSON);
+  }
 }

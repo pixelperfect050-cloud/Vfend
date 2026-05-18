@@ -35,7 +35,8 @@ router.post('/', auth, async (req, res) => {
       lateFeeAfterDays: lateFeeAfterDays || 15,
       billingDay: billingDay || 1,
       createdBy: req.user._id,
-      inviteCode
+      inviteCode,
+      trialExpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     });
 
     await society.save();

@@ -4,6 +4,19 @@
       "VITE_API_URL": "https://society-backend-b004.onrender.com"
     }
   },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "client-eight-roan-56.vercel.app"
+        }
+      ],
+      "destination": "https://societysync-app.vercel.app/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/socket.io/:path*", "destination": "https://society-backend-b004.onrender.com/socket.io/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
