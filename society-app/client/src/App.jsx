@@ -58,27 +58,17 @@ function App() {
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    // Hide the status bar for a game-like full screen experience
-    const hideStatusBar = async () => {
-      try {
-        await StatusBar.hide();
-      } catch (e) {
-        console.log('StatusBar not available');
-      }
-    };
-    hideStatusBar();
-
-    // Keep-alive ping to prevent Render backend from sleeping
     const pingBackend = () => {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://society-backend-b004.onrender.com';
-      fetch(`${apiUrl}/api/health`)
-        .then(() => console.log('Backend pinged to keep it awake 🚀'))
-        .catch(err => console.error('Ping failed:', err));
+      // Ping backend to keep it awake (for Render/Cyclic free tiers)
+      fetch(`${apiUrl}/api/ping`)
+        .then(() => console.log('🟢 Backend pinged - staying awake'))
+        .catch(err => console.log('Backend sleeping, will wake on next request'));
     };
 
-    // Ping immediately and then every 14 minutes
+    // Ping immediately, then every 5 minutes to prevent sleep
     pingBackend();
-    const interval = setInterval(pingBackend, 14 * 60 * 1000);
+    const interval = setInterval(pingBackend, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 

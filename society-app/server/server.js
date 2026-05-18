@@ -70,6 +70,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), env: process.env.NODE_ENV });
 });
 
+// Lightweight ping endpoint for keep-alive
+app.get('/api/ping', (req, res) => {
+  res.json({ ping: 'pong', timestamp: Date.now() });
+});
+
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({ message: 'SocietySync API is running 🚀', version: '1.1.0' });
