@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
-import { SocketProvider } from './context/SocketContext';
+import { RealtimeProvider } from './context/RealtimeContext';
 import { ThemeProvider } from './context/ThemeContext';
 import './index.css';
 import './styles/landing.css';
@@ -14,9 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
-          <SocketProvider>
+          <RealtimeProvider>
             <App />
-          </SocketProvider>
+          </RealtimeProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

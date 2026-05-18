@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { StatusBar } from '@capacitor/status-bar';
 import { useAuth } from './context/AuthContext';
@@ -57,20 +56,7 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 function App() {
   const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const pingBackend = () => {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://society-backend-b004.onrender.com';
-      // Ping backend to keep it awake (for Render/Cyclic free tiers)
-      fetch(`${apiUrl}/api/ping`)
-        .then(() => console.log('🟢 Backend pinged - staying awake'))
-        .catch(err => console.log('Backend sleeping, will wake on next request'));
-    };
-
-    // Ping immediately, then every 5 minutes to prevent sleep
-    pingBackend();
-    const interval = setInterval(pingBackend, 5 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // No backend ping needed - Supabase is always on
 
   if (loading) {
     return <div className="page-loader"><div className="spinner"></div></div>;
