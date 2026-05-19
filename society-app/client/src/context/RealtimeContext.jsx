@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
 import supabase from '../lib/supabase';
 import { useAuth } from './AuthContext';
 
@@ -80,12 +80,26 @@ export const RealtimeProvider = ({ children }) => {
     };
   }, [user]);
 
+  const handlersMapRef = useRef(new Map());
+
   // Provide a backward-compatible emit-like interface
   // Components that used socket.on('event', handler) can now use window events
   const realtimeValue = {
     on: (event, handler) => {
-      window.addEventListener(event, (e) => handler(e.detail));
-      return () => window.removeEventListener(event, handler);
+      const wrapper = (e) => handler(e.detail);
+      handlersMapRef.current.set(handler, wrapper);
+      window.addEventListener(event, wrapper);
+      return () => {
+        window.removeEventListener(event, wrapper);
+        handlersMapRef.current.delete(handler);
+      };
+    },
+    off: (event, handler) => {
+      const wrapper = handlersMapRef.current.get(handler);
+      if (wrapper) {
+        window.removeEventListener(event, wrapper);
+        handlersMapRef.current.delete(handler);
+      }
     },
     connected: !!channel
   };
@@ -96,3 +110,4 @@ export const RealtimeProvider = ({ children }) => {
     </RealtimeContext.Provider>
   );
 };
+

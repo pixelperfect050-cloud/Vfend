@@ -1,9 +1,4 @@
 {
-  "build": {
-    "env": {
-      "VITE_API_URL": "https://society-backend-b004.onrender.com"
-    }
-  },
   "redirects": [
     {
       "source": "/:path*",
@@ -18,7 +13,10 @@
     }
   ],
   "rewrites": [
-    { "source": "/socket.io/:path*", "destination": "https://society-backend-b004.onrender.com/socket.io/:path*" },
+    { "source": "/api/payments/:id/receipt", "destination": "/api/receipt-pdf?id=:id" },
+    { "source": "/api/sheets/:path*", "destination": "/api/sheets?path=:path*" },
+    { "source": "/api/ai/:path*", "destination": "/api/ai-chat?path=:path*" },
+    { "source": "/api/ai-chat", "destination": "/api/ai-chat.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
