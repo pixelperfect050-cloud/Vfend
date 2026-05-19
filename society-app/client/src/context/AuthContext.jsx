@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [lastAuthAttempt, setLastAuthAttempt] = useState(0);
+  const AUTH_THROTTLE_MS = 2000;
 
   const loadUser = useCallback(async () => {
     try {
@@ -79,31 +81,50 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      const now = Date.now();
+      if (now - lastAuthAttempt < AUTH_THROTTLE_MS) {
+        throw new Error('Please wait a moment before trying again');
+      }
+      setLastAuthAttempt(now);
+      
       setError('');
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
-        email,
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
         password
       });
-      if (authError) throw authError;
+      if (authError) {
+        if (authError.message.includes('Invalid login credentials')) {
+          throw new Error('Invalid email or password. Please check your credentials and try again.');
+        }
+        if (authError.message.includes('Network')) {
+          throw new Error('Network error. Please check your internet connection and try again.');
+        }
+        throw authError;
+      }
 
-      // Load full profile
-      const profile = await getCurrentProfile();
+      let profile = null;
+      try {
+        profile = await getCurrentProfile();
+      } catch (profileErr) {
+        console.warn('Profile fetch failed, using auth user data:', profileErr.message);
+      }
+
       const mappedUser = {
-        id: profile.id,
-        _id: profile.id,
-        name: profile.name,
-        email: profile.email,
-        phone: profile.phone,
-        role: profile.role,
-        status: profile.status,
-        residentType: profile.resident_type,
-        avatar: profile.avatar,
-        isActive: profile.is_active,
-        ...(profile.society && { societyId: { _id: profile.society.id, ...profile.society } }),
-        ...(profile.flat && { flatId: { _id: profile.flat.id, ...profile.flat } })
+        id: authData.user.id,
+        _id: authData.user.id,
+        name: profile?.name || authData.user.email?.split('@')[0] || 'User',
+        email: profile?.email || authData.user.email || '',
+        phone: profile?.phone || '',
+        role: profile?.role || 'member',
+        status: profile?.status || 'approved',
+        residentType: profile?.resident_type || 'none',
+        avatar: profile?.avatar || '',
+        isActive: profile?.is_active ?? true,
+        ...(profile?.society && { societyId: { _id: profile.society.id, ...profile.society } }),
+        ...(profile?.flat && { flatId: { _id: profile.flat.id, ...profile.flat } })
       };
       setUser(mappedUser);
-      return { token: data.session.access_token, user: mappedUser };
+      return { token: authData.session.access_token, user: mappedUser };
     } catch (err) {
       const message = err.message || 'Login failed. Please try again.';
       setError(message);
@@ -113,18 +134,47 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
+      const now = Date.now();
+      if (now - lastAuthAttempt < AUTH_THROTTLE_MS) {
+        throw new Error('Please wait a moment before trying again');
+      }
+      setLastAuthAttempt(now);
+      
       setError('');
       const { name, email, phone, password, role, inviteCode, flatId, residentType } = userData;
 
-      // Sign up with Supabase Auth
+      // 1. Pre-check if email already exists in profiles
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', email.trim().toLowerCase())
+        .maybeSingle();
+
+      if (existingProfile) {
+        throw new Error('An account with this email already exists. Please sign in instead.');
+      }
+
+      // 2. Sign up with Supabase Auth
       const { data, error: authError } = await supabase.auth.signUp({
-        email,
+        email: email.trim().toLowerCase(),
         password,
         options: {
-          data: { name, phone } // stored in raw_user_meta_data → trigger creates profile
+          data: { name: name.trim(), phone: phone.trim() }
         }
       });
-      if (authError) throw authError;
+      if (authError) {
+        if (authError.message.includes('already registered') || authError.message.includes('duplicate')) {
+          throw new Error('An account with this email already exists. Please sign in instead.');
+        }
+        if (authError.message.includes('429') || authError.message.includes('rate limit')) {
+          throw new Error('Too many signup requests. Please wait a moment and try again.');
+        }
+        throw authError;
+      }
+
+      if (!data || !data.user) {
+        throw new Error('Registration failed. This email may already be registered or pending verification. Please try logging in.');
+      }
 
       const userId = data.user.id;
 
@@ -183,8 +233,10 @@ export const AuthProvider = ({ children }) => {
     setError('');
   };
 
+  const clearError = () => setError('');
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, error, login, register, logout, loadUser }}>
+    <AuthContext.Provider value={{ user, setUser, loading, error, setError, clearError, login, register, logout, loadUser }}>
       {children}
     </AuthContext.Provider>
   );
