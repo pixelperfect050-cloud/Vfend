@@ -14,6 +14,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
 import { WorkspaceSwitcher } from './workspace-switcher'
+import { useWorkspaceStore } from '@/stores/workspace-store'
 
 export function Sidebar({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
   const pathname = usePathname()
@@ -26,8 +27,17 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
   )
 
   const handleLogout = async () => {
+    // 1. Sign out from Supabase
     await supabase.auth.signOut()
-    router.push('/login')
+
+    // 2. Clear local state
+    useWorkspaceStore.setState({ currentWorkspace: null, workspaces: [] })
+    
+    // 3. Clear demo_session cookie if present
+    document.cookie = 'demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    
+    // 4. Redirect to /
+    router.push('/')
     router.refresh()
   }
 

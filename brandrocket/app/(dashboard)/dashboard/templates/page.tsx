@@ -10,6 +10,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { Search, Sparkles, Filter, ExternalLink, Download, Eye, Zap, ArrowRight, Plus } from 'lucide-react'
 import { CardTitle } from '@/components/ui/card'
+import ReactMarkdown from 'react-markdown'
 
 interface Template {
   id: number
@@ -156,8 +157,20 @@ export default function TemplatesPage() {
                   </div>
                   <p className="text-muted-foreground">{selectedTemplate.description}</p>
                 </div>
-                <div className="bg-muted/50 rounded-lg p-4 border font-mono text-sm whitespace-pre-wrap max-h-64 overflow-y-auto">
-                  {selectedTemplate.content}
+                <div className="bg-card rounded-xl p-6 border shadow-sm max-h-[400px] overflow-y-auto">
+                  <ReactMarkdown
+                    components={{
+                      h1: ({node, ...props}) => <h1 className="text-2xl font-bold mb-4 text-foreground border-b pb-2" {...props} />,
+                      h2: ({node, ...props}) => <h2 className="text-lg font-semibold mb-3 mt-6 text-foreground" {...props} />,
+                      h3: ({node, ...props}) => <h3 className="text-md font-medium mb-2 mt-4 text-foreground" {...props} />,
+                      ul: ({node, ...props}) => <ul className="list-disc list-inside mb-4 space-y-1.5 text-muted-foreground ml-2" {...props} />,
+                      ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-4 space-y-1.5 text-muted-foreground ml-2" {...props} />,
+                      li: ({node, ...props}) => <li className="text-sm leading-relaxed" {...props} />,
+                      p: ({node, ...props}) => <p className="mb-4 text-sm text-muted-foreground leading-relaxed" {...props} />,
+                    }}
+                  >
+                    {selectedTemplate.content || ''}
+                  </ReactMarkdown>
                 </div>
               </div>
               <DialogFooter className="mt-4">

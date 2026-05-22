@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Sidebar } from '@/components/layout/sidebar'
 import { ThemeToggle } from '@/components/shared/theme-toggle'
 import { NotificationsPopover } from '@/components/layout/notifications-popover'
+import { UserNav } from '@/components/layout/user-nav'
 import { CommandPalette } from '@/components/layout/command-palette'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
@@ -60,6 +61,7 @@ export default function DashboardLayout({
             </Button>
             <NotificationsPopover />
             <ThemeToggle />
+            <UserNav />
           </div>
         </header>
 
