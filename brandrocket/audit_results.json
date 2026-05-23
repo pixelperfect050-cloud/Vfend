@@ -1,0 +1,33 @@
+{
+  "pagesTested": [
+    "https://brandrocket-ebon.vercel.app/",
+    "https://brandrocket-ebon.vercel.app/login",
+    "https://brandrocket-ebon.vercel.app/signup",
+    "https://brandrocket-ebon.vercel.app/dashboard",
+    "https://brandrocket-ebon.vercel.app/onboarding",
+    "https://brandrocket-ebon.vercel.app/dashboard/settings",
+    "https://brandrocket-ebon.vercel.app/dashboard/billing",
+    "https://brandrocket-ebon.vercel.app/dashboard/campaigns/new",
+    "https://brandrocket-ebon.vercel.app/dashboard/demo",
+    "https://brandrocket-ebon.vercel.app/dashboard/ai"
+  ],
+  "clicksPerformed": 38,
+  "brokenRoutes": [],
+  "consoleErrors": [
+    "[Desktop] Console error: Failed to load resource: the server responded with a status of 400 ()",
+    "[Tablet] Console error: Failed to load resource: the server responded with a status of 400 ()",
+    "[iPhone 12] Console error: Failed to load resource: the server responded with a status of 400 ()"
+  ],
+  "networkErrors": [
+    "[Desktop] 400 https://ypxpgelxsogbalpivlvo.supabase.co/auth/v1/token?grant_type=password",
+    "[Tablet] 400 https://ypxpgelxsogbalpivlvo.supabase.co/auth/v1/token?grant_type=password",
+    "[iPhone 12] 400 https://ypxpgelxsogbalpivlvo.supabase.co/auth/v1/token?grant_type=password"
+  ],
+  "mobileIssues": [],
+  "authIssues": [
+    "[Desktop] Unauthenticated user redirected out of dashboard from /dashboard",
+    "[Desktop] Login failed or rejected (expected if no backend)",
+    "[Tablet] Login failed or rejected (expected if no backend)",
+    "[iPhone 12] Login failed or rejected (expected if no backend)"
+  ]
+}

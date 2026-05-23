@@ -51,7 +51,7 @@ const AVAILABLE_INTEGRATIONS = [
     icon: FacebookIcon,
     color: 'bg-blue-600',
     features: ['Ad performance sync', 'Auto-optimization', 'Audience insights'],
-    status: 'not_connected',
+    status: 'coming_soon',
   },
   {
     id: 'google',
@@ -60,7 +60,7 @@ const AVAILABLE_INTEGRATIONS = [
     icon: ChromeIcon,
     color: 'bg-green-500',
     features: ['Search campaigns', 'Performance tracking', 'Budget optimization'],
-    status: 'not_connected',
+    status: 'coming_soon',
   },
   {
     id: 'linkedin',
@@ -69,7 +69,7 @@ const AVAILABLE_INTEGRATIONS = [
     icon: LinkedinIcon,
     color: 'bg-blue-700',
     features: ['Sponsored content', 'Lead gen forms', 'Account targeting'],
-    status: 'not_connected',
+    status: 'coming_soon',
   },
   {
     id: 'twitter',
@@ -78,7 +78,7 @@ const AVAILABLE_INTEGRATIONS = [
     icon: TwitterIcon,
     color: 'bg-black',
     features: ['Tweet scheduling', 'Analytics', 'Audience engagement'],
-    status: 'not_connected',
+    status: 'coming_soon',
   },
   {
     id: 'analytics',
@@ -87,7 +87,7 @@ const AVAILABLE_INTEGRATIONS = [
     icon: ChromeIcon,
     color: 'bg-orange-500',
     features: ['Traffic analysis', 'Conversion tracking', 'Audience insights'],
-    status: 'connected',
+    status: 'coming_soon',
   },
   {
     id: 'cms',
@@ -96,42 +96,23 @@ const AVAILABLE_INTEGRATIONS = [
     icon: Link2,
     color: 'bg-purple-500',
     features: ['Auto-publishing', 'Content sync', 'SEO optimization'],
-    status: 'not_connected',
+    status: 'coming_soon',
   },
 ]
 
 export default function IntegrationsPage() {
-  const [connectedIntegrations, setConnectedIntegrations] = React.useState<Integration[]>([
-    { id: '1', provider: 'analytics', isActive: true, accountName: 'BrandRocket GA4', lastSynced: '5m ago' },
-  ])
+  const connectedIntegrations: Integration[] = []
 
   const getIntegrationStatus = (providerId: string) => {
-    const connected = connectedIntegrations.find(i => i.provider === providerId)
-    if (!connected) return 'not_connected'
-    return connected.isActive ? 'connected' : 'disconnected'
+    return 'coming_soon'
   }
 
-  const handleConnect = (providerId: string) => {
-    // In production, this would redirect to OAuth flow
-    // For demo, simulate connection
-    const newIntegration: Integration = {
-      id: Date.now().toString(),
-      provider: providerId,
-      isActive: true,
-      accountName: `${providerId.charAt(0).toUpperCase() + providerId.slice(1)} Account`,
-      lastSynced: 'Just now',
-    }
-    setConnectedIntegrations([...connectedIntegrations, newIntegration])
+  const handleToggle = (id: string) => {
+    console.log('Toggle', id)
   }
 
-  const handleDisconnect = (providerId: string) => {
-    setConnectedIntegrations(connectedIntegrations.filter(i => i.provider !== providerId))
-  }
-
-  const handleToggle = (providerId: string) => {
-    setConnectedIntegrations(connectedIntegrations.map(i => 
-      i.provider === providerId ? { ...i, isActive: !i.isActive } : i
-    ))
+  const handleDisconnect = (id: string) => {
+    console.log('Disconnect', id)
   }
 
   return (
@@ -232,14 +213,13 @@ export default function IntegrationsPage() {
                   ))}
                 </div>
 
-                {status === 'not_connected' ? (
+                {status === 'coming_soon' || status === 'not_connected' ? (
                   <Button 
-                    className="w-full" 
+                    className="w-full bg-muted text-muted-foreground hover:bg-muted cursor-not-allowed" 
                     variant="outline"
-                    onClick={() => handleConnect(integration.id)}
+                    disabled
                   >
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Connect
+                    Coming Soon
                   </Button>
                 ) : (
                   <div className="space-y-3">

@@ -25,18 +25,14 @@ export function UserNav() {
   )
 
   const handleLogout = async () => {
-    // 1. Sign out from Supabase
-    await supabase.auth.signOut()
+    // Call server-side signout to clear cookies properly
+    await fetch('/api/auth/signout', { method: 'POST' })
 
-    // 2. Clear local state
+    // Clear local state
     useWorkspaceStore.setState({ currentWorkspace: null, workspaces: [] })
     
-    // 3. Clear demo_session cookie if present
-    document.cookie = 'demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-    
-    // 4. Redirect to /
-    router.push('/')
-    router.refresh()
+    // Redirect
+    window.location.href = '/login'
   }
 
   return (

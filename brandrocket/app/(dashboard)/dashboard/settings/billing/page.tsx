@@ -9,6 +9,7 @@ import { useCreditStore } from '@/stores/credit-store'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { AlertCircle, CheckCircle2, CreditCard, ExternalLink, Zap, Check, X } from 'lucide-react'
+import { trackEvent } from '@/lib/analytics'
 
 const PLANS = [
   {
@@ -41,13 +42,51 @@ const PLANS = [
 export default function BillingSettingsPage() {
   const { creditsUsed, creditsTotal, plan, isNearLimit, isExhausted } = useCreditStore()
   const [showPlans, setShowPlans] = React.useState(false)
+  const [isRedirecting, setIsRedirecting] = React.useState(false)
   
   const percentageUsed = Math.min((creditsUsed / creditsTotal) * 100, 100)
   const isDanger = isNearLimit() || isExhausted()
 
-  const handleCustomerPortal = () => {
-    // In production, this would call an API route to generate a Stripe Customer Portal session URL
-    alert("Redirecting to Stripe Customer Portal...")
+  const handleCustomerPortal = async () => {
+    setIsRedirecting(true)
+    trackEvent('Billing Portal Opened', 'Billing')
+    try {
+      const response = await fetch('/api/billing/portal', {
+        method: 'POST',
+      })
+      const result = await response.json()
+      if (result.url) {
+        window.location.href = result.url
+      } else {
+        throw new Error(result.error || 'Failed to load portal')
+      }
+    } catch (error) {
+      console.error(error)
+      alert("Error loading customer portal. Please try again.")
+      setIsRedirecting(false)
+    }
+  }
+
+  const handleCheckout = async (planType: string) => {
+    setIsRedirecting(true)
+    trackEvent('Upgrade Clicked', 'Billing', planType)
+    try {
+      const response = await fetch('/api/billing/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planType: planType.toLowerCase() })
+      })
+      const result = await response.json()
+      if (result.url) {
+        window.location.href = result.url
+      } else {
+        throw new Error(result.error || 'Failed to checkout')
+      }
+    } catch (error) {
+      console.error(error)
+      alert("Error starting checkout. Please try again.")
+      setIsRedirecting(false)
+    }
   }
 
   return (
@@ -76,11 +115,20 @@ export default function BillingSettingsPage() {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button className="bg-foreground text-background hover:bg-foreground/90 transition-colors" onClick={handleCustomerPortal}>
+            <Button 
+              className="bg-foreground text-background hover:bg-foreground/90 transition-colors" 
+              onClick={handleCustomerPortal}
+              disabled={isRedirecting}
+            >
               <CreditCard className="mr-2 h-4 w-4" />
               Manage Billing
             </Button>
-            <Button variant="outline" className="border-border hover:bg-muted/50 transition-colors" onClick={() => setShowPlans(true)}>
+            <Button 
+              variant="outline" 
+              className="border-border hover:bg-muted/50 transition-colors" 
+              onClick={() => setShowPlans(true)}
+              disabled={isRedirecting}
+            >
               Compare Plans
             </Button>
 
@@ -125,7 +173,11 @@ export default function BillingSettingsPage() {
                           </div>
                         ))}
                       </div>
-                      <Button className={p.popular ? "bg-brand hover:bg-brand/90" : "bg-muted-foreground"}>
+                      <Button 
+                        className={p.popular ? "bg-brand hover:bg-brand/90" : "bg-muted-foreground"}
+                        onClick={() => handleCheckout(p.name)}
+                        disabled={isRedirecting || plan === p.name}
+                      >
                         {plan === p.name ? 'Current Plan' : p.price === 0 ? 'Downgrade' : 'Upgrade'}
                       </Button>
                     </div>

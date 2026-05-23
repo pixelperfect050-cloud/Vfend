@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageHeader } from '@/components/shared/page-header'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -9,11 +9,11 @@ import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
   TrendingUp, TrendingDown, AlertTriangle, Target, Brain,
-  Zap, Activity, BarChart3, Shield, ChevronRight, RefreshCw
+  Zap, Activity, BarChart3, Shield, ChevronRight, RefreshCw, Lightbulb
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useDemoMode } from '@/hooks/use-demo-mode'
 import { EmptyState } from '@/components/shared/empty-state'
+import { useWorkspaceStore } from '@/stores/workspace-store'
 
 interface ScoreData {
   entityName: string
@@ -33,21 +33,44 @@ interface TrendData {
 }
 
 export default function IntelligencePage() {
-  const [scores, setScores] = React.useState<ScoreData[]>([
-    { entityName: 'Product Launch Campaign', entityType: 'campaign', overall: 82, growth: 78, risk: 15, opportunity: 89, execution: 75 },
-    { entityName: 'Q2 Content Strategy', entityType: 'campaign', overall: 71, growth: 65, risk: 25, opportunity: 82, execution: 68 },
-    { entityName: 'SEO Growth', entityType: 'seo', overall: 76, growth: 88, risk: 12, opportunity: 72, execution: 70 },
-    { entityName: 'Paid Ads Portfolio', entityType: 'ads', overall: 64, growth: 55, risk: 45, opportunity: 78, execution: 60 },
-    { entityName: 'Email Automation', entityType: 'email', overall: 85, growth: 82, risk: 8, opportunity: 88, execution: 90 },
-  ])
+  const { currentWorkspace } = useWorkspaceStore()
+  const router = useRouter()
+  
+  const [isLoading, setIsLoading] = useState(true)
+  const [scores, setScores] = useState<any[]>([])
+  const [opportunities, setOpportunities] = useState<any[]>([])
+  const [recommendations, setRecommendations] = useState<any[]>([])
 
-  const [trends, setTrends] = React.useState<TrendData[]>([
-    { label: 'Website Traffic', value: 12400, change: 18, direction: 'up' },
-    { label: 'Conversion Rate', value: 2.8, change: -0.3, direction: 'down' },
-    { label: 'Ad Spend', value: 4200, change: 12, direction: 'up' },
-    { label: 'Email Open Rate', value: 34, change: 5, direction: 'up' },
-    { label: 'SEO Ranking', value: 45, change: 8, direction: 'up' },
-  ])
+  useEffect(() => {
+    if (!currentWorkspace?.id) return
+
+    async function loadData() {
+      setIsLoading(true)
+      try {
+        const [intelRes, recsRes] = await Promise.all([
+          fetch(`/api/intelligence?team_id=${currentWorkspace?.id}`),
+          fetch(`/api/intelligence?team_id=${currentWorkspace?.id}&type=recommendations`)
+        ])
+
+        if (intelRes.ok) {
+          const data = await intelRes.json()
+          setScores(data.scores || [])
+          setOpportunities(data.opportunities || [])
+        }
+
+        if (recsRes.ok) {
+          const data = await recsRes.json()
+          setRecommendations(data.recommendations || [])
+        }
+      } catch (err) {
+        console.error('Failed to load intelligence data:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadData()
+  }, [currentWorkspace?.id])
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-success'
@@ -61,12 +84,13 @@ export default function IntelligencePage() {
     return 'bg-destructive'
   }
 
-  const { isDemoMode, isLoaded } = useDemoMode()
-  const router = useRouter()
+  if (!currentWorkspace) return null
 
-  if (!isLoaded) return null
+  if (isLoading) {
+    return <div className="p-12 text-center text-muted-foreground">Loading intelligence data...</div>
+  }
 
-  if (!isDemoMode) {
+  if (scores.length === 0 && opportunities.length === 0 && recommendations.length === 0) {
     return (
       <div className="space-y-6">
         <PageHeader 
@@ -78,7 +102,7 @@ export default function IntelligencePage() {
           title="Intelligence Gathering"
           description="Your AI team needs active campaigns to generate growth insights and recommendations. Launch your first campaign to start gathering intelligence."
           action={{
-            label: "Launch Campaign",
+            label: "Generate First Analysis",
             onClick: () => router.push('/dashboard/campaign-builder')
           }}
         />
@@ -86,7 +110,9 @@ export default function IntelligencePage() {
     )
   }
 
-  const avgOverall = scores.reduce((acc, s) => acc + s.overall, 0) / scores.length
+  const avgOverall = scores.length > 0 
+    ? scores.reduce((acc, s) => acc + (s.overall_score || 0), 0) / scores.length 
+    : 0
 
   return (
     <div className="space-y-6">
@@ -137,7 +163,7 @@ export default function IntelligencePage() {
                 </div>
                 <span className="text-sm text-muted-foreground">Growth</span>
               </div>
-              <p className="text-2xl font-bold">74</p>
+              <p className="text-2xl font-bold">{Math.round(scores.length > 0 ? scores[0].growth_score || 0 : 0)}</p>
               <p className="text-xs text-success">+8% this month</p>
             </CardContent>
           </Card>
@@ -149,7 +175,7 @@ export default function IntelligencePage() {
                 </div>
                 <span className="text-sm text-muted-foreground">Risk</span>
               </div>
-              <p className="text-2xl font-bold">21</p>
+              <p className="text-2xl font-bold">{Math.round(scores.length > 0 ? scores[0].risk_score || 0 : 0)}</p>
               <p className="text-xs text-warning">2 alerts active</p>
             </CardContent>
           </Card>
@@ -161,8 +187,8 @@ export default function IntelligencePage() {
                 </div>
                 <span className="text-sm text-muted-foreground">Opportunity</span>
               </div>
-              <p className="text-2xl font-bold">82</p>
-              <p className="text-xs text-brand">12 new found</p>
+              <p className="text-2xl font-bold">{opportunities.length}</p>
+              <p className="text-xs text-brand">{opportunities.filter(o => o.status === 'identified').length} active</p>
             </CardContent>
           </Card>
           <Card className="border-border shadow-sm">
@@ -173,59 +199,37 @@ export default function IntelligencePage() {
                 </div>
                 <span className="text-sm text-muted-foreground">Execution</span>
               </div>
-              <p className="text-2xl font-bold">73</p>
+              <p className="text-2xl font-bold">{Math.round(scores.length > 0 ? scores[0].execution_score || 0 : 0)}</p>
               <p className="text-xs text-muted-foreground">5 automations running</p>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Trends */}
-      <Card className="border-border shadow-sm">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Activity className="h-5 w-5 text-brand" />
-            Growth Trends
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {trends.map((trend, i) => (
-              <div key={i} className="p-4 rounded-lg bg-muted/30 text-center">
-                <p className="text-sm text-muted-foreground mb-1">{trend.label}</p>
-                <p className="text-xl font-bold">{trend.value.toLocaleString()}</p>
-                <div className={`flex items-center justify-center gap-1 text-xs mt-1 ${trend.direction === 'up' ? 'text-success' : 'text-destructive'}`}>
-                  {trend.direction === 'up' ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
-                  {trend.change > 0 ? '+' : ''}{trend.change}%
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
       <Tabs defaultValue="scores" className="space-y-4">
         <TabsList>
           <TabsTrigger value="scores">Entity Scores</TabsTrigger>
-          <TabsTrigger value="risks">Risk Analysis</TabsTrigger>
           <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
+          <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
         </TabsList>
 
         <TabsContent value="scores" className="space-y-4">
-          {scores.map((score, i) => (
-            <Card key={i} className="border-border shadow-sm">
+          {scores.length === 0 ? (
+            <div className="p-8 text-center text-sm text-muted-foreground border rounded-lg border-dashed">No entity scores available yet.</div>
+          ) : scores.map((score, i) => (
+            <Card key={score.id || i} className="border-border shadow-sm">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-medium">{score.entityName}</h3>
-                      <Badge variant="outline" className="text-xs capitalize">{score.entityType}</Badge>
+                      <h3 className="font-medium">{score.entity_id || 'Entity'}</h3>
+                      <Badge variant="outline" className="text-xs capitalize">{score.entity_type}</Badge>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
                       <p className="text-2xl font-bold">Overall</p>
-                      <p className={`text-sm ${getScoreColor(score.overall)}`}>{score.overall}</p>
+                      <p className={`text-sm ${getScoreColor(score.overall_score || 0)}`}>{Math.round(score.overall_score || 0)}</p>
                     </div>
                   </div>
                 </div>
@@ -233,30 +237,30 @@ export default function IntelligencePage() {
                   <div>
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-muted-foreground">Growth</span>
-                      <span className={getScoreColor(score.growth)}>{score.growth}</span>
+                      <span className={getScoreColor(score.growth_score || 0)}>{Math.round(score.growth_score || 0)}</span>
                     </div>
-                    <Progress value={score.growth} className="h-1.5" indicatorClassName={getScoreBg(score.growth)} />
+                    <Progress value={score.growth_score || 0} className="h-1.5" indicatorClassName={getScoreBg(score.growth_score || 0)} />
                   </div>
                   <div>
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-muted-foreground">Risk</span>
-                      <span className={getScoreColor(100 - score.risk)}>{score.risk}</span>
+                      <span className={getScoreColor(100 - (score.risk_score || 0))}>{Math.round(score.risk_score || 0)}</span>
                     </div>
-                    <Progress value={score.risk} className="h-1.5" indicatorClassName={getScoreBg(100 - score.risk)} />
+                    <Progress value={score.risk_score || 0} className="h-1.5" indicatorClassName={getScoreBg(100 - (score.risk_score || 0))} />
                   </div>
                   <div>
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-muted-foreground">Opportunity</span>
-                      <span className={getScoreColor(score.opportunity)}>{score.opportunity}</span>
+                      <span className={getScoreColor(score.opportunity_score || 0)}>{Math.round(score.opportunity_score || 0)}</span>
                     </div>
-                    <Progress value={score.opportunity} className="h-1.5" indicatorClassName={getScoreBg(score.opportunity)} />
+                    <Progress value={score.opportunity_score || 0} className="h-1.5" indicatorClassName={getScoreBg(score.opportunity_score || 0)} />
                   </div>
                   <div>
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-muted-foreground">Execution</span>
-                      <span className={getScoreColor(score.execution)}>{score.execution}</span>
+                      <span className={getScoreColor(score.execution_score || 0)}>{Math.round(score.execution_score || 0)}</span>
                     </div>
-                    <Progress value={score.execution} className="h-1.5" indicatorClassName={getScoreBg(score.execution)} />
+                    <Progress value={score.execution_score || 0} className="h-1.5" indicatorClassName={getScoreBg(score.execution_score || 0)} />
                   </div>
                 </div>
               </CardContent>
@@ -264,28 +268,63 @@ export default function IntelligencePage() {
           ))}
         </TabsContent>
 
-        <TabsContent value="risks" className="space-y-4">
-          <Card className="border-border shadow-sm">
-            <CardContent className="p-6 text-center">
-              <Shield className="h-12 w-12 mx-auto text-success mb-4" />
-              <h3 className="text-lg font-medium mb-2">Low Risk Profile</h3>
-              <p className="text-muted-foreground">No critical issues detected. Your campaigns are performing within safe parameters.</p>
-            </CardContent>
-          </Card>
+        <TabsContent value="opportunities" className="space-y-4">
+          {opportunities.length === 0 ? (
+            <Card className="border-border shadow-sm">
+              <CardContent className="p-6 text-center">
+                <Target className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium mb-2">No Opportunities Identified</h3>
+                <p className="text-muted-foreground mb-4">Check back later once the AI has analyzed more data.</p>
+              </CardContent>
+            </Card>
+          ) : (
+            opportunities.map(opp => (
+              <Card key={opp.id} className="border-border shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="text-lg font-medium mb-1">{opp.title}</h3>
+                      <p className="text-sm text-muted-foreground">{opp.description}</p>
+                    </div>
+                    <Badge variant="outline" className="capitalize">{opp.opportunity_type}</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </TabsContent>
 
-        <TabsContent value="opportunities" className="space-y-4">
-          <Card className="border-border shadow-sm">
-            <CardContent className="p-6 text-center">
-              <Target className="h-12 w-12 mx-auto text-brand mb-4" />
-              <h3 className="text-lg font-medium mb-2">12 Opportunities Identified</h3>
-              <p className="text-muted-foreground mb-4">AI has found additional growth opportunities across your campaigns.</p>
-              <Button className="bg-brand hover:bg-brand/90">
-                View Opportunities
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </CardContent>
-          </Card>
+        <TabsContent value="recommendations" className="space-y-4">
+          {recommendations.length === 0 ? (
+            <Card className="border-border shadow-sm">
+              <CardContent className="p-6 text-center">
+                <Lightbulb className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium mb-2">No Recommendations</h3>
+                <p className="text-muted-foreground mb-4">You're all caught up!</p>
+              </CardContent>
+            </Card>
+          ) : (
+            recommendations.map(rec => (
+              <Card key={rec.id} className="border-border shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-brand/10 rounded-lg">
+                      <Lightbulb className="h-6 w-6 text-brand" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-medium mb-1">{rec.title}</h3>
+                      <p className="text-sm text-muted-foreground">{rec.description}</p>
+                    </div>
+                    {rec.action_url && (
+                      <Button className="bg-brand hover:bg-brand/90" onClick={() => router.push(rec.action_url)}>
+                        Action
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </TabsContent>
       </Tabs>
     </div>

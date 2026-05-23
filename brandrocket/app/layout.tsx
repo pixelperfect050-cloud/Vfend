@@ -7,6 +7,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { PostHogProvider, PostHogPageView } from "@/components/providers/posthog-provider";
 import { Suspense } from "react";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -57,6 +59,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log('LAYOUT GA ID:', GA_MEASUREMENT_ID);
   return (
     <html
       lang="en"
@@ -82,6 +85,7 @@ export default function RootLayout({
             </QueryProvider>
           </ThemeProvider>
         </PostHogProvider>
+        {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>
     </html>
   );

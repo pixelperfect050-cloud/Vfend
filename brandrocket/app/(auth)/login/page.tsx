@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { loginSchema } from '@/lib/validations'
 import type { z } from 'zod'
+import { trackEvent } from '@/lib/analytics'
 
 type LoginForm = z.infer<typeof loginSchema>
 
@@ -64,6 +65,7 @@ export default function LoginPage() {
         // Clear demo cookie if present
         document.cookie = "demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
+        trackEvent('Login', 'Auth', 'Email')
         toast.success('Successfully logged in')
 
         if (!profile || !profile.onboarding_completed) {
@@ -96,6 +98,7 @@ export default function LoginPage() {
       if (error) throw error
       // Clear demo cookie if present
       document.cookie = "demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      trackEvent('Login', 'Auth', 'Google')
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)

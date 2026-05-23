@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { signupSchema } from '@/lib/validations'
 import type { z } from 'zod'
+import { trackEvent } from '@/lib/analytics'
 
 type SignupForm = z.infer<typeof signupSchema>
 
@@ -21,6 +22,10 @@ export default function SignupPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    trackEvent('Signup Started', 'Auth')
+  }, [])
 
   const supabase = createBrowserClient(
     (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
@@ -54,6 +59,7 @@ export default function SignupPage() {
       // Clear demo cookie if present
       document.cookie = "demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
+      trackEvent('Signup Completed', 'Auth', 'Email')
       toast.success('Check your email to verify your account')
       router.push('/login')
     } catch (error) {
@@ -77,6 +83,7 @@ export default function SignupPage() {
         },
       })
       if (error) throw error
+      trackEvent('Signup Completed', 'Auth', 'Google')
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)

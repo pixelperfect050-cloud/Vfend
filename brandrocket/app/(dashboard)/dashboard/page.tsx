@@ -1,31 +1,88 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageHeader } from '@/components/shared/page-header'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { BarChart3, Bot, FileText, Megaphone, Search, Zap, ArrowUpRight, Plus, Rocket, Copy, AlertTriangle, Activity, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
-import { demoCampaigns, demoActivityFeed, demoMetrics } from '@/lib/demo-data'
+import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
-import { useDemoMode } from '@/hooks/use-demo-mode'
+import { useWorkspaceStore } from '@/stores/workspace-store'
+import { EmptyState } from '@/components/shared/empty-state'
 
 export default function DashboardPage() {
-  const { isDemoMode, isLoaded } = useDemoMode()
-
-  const campaigns = isDemoMode ? demoCampaigns : [] // Explicit source switching: Real users see empty state until real DB is connected
-  const activityFeed = isDemoMode ? demoActivityFeed : []
-  const metrics = isDemoMode ? demoMetrics : {
+  const { currentWorkspace } = useWorkspaceStore()
+  const router = useRouter()
+  
+  const [campaigns, setCampaigns] = useState<any[]>([])
+  const [activityFeed, setActivityFeed] = useState<any[]>([])
+  const [metrics, setMetrics] = useState({
     totalConversions: 0,
     conversionGrowth: '0%',
     totalSpend: '$0',
     spendEfficiency: '0%',
     activeAgents: 0,
     tasksCompleted: 0
-  }
+  })
+  const [isLoading, setIsLoading] = useState(true)
 
-  if (!isLoaded) return null // Prevent hydration mismatch
+  useEffect(() => {
+    if (!currentWorkspace?.id) return
+
+    async function loadData() {
+      setIsLoading(true)
+      try {
+        const [campaignsRes, intelRes] = await Promise.all([
+          fetch(`/api/campaigns/orchestrate?team_id=${currentWorkspace?.id}`),
+          fetch(`/api/intelligence?team_id=${currentWorkspace?.id}`)
+        ])
+
+        if (campaignsRes.ok) {
+          const { orchestrations } = await campaignsRes.json()
+          setCampaigns(orchestrations.map((o: any) => ({
+            id: o.id,
+            name: o.name,
+            status: o.status,
+            channels: [o.campaign_type.replace('_', ' ')],
+            lastActiveAgent: 'Campaign Manager',
+            lastAction: o.status === 'completed' ? 'Campaign finished' : 'Processing steps',
+            conversions: o.conversions || 0,
+            cpa: o.cpa || '$0.00'
+          })))
+        }
+
+        if (intelRes.ok) {
+          const intel = await intelRes.json()
+          const act = intel.activity || []
+          setActivityFeed(act.map((a: any) => ({
+            id: a.id,
+            type: a.actor_type === 'ai' ? 'bot' : 'opportunity',
+            agent: a.actor_name,
+            time: new Date(a.created_at).toLocaleDateString(),
+            action: a.description
+          })))
+          
+          setMetrics(prev => ({
+            ...prev,
+            activeAgents: act.length > 0 ? 3 : 0,
+            tasksCompleted: act.length
+          }))
+        }
+      } catch (err) {
+        console.error('Failed to load dashboard data:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadData()
+  }, [currentWorkspace?.id])
+
+  if (!currentWorkspace) return null
+
+
 
 
   return (
@@ -121,10 +178,20 @@ export default function DashboardPage() {
           </div>
           
           <div className="grid gap-4">
-            {campaigns.length === 0 ? (
+            {isLoading ? (
               <div className="text-center py-8 text-muted-foreground border rounded-lg border-dashed">
-                No active campaigns found. Start one today!
+                Loading campaigns...
               </div>
+            ) : campaigns.length === 0 ? (
+              <EmptyState 
+                icon={Rocket}
+                title="No campaigns yet" 
+                description="Launch your first campaign to start generating leads." 
+                action={{
+                  label: "Launch Campaign",
+                  onClick: () => router.push('/dashboard/campaign-builder')
+                }}
+              />
             ) : (
             campaigns.map(campaign => (
               <Card key={campaign.id} className="hover:border-brand/30 transition-colors">
@@ -145,7 +212,7 @@ export default function DashboardPage() {
                           </span>
                         </div>
                         <div className="flex gap-2">
-                          {campaign.channels.map(c => (
+                          {campaign.channels.map((c: string) => (
                             <span key={c} className="text-xs bg-muted px-2 py-1 rounded-md text-muted-foreground font-medium">
                               {c}
                             </span>
@@ -193,7 +260,9 @@ export default function DashboardPage() {
           <Card className="h-[calc(100%-2rem)]">
             <CardContent className="p-0">
               <div className="divide-y">
-                {activityFeed.length === 0 ? (
+                {isLoading ? (
+                  <div className="p-8 text-center text-sm text-muted-foreground">Loading activity...</div>
+                ) : activityFeed.length === 0 ? (
                   <div className="p-8 text-center text-sm text-muted-foreground">No recent activity.</div>
                 ) : (
                   activityFeed.map((activity) => (

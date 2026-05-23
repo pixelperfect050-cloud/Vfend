@@ -2,6 +2,8 @@
 
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
+import { useWorkspaceStore } from '@/stores/workspace-store'
+import { trackEvent } from '@/lib/analytics'
 import { PageHeader } from '@/components/shared/page-header'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -63,6 +65,8 @@ export default function CampaignBuilderPage() {
   })
   const [isLaunching, setIsLaunching] = React.useState(false)
   const [launchProgress, setLaunchProgress] = React.useState(0)
+  const [error, setError] = React.useState<string | null>(null)
+  const { currentWorkspace } = useWorkspaceStore()
 
   const progress = ((currentStep + 1) / STEPS.length) * 100
 
@@ -87,26 +91,42 @@ export default function CampaignBuilderPage() {
   }
 
   const handleLaunch = async () => {
-    setIsLaunching(true)
-    setLaunchProgress(0)
-
-    // Simulate campaign launch with progress
-    const steps = [
-      { label: 'Analyzing business context', progress: 20 },
-      { label: 'Researching target audience', progress: 40 },
-      { label: 'Generating campaign strategy', progress: 60 },
-      { label: 'Creating content assets', progress: 80 },
-      { label: 'Setting up automations', progress: 95 },
-      { label: 'Launching campaign', progress: 100 },
-    ]
-
-    for (const step of steps) {
-      await new Promise(resolve => setTimeout(resolve, 800))
-      setLaunchProgress(step.progress)
+    if (!currentWorkspace) {
+      setError('No active workspace selected.')
+      return
     }
 
-    // Navigate to dashboard to see results
-    router.push('/dashboard')
+    setIsLaunching(true)
+    setError(null)
+    setLaunchProgress(50) // Show it's working
+    trackEvent('Campaign Launched', 'Campaign')
+
+    try {
+      const response = await fetch('/api/campaigns/orchestrate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          teamId: currentWorkspace?.id,
+          name: data.businessName ? `${data.businessName} Campaign` : 'New Campaign',
+          goal: data.goal,
+          campaignType: campaignType || 'product_launch',
+          context: data,
+        })
+      })
+      
+      const result = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to launch campaign')
+      }
+
+      trackEvent('Campaign Created', 'Campaign', campaignType || 'product_launch')
+      setLaunchProgress(100)
+      router.push('/dashboard')
+    } catch (err: any) {
+      setError(err.message)
+      setIsLaunching(false)
+    }
   }
 
   const renderStep = () => {
@@ -348,6 +368,12 @@ export default function CampaignBuilderPage() {
                     </li>
                   </ul>
                 </div>
+
+                {error && (
+                  <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
+                    {error}
+                  </div>
+                )}
 
                 <Button 
                   className="w-full bg-brand hover:bg-brand/90 text-lg py-6"

@@ -15,6 +15,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useWorkspaceStore, Workspace } from '@/stores/workspace-store'
+import { useRouter } from 'next/navigation'
+import { createBrowserClient } from '@supabase/ssr'
+import { LogOut } from 'lucide-react'
 
 const mockWorkspaces: Workspace[] = [
   { id: '1', name: 'Personal Workspace', slug: 'personal', createdAt: new Date().toISOString() },
@@ -29,9 +32,23 @@ const planColors: Record<string, string> = {
 }
 
 export function WorkspaceSwitcher({ isCollapsed }: { isCollapsed?: boolean }) {
+  const router = useRouter()
   const { currentWorkspace, setWorkspace, workspaces } = useWorkspaceStore()
   const [isLoading, setIsLoading] = React.useState(false)
   const [open, setOpen] = React.useState(false)
+
+  const supabase = createBrowserClient(
+    (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+    (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder')
+  )
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    useWorkspaceStore.setState({ currentWorkspace: null, workspaces: [] })
+    document.cookie = 'demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    router.push('/')
+    router.refresh()
+  }
 
   const activeWorkspace = currentWorkspace || mockWorkspaces[1]
   const allWorkspaces = workspaces.length > 0 ? workspaces : mockWorkspaces
@@ -106,9 +123,14 @@ export function WorkspaceSwitcher({ isCollapsed }: { isCollapsed?: boolean }) {
           <Plus className="mr-2 h-4 w-4" />
           <span>Create Workspace</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/dashboard/settings')}>
           <Settings className="mr-2 h-4 w-4" />
           <span>Workspace Settings</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
